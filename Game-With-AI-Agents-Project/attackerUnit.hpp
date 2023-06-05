@@ -2,6 +2,8 @@
 * attackerUnit.hpp
 */
 
+#pragma once
+
 #include "enemyUnit.hpp"
 
 class AttackerUnit : public EnemyUnit

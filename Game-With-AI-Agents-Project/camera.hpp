@@ -21,8 +21,8 @@ public:
 	void setPos(std::vector<double>);
 
 private:
-	std::vector<double> _eye;
 	std::vector<double> _front;
+	std::vector<double> _eye;
 	std::vector<double> _center;
 	std::vector<double> _up;
 	

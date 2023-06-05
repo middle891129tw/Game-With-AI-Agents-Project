@@ -22,6 +22,7 @@ EnemyUnit::EnemyUnit()
 	randomValue = dis(gen);
 	_pos[1] = randomValue;
 	_destination = _pos;
+	_threshold = 5.0;
 
 	_segmentCount = 7;
 	_radius = 2.0;
@@ -33,16 +34,16 @@ EnemyUnit::~EnemyUnit()
 
 void EnemyUnit::goToDestination()
 {
-	if (_pos[0] < _destination[0])
+	if (_pos[0] < _destination[0] - _threshold)
 		move(Rightward);
-	else if (_pos[0] > _destination[0])
+	else if (_pos[0] > _destination[0] + _threshold)
 		move(Leftward);
 	else
 		stop(Rightward);
 
-	if (_pos[1] < _destination[1])
+	if (_pos[1] < _destination[1] - _threshold)
 		move(Forward);
-	else if (_pos[1] > _destination[1])
+	else if (_pos[1] > _destination[1] + _threshold)
 		move(Backward);
 	else
 		stop(Forward);
@@ -50,7 +51,7 @@ void EnemyUnit::goToDestination()
 
 void EnemyUnit::wander()
 {
-	if (abs(_pos[0] - _destination[0]) < 5.0 && abs(_pos[1] - _destination[1]) < 5.0)
+	if (abs(_pos[0] - _destination[0]) < _threshold && abs(_pos[1] - _destination[1]) < _threshold)
 	{
 		std::random_device rd;
 		std::mt19937 gen(rd());

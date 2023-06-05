@@ -18,11 +18,15 @@ Unit::Unit()
 
     _front  = { 0.0, 0.9, 0.0 };
 
-    _radius = 1.0;
     _segmentCount = 3;
+    _radius = 1.0;
+    _mass = 1.0;
 
     _isStoppingX = true;
     _isStoppingY = true;
+
+    _velMax = 10.0;
+    _accAbility = 15.0;
 }
 
 Unit::~Unit()
@@ -79,9 +83,9 @@ void Unit::accelerate(std::vector<double> a)
     _vel[0] += a[0];
     _vel[1] += a[1];
     _vel[2] += a[2];
-    if (_vel[0] < -10.0 || 10.0 < _vel[0]) _vel[0] -= a[0];
-    if (_vel[1] < -10.0 || 10.0 < _vel[1]) _vel[1] -= a[1];
-    if (_vel[2] < -10.0 || 10.0 < _vel[2]) _vel[2] -= a[2];
+    if (_vel[0] < -_velMax || _velMax < _vel[0]) _vel[0] -= a[0];
+    if (_vel[1] < -_velMax || _velMax < _vel[1]) _vel[1] -= a[1];
+    if (_vel[2] < -_velMax || _velMax < _vel[2]) _vel[2] -= a[2];
 }
 
 void Unit::accelerate(double deltaTime)
@@ -150,19 +154,19 @@ void Unit::move(Direction dir)
     {
     case Forward:
         _isStoppingY = false;
-        _acc[1] = 10.0;
+        _acc[1] = _accAbility;
         break;
     case Backward:
         _isStoppingY = false;
-        _acc[1] = -10.0;
+        _acc[1] = -_accAbility;
         break;
     case Leftward:
         _isStoppingX = false;
-        _acc[0] = -10.0;
+        _acc[0] = -_accAbility;
         break;
     case Rightward:
         _isStoppingX = false;
-        _acc[0] = 10.0;
+        _acc[0] = _accAbility;
         break;
     default:
         break;
@@ -176,11 +180,11 @@ void Unit::stop(Direction dir)
         _isStoppingY = true;
         if (_vel[1] < -0.1)
         {
-            _acc[1] = 15.0;
+            _acc[1] = _accAbility;
         }
         else if (_vel[1] > 0.1)
         {
-            _acc[1] = -15.0;
+            _acc[1] = -_accAbility;
         }
         else
         {
@@ -194,11 +198,11 @@ void Unit::stop(Direction dir)
         _isStoppingX = true;
         if (_vel[0] < -0.1)
         {
-            _acc[0] = 15.0;
+            _acc[0] = _accAbility;
         }
         else if (_vel[0] > 0.1)
         {
-            _acc[0] = -15.0;
+            _acc[0] = -_accAbility;
         }
         else
         {

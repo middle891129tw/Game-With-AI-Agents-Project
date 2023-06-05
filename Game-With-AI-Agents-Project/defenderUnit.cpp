@@ -10,6 +10,9 @@ DefenderUnit::DefenderUnit(Unit* target)
 
 	_segmentCount = 4;
 	_radius = 1.0;
+
+	_velMax = 20.0;
+	_accAbility = 20.0;
 }
 
 DefenderUnit::~DefenderUnit()

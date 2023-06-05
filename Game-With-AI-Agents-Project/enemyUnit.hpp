@@ -17,4 +17,5 @@ public:
 
 protected:
 	std::vector<double> _destination;
+	double _threshold;
 };

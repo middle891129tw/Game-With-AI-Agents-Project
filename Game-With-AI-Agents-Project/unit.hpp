@@ -26,10 +26,15 @@ protected:
 	std::vector<double> _vel;
 	std::vector<double> _acc;
 	std::vector<double> _front;
+
 	unsigned int _segmentCount;
 	double _radius;
+	double _mass;
+
 	bool _isStoppingX;
 	bool _isStoppingY;
+	double _accAbility;
+	double _velMax;
 
 	void translate(std::vector<double> t);
 	void translate(double deltaTime);
