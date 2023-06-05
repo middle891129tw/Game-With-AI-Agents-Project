@@ -2,9 +2,12 @@
 * vector3.hpp
 */
 
+#pragma once
+
 class Vector3
 {
 public:
+    Vector3();
 	Vector3(double, double, double);
 	~Vector3();
 
@@ -35,6 +38,10 @@ public:
     Vector3 crossProduct(const Vector3& other) const;
     Vector3 normalized() const;
 
+    static Vector3 slerp(const Vector3& start, const Vector3& end, double t);
+
 private:
-	double _data[3];
+	double _x;
+	double _y;
+	double _z;
 };

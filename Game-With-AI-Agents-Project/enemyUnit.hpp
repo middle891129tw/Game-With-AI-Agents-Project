@@ -16,6 +16,6 @@ public:
 	void wander();
 
 protected:
-	std::vector<double> _destination;
+	Vector3 _destination;
 	double _threshold;
 };

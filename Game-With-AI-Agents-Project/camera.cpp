@@ -13,9 +13,9 @@ Camera::~Camera()
 {
 }
 
-std::vector<double> Camera::getEye()	{ return _eye; }
-std::vector<double> Camera::getCenter()	{ return _center; }
-std::vector<double> Camera::getUp()		{ return _up; }
+Vector3 Camera::getEye()	{ return _eye; }
+Vector3 Camera::getCenter()	{ return _center; }
+Vector3 Camera::getUp()		{ return _up; }
 
 void Camera::reset()
 {
@@ -27,7 +27,7 @@ void Camera::reset()
     _up = { 0.0,  1.0,  0.0 };
 }
 
-void Camera::translate(std::vector<double> t)
+void Camera::translate(Vector3 t)
 {
     _eye	[0] += t[0] * 0.9;
     _eye	[1] += t[1] * 0.9;
@@ -37,7 +37,7 @@ void Camera::translate(std::vector<double> t)
     _center	[2] += t[2];
 }
 
-void Camera::setPos(std::vector<double> p)
+void Camera::setPos(Vector3 p)
 {
     _eye	[0] = p[0];
     _eye	[1] = p[1] - _front[1];

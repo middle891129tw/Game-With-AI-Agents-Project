@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <vector>
+#include "vector3.hpp"
 
 class Camera
 {
@@ -12,18 +12,18 @@ public:
 	Camera();
 	~Camera();
 
-	std::vector<double> getEye();
-	std::vector<double> getCenter();
-	std::vector<double> getUp();
+	Vector3 getEye();
+	Vector3 getCenter();
+	Vector3 getUp();
 
 	void reset();
-	void translate(std::vector<double>);
-	void setPos(std::vector<double>);
+	void translate(Vector3);
+	void setPos(Vector3);
 
 private:
-	std::vector<double> _front;
-	std::vector<double> _eye;
-	std::vector<double> _center;
-	std::vector<double> _up;
+	Vector3 _front;
+	Vector3 _eye;
+	Vector3 _center;
+	Vector3 _up;
 	
 };

@@ -62,27 +62,24 @@ void Unit::draw()
     glEnd();
 }
 
-void Unit::translate(std::vector<double> t)
+
+void Unit::translate(Vector3 t)
 {
-    _pos[0] += t[0];
-    _pos[1] += t[1];
-    _pos[2] += t[2];
-    if (_pos[0] < -25.0+_radius || 25.0-_radius < _pos[0]) _pos[0] -= t[0];
-    if (_pos[1] < -25.0+_radius || 25.0-_radius < _pos[1]) _pos[1] -= t[1];
-    if (_pos[2] < -25.0+_radius || 25.0-_radius < _pos[2]) _pos[2] -= t[2];
+    _pos += t;
+    if (_pos[0] < -25.0 + _radius || 25.0 - _radius < _pos[0]) _pos[0] -= t[0];
+    if (_pos[1] < -25.0 + _radius || 25.0 - _radius < _pos[1]) _pos[1] -= t[1];
+    if (_pos[2] < -25.0 + _radius || 25.0 - _radius < _pos[2]) _pos[2] -= t[2];
 }
 
 void Unit::translate(double deltaTime)
 {
-    std::vector<double> t = { _vel[0] * deltaTime, _vel[1] * deltaTime , _vel[2] * deltaTime };
+    Vector3 t(_vel[0] * deltaTime, _vel[1] * deltaTime, _vel[2] * deltaTime);
     translate(t);
 }
 
-void Unit::accelerate(std::vector<double> a)
+void Unit::accelerate(Vector3 a)
 {
-    _vel[0] += a[0];
-    _vel[1] += a[1];
-    _vel[2] += a[2];
+    _vel += a;
     if (_vel[0] < -_velMax || _velMax < _vel[0]) _vel[0] -= a[0];
     if (_vel[1] < -_velMax || _velMax < _vel[1]) _vel[1] -= a[1];
     if (_vel[2] < -_velMax || _velMax < _vel[2]) _vel[2] -= a[2];
@@ -90,7 +87,7 @@ void Unit::accelerate(std::vector<double> a)
 
 void Unit::accelerate(double deltaTime)
 {
-    std::vector<double> a = { _acc[0] * deltaTime, _acc[1] * deltaTime , _acc[2] * deltaTime };
+    Vector3 a(_acc[0] * deltaTime, _acc[1] * deltaTime, _acc[2] * deltaTime);
     accelerate(a);
 }
 
@@ -99,7 +96,7 @@ void Unit::rotate(double deltaTime)
     if (_isStoppingX && _isStoppingY)
         return;
 
-    std::vector<double> targetFront = _acc;
+    Vector3 targetFront = _acc;
 
     // normalize
     double targetFrontLength = sqrt(targetFront[0] * targetFront[0] + targetFront[1] * targetFront[1] + targetFront[2] * targetFront[2]);
@@ -112,36 +109,15 @@ void Unit::rotate(double deltaTime)
 
     double interpolationFactor = rotationSpeed * deltaTime;
     
-    std::vector<double> interpolatedFront = slerp(_front, targetFront, interpolationFactor);
+    Vector3 interpolatedFront = Vector3::slerp(_front, targetFront, interpolationFactor);
 
     _front = interpolatedFront;
     //printf("_front: %f, %f, %f\n", _front[0], _front[1], _front[2]);
 }
 
-void Unit::applyForce(std::vector<double> f)
+void Unit::applyForce(Vector3 f)
 {
-    _acc[0] += f[0] / _mass;
-    _acc[1] += f[1] / _mass;
-    _acc[2] += f[2] / _mass;
-}
-
-std::vector<double> Unit::slerp(const std::vector<double>& start, const std::vector<double>& end, double t)
-{
-    double dotProduct = start[0] * end[0] + start[1] * end[1] + start[2] * end[2];
-    double angle = std::acos(dotProduct);
-
-    double sinAngle = std::sin(angle);
-    double invSinAngle = 1.0 / sinAngle;
-
-    double startWeight = std::sin((1.0 - t) * angle) * invSinAngle;
-    double endWeight = std::sin(t * angle) * invSinAngle;
-
-    std::vector<double> interpolatedVec;
-    interpolatedVec.push_back(startWeight * start[0] + endWeight * end[0]);
-    interpolatedVec.push_back(startWeight * start[1] + endWeight * end[1]);
-    interpolatedVec.push_back(startWeight * start[2] + endWeight * end[2]);
-
-    return interpolatedVec;
+    _acc += f / _mass;
 }
 
 void Unit::animate(double deltaTime)
@@ -219,7 +195,7 @@ void Unit::stop(Direction dir)
     }
 }
 
-std::vector<double> Unit::getPos()
+Vector3 Unit::getPos()
 {
     return _pos;
 }

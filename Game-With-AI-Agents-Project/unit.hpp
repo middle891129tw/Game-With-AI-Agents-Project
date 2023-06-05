@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <vector>
+#include "vector3.hpp"
 
 class Unit
 {
@@ -19,14 +19,14 @@ public:
 	void move(Direction);
 	void stop(Direction);
 
-	std::vector<double> getPos();
+	Vector3 getPos();
 	double getRadius();
 
 protected:
-	std::vector<double> _pos;
-	std::vector<double> _vel;
-	std::vector<double> _acc;
-	std::vector<double> _front;
+	Vector3 _pos;
+	Vector3 _vel;
+	Vector3 _acc;
+	Vector3 _front;
 
 	unsigned int _segmentCount;
 	double _radius;
@@ -37,12 +37,10 @@ protected:
 	double _accAbility;
 	double _velMax;
 
-	void translate(std::vector<double> t);
+	void translate(Vector3 t);
 	void translate(double deltaTime);
-	void accelerate(std::vector<double> a);
+	void accelerate(Vector3 a);
 	void accelerate(double deltaTime);
 	void rotate(double deltaTime);
-	void applyForce(std::vector<double> f);
-
-	std::vector<double> slerp(const std::vector<double>& start, const std::vector<double>& end, double t);
+	void applyForce(Vector3 f);
 };
