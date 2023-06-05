@@ -144,6 +144,7 @@
     <ClCompile Include="playerUnit.cpp" />
     <ClCompile Include="playerUnit.hpp" />
     <ClCompile Include="unit.cpp" />
+    <ClCompile Include="vector3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="attackerUnit.hpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="enemyUnit.hpp" />
     <ClInclude Include="gameApp.hpp" />
     <ClInclude Include="unit.hpp" />
+    <ClInclude Include="vector3.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

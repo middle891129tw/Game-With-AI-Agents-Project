@@ -100,8 +100,14 @@ void renderScene()
 
 #pragma endregion
 
+void handleCollision()
+{
+    if (playerUnit.getPos()[0] - enemyUnit.getPos()[0])
+    {
+        ;
+    }
+}
 
-#pragma region Rendering Objects
 
 void drawGrid()
 {
@@ -125,8 +131,6 @@ void drawGrid()
         glEnd();
     }
 }
-
-#pragma endregion
 
 
 #pragma region Callbacks
@@ -173,6 +177,8 @@ void idleCallback()
 
     attackerUnit.attack();
     attackerUnit.animate(deltaTime.count());
+
+    handleCollision();
 
     renderScene();
 }

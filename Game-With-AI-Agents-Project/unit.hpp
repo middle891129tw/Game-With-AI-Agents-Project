@@ -20,6 +20,7 @@ public:
 	void stop(Direction);
 
 	std::vector<double> getPos();
+	double getRadius();
 
 protected:
 	std::vector<double> _pos;
@@ -41,6 +42,7 @@ protected:
 	void accelerate(std::vector<double> a);
 	void accelerate(double deltaTime);
 	void rotate(double deltaTime);
+	void applyForce(std::vector<double> f);
 
 	std::vector<double> slerp(const std::vector<double>& start, const std::vector<double>& end, double t);
 };

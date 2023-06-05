@@ -19,5 +19,7 @@ void keyboardUpCallback(unsigned char, int, int);
 void makeProjection();
 void makeView();
 
+void handleCollision();
+
 void renderScene();
 void drawGrid();

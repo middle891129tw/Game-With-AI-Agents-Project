@@ -118,6 +118,13 @@ void Unit::rotate(double deltaTime)
     //printf("_front: %f, %f, %f\n", _front[0], _front[1], _front[2]);
 }
 
+void Unit::applyForce(std::vector<double> f)
+{
+    _acc[0] += f[0] / _mass;
+    _acc[1] += f[1] / _mass;
+    _acc[2] += f[2] / _mass;
+}
+
 std::vector<double> Unit::slerp(const std::vector<double>& start, const std::vector<double>& end, double t)
 {
     double dotProduct = start[0] * end[0] + start[1] * end[1] + start[2] * end[2];
@@ -215,4 +222,9 @@ void Unit::stop(Direction dir)
 std::vector<double> Unit::getPos()
 {
     return _pos;
+}
+
+double Unit::getRadius()
+{
+    return _radius;
 }

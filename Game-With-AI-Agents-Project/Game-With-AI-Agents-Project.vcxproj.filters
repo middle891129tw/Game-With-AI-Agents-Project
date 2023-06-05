@@ -42,6 +42,9 @@
     <ClCompile Include="attackerUnit.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
+    <ClCompile Include="vector3.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.hpp">
@@ -57,6 +60,9 @@
       <Filter>標頭檔</Filter>
     </ClInclude>
     <ClInclude Include="attackerUnit.hpp">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="vector3.hpp">
       <Filter>標頭檔</Filter>
     </ClInclude>
   </ItemGroup>
