@@ -10,15 +10,15 @@
 
 #define PI 3.14159
 
-Unit::Unit()
+Unit::Unit() : _segmentCount(3),
+               _isStoppingX(true),
+               _isStoppingY(true),
+               _velMax(10.0),
+               _accAbility(15.0),
+               _bodyColor(0.8, 0.8, 0.8),
+               _indicatorColor(0.8, 0.8, 0.8)
 {
-    _segmentCount = 3;
-
-    _isStoppingX = true;
-    _isStoppingY = true;
-
-    _velMax = 10.0;
-    _accAbility = 15.0;
+    _pos = { 0.0, 0.0, 0.1 };
 }
 
 Unit::~Unit()
@@ -30,28 +30,42 @@ void Unit::draw()
 {
     float angleOffset = atan2(_front[1], _front[0]);
 
-    glColor3f(0.8f, 0.8f, 0.8f);
+    glColor3f(_bodyColor[0],
+              _bodyColor[1],
+              _bodyColor[2]);
     glBegin(GL_TRIANGLE_FAN);
-      glVertex3f(_pos[0], _pos[1], _pos[2]);
-      for (int i = 0; i <= _segmentCount; ++i)
-      {
-          float angle = 2.0f * PI * static_cast<float>(i) / static_cast<float>(_segmentCount) + angleOffset;
-          float x = _pos[0] + _radius * cos(angle);
-          float y = _pos[1] + _radius * sin(angle);
-          glVertex3f(x, y, _pos[2]);
-      }
+    glVertex3f(_pos[0],
+               _pos[1],
+               _pos[2]);
+    for (int i = 0; i <= _segmentCount; ++i)
+    {
+        float angle = 2.0f * PI * static_cast<float>(i) / static_cast<float>(_segmentCount) + angleOffset;
+        float x = _pos[0] + _radius * cos(angle);
+        float y = _pos[1] + _radius * sin(angle);
+        glVertex3f(x, y, _pos[2]);
+    }
     glEnd();
-    glColor3f(0.0f, 0.0f, 0.0f);
+
+    glPushMatrix();
+    glTranslatef(1.25 * _radius * _front[0],
+                 1.25 * _radius * _front[1],
+                 1.25 * _radius * _front[2]);
+    glColor3f(_indicatorColor[0],
+              _indicatorColor[1],
+              _indicatorColor[2]);
     glBegin(GL_TRIANGLE_FAN);
-      glVertex3f(_pos[0], _pos[1], _pos[2] + 0.1);
-      for (int i = 0; i <= 3; ++i)
-      {
-          float angle = 2.0f * PI * static_cast<float>(i) / static_cast<float>(3) + angleOffset;
-          float x = _pos[0] + _radius * cos(angle) * 0.2;
-          float y = _pos[1] + _radius * sin(angle) * 0.2;
-          glVertex3f(x, y, _pos[2]);
-      }
+    glVertex3f(_pos[0],
+               _pos[1],
+               _pos[2]);
+    for (int i = 0; i <= 3; ++i)
+    {
+        float angle = 2.0f * PI * static_cast<float>(i) / static_cast<float>(3) + angleOffset;
+        float x = _pos[0] + cos(angle) * 0.2;
+        float y = _pos[1] + sin(angle) * 0.2;
+        glVertex3f(x, y, _pos[2]);
+    }
     glEnd();
+    glPopMatrix();
 }
 
 void Unit::turn(double deltaTime)

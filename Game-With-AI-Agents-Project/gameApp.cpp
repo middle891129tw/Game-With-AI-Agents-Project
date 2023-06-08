@@ -105,8 +105,8 @@ void handleCollision()
     if ((playerUnit.getPos() - enemyUnit.getPos()).magnitude() <
         playerUnit.getRadius() + enemyUnit.getRadius())
     {
-        //Vector3 force(playerUnit.getPos() - enemyUnit.getPos());
-        //printf("Collided! Force: %f, %f, %f\n", force.getX(), force.getY(), force.getZ());
+        Vector3 force(playerUnit.getPos() - enemyUnit.getPos());
+        printf("Collided! Force: %f, %f, %f\n", force.getX(), force.getY(), force.getZ());
         //playerUnit.applyForce(force);
     }
 }

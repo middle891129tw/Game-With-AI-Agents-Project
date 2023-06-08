@@ -34,15 +34,11 @@ void GameObject::confinePos()
         _pos[0] = _minPos[0] + _radius;
     if (_pos[1] < _minPos[1] + _radius)
         _pos[1] = _minPos[1] + _radius;
-    if (_pos[2] < _minPos[2] + _radius)
-        _pos[2] = _minPos[2] + _radius;
 
     if (_pos[0] > _maxPos[0] - _radius)
         _pos[0] = _maxPos[0] - _radius;
     if (_pos[1] > _maxPos[1] - _radius)
         _pos[1] = _maxPos[1] - _radius;
-    if (_pos[2] > _maxPos[2] - _radius)
-        _pos[2] = _maxPos[2] - _radius;
 }
 
 void GameObject::confineVel()

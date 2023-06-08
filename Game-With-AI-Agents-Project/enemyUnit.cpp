@@ -22,7 +22,7 @@ EnemyUnit::EnemyUnit()
     randomValue = dis(gen);
     _pos[1] = randomValue;
     _destination = _pos;
-    _threshold = 5.0;
+    _threshold = 3.0;
 
     _segmentCount = 7;
     _radius = 2.0;
@@ -66,7 +66,6 @@ void EnemyUnit::wander()
         _destination[0] = randomValue;
         randomValue = dis(gen);
         _destination[1] = randomValue;
-        //printf("_destination: %f, %f\n", _destination[0], _destination[1]);
     }
     else
     {
