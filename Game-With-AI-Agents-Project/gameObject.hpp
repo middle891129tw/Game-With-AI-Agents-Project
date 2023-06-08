@@ -20,14 +20,14 @@ public:
     GameObject();
     ~GameObject();
 
-    void translate(Vector3 t);
-    void translate(double deltaTime);
-    void accelerate(Vector3 a);
-    void accelerate(double deltaTime);
-    //void turn();
+    void virtual draw();
 
-    void draw();
-    void animate(double deltaTime);
+    void translate(Vector3 deltaPos);
+    void translate(double deltaTime);
+    void accelerate(Vector3 deltaVel);
+    void accelerate(double deltaTime);
+    void turn();
+
     void update(double deltaTime);
 };
 

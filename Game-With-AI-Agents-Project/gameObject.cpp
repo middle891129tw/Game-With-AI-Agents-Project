@@ -17,30 +17,38 @@ GameObject::~GameObject()
 {
 }
 
-void GameObject::translate(Vector3 t)
-{
-}
-
-void GameObject::translate(double deltaTime)
-{
-}
-
-void GameObject::accelerate(Vector3 a)
-{
-}
-
-void GameObject::accelerate(double deltaTime)
-{
-}
-
 void GameObject::draw()
 {
 }
 
-void GameObject::animate(double deltaTime)
+void GameObject::translate(Vector3 deltaPos)
 {
+    _pos += deltaPos;
+}
+
+void GameObject::translate(double deltaTime)
+{
+    translate(_vel * deltaTime);
+}
+
+void GameObject::accelerate(Vector3 deltaVel)
+{
+    _vel += deltaVel;
+}
+
+void GameObject::accelerate(double deltaTime)
+{
+    translate(_acc * deltaTime);
+}
+
+void GameObject::turn()
+{
+    // TODO
 }
 
 void GameObject::update(double deltaTime)
 {
+    accelerate(deltaTime);
+    translate(deltaTime);
+    turn();
 }

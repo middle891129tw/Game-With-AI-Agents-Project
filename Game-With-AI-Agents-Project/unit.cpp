@@ -55,19 +55,19 @@ void Unit::draw()
 }
 
 
-void Unit::translate(Vector3 t)
-{
-    _pos += t;
-    if (_pos[0] < -25.0 + _radius || 25.0 - _radius < _pos[0]) _pos[0] -= t[0];
-    if (_pos[1] < -25.0 + _radius || 25.0 - _radius < _pos[1]) _pos[1] -= t[1];
-    if (_pos[2] < -25.0 + _radius || 25.0 - _radius < _pos[2]) _pos[2] -= t[2];
-}
-
-void Unit::translate(double deltaTime)
-{
-    Vector3 t(_vel[0] * deltaTime, _vel[1] * deltaTime, _vel[2] * deltaTime);
-    translate(t);
-}
+//void Unit::translate(Vector3 t)
+//{
+//    _pos += t;
+//    if (_pos[0] < -25.0 + _radius || 25.0 - _radius < _pos[0]) _pos[0] -= t[0];
+//    if (_pos[1] < -25.0 + _radius || 25.0 - _radius < _pos[1]) _pos[1] -= t[1];
+//    if (_pos[2] < -25.0 + _radius || 25.0 - _radius < _pos[2]) _pos[2] -= t[2];
+//}
+//
+//void Unit::translate(double deltaTime)
+//{
+//    Vector3 t(_vel[0] * deltaTime, _vel[1] * deltaTime, _vel[2] * deltaTime);
+//    translate(t);
+//}
 
 void Unit::accelerate(Vector3 a)
 {

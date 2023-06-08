@@ -14,7 +14,7 @@ public:
     Unit();
     ~Unit();
     
-    void draw();
+    void draw() override;
     void animate(double deltaTime);
     void move(Direction);
     void stop(Direction);
@@ -31,8 +31,8 @@ protected:
     double _accAbility;
     double _velMax;
 
-    void translate(Vector3 t);
-    void translate(double deltaTime);
+    //void translate(Vector3 t);
+    //void translate(double deltaTime);
     void accelerate(Vector3 a);
     void accelerate(double deltaTime);
     void rotate(double deltaTime);
