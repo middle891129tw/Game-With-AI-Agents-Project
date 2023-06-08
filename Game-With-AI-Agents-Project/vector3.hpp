@@ -25,6 +25,7 @@ public:
     Vector3 operator+(const Vector3& other) const;
     Vector3 operator-(const Vector3& other) const;
     Vector3 operator*(double scalar) const;
+    Vector3 friend operator*(double scalar, const Vector3& vector);
     Vector3 operator/(double scalar) const;
     Vector3& operator+=(const Vector3& other);
     Vector3& operator-=(const Vector3& other);

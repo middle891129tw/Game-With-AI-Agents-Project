@@ -105,9 +105,9 @@ void handleCollision()
     if ((playerUnit.getPos() - enemyUnit.getPos()).magnitude() <
         playerUnit.getRadius() + enemyUnit.getRadius())
     {
-        Vector3 force(playerUnit.getPos() - enemyUnit.getPos());
-        printf("Collided! Force: %f, %f, %f\n", force.getX(), force.getY(), force.getZ());
-        playerUnit.applyForce(force);
+        //Vector3 force(playerUnit.getPos() - enemyUnit.getPos());
+        //printf("Collided! Force: %f, %f, %f\n", force.getX(), force.getY(), force.getZ());
+        //playerUnit.applyForce(force);
     }
 }
 
@@ -169,17 +169,17 @@ void idleCallback()
     else
         playerUnit.stop(Unit::Rightward);
 
-    playerUnit.animate(deltaTime.count());
+    playerUnit.update(deltaTime.count());
     camera.setPos(playerUnit.getPos());
 
     enemyUnit.wander();
-    enemyUnit.animate(deltaTime.count());
+    enemyUnit.update(deltaTime.count());
 
     defenderUnit.defend();
-    defenderUnit.animate(deltaTime.count());
+    defenderUnit.update(deltaTime.count());
 
     attackerUnit.attack();
-    attackerUnit.animate(deltaTime.count());
+    attackerUnit.update(deltaTime.count());
 
     handleCollision();
 

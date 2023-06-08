@@ -54,30 +54,38 @@ double& Vector3::operator[](size_t index)
 
 Vector3 Vector3::operator+(const Vector3& other) const
 {
-    return Vector3( _x + other._x,
-                    _y + other._y,
-                    _z + other._z);
+    return Vector3(_x + other._x,
+                   _y + other._y,
+                   _z + other._z);
 }
 
 Vector3 Vector3::operator-(const Vector3& other) const
 {
-    return Vector3( _x - other._x,
-                    _y - other._y,
-                    _z - other._z);
+    return Vector3(_x - other._x,
+                   _y - other._y,
+                   _z - other._z);
 }
 
 Vector3 Vector3::operator*(double scalar) const
 {
-    return Vector3( _x * scalar,
-                    _y * scalar,
-                    _z * scalar);
+    return Vector3(_x * scalar,
+                   _y * scalar,
+                   _z * scalar);
 }
+
+Vector3 operator*(double scalar, const Vector3& vector)
+{
+    return Vector3(scalar * vector._x,
+                   scalar * vector._y,
+                   scalar * vector._z);
+}
+
 
 Vector3 Vector3::operator/(double scalar) const
 {
-    return Vector3( _x / scalar,
-                    _y / scalar,
-                    _z / scalar);
+    return Vector3(_x / scalar,
+                   _y / scalar,
+                   _z / scalar);
 }
 
 Vector3& Vector3::operator+=(const Vector3& other)
@@ -114,9 +122,9 @@ Vector3& Vector3::operator/=(double scalar)
 
 Vector3 Vector3::operator-() const
 {
-    return Vector3( -_x,
-                    -_y,
-                    -_z);
+    return Vector3(-_x,
+                   -_y,
+                   -_z);
 }
 
 

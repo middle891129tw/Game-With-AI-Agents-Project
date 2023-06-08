@@ -6,7 +6,7 @@
 
 #include "gameObject.hpp"
 
-class Unit : protected GameObject
+class Unit : public GameObject
 {
 public:
     enum Direction { Forward, Backward, Leftward, Rightward };
@@ -15,12 +15,9 @@ public:
     ~Unit();
     
     void draw() override;
-    void animate(double deltaTime);
     void move(Direction);
     void stop(Direction);
 
-    Vector3 getPos();
-    double getRadius();
     void applyForce(Vector3 f);
 
 protected:
@@ -31,9 +28,5 @@ protected:
     double _accAbility;
     double _velMax;
 
-    //void translate(Vector3 t);
-    //void translate(double deltaTime);
-    void accelerate(Vector3 a);
-    void accelerate(double deltaTime);
-    void rotate(double deltaTime);
+    void turn(double deltaTime) override;
 };
