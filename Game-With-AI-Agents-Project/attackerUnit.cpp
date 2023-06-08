@@ -9,11 +9,11 @@ AttackerUnit::AttackerUnit(Unit* target)
 	_target = target;
 
 	_segmentCount = 3;
-	_radius = 0.5;
-	_threshold = 1.0;
+	_radius = 0.7;
+	_threshold = 0.1;
 
-	_velMax = 30.0;
-	_accAbility = 20.0;
+	_velMax = 15.0;
+	_accAbility = 15.0;
 }
 
 AttackerUnit::~AttackerUnit()

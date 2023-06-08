@@ -6,6 +6,11 @@
 
 class Vector3
 {
+private:
+    double _x;
+    double _y;
+    double _z;
+
 public:
     Vector3();
 	Vector3(double, double, double);
@@ -14,7 +19,6 @@ public:
 	double getX();
 	double getY();
 	double getZ();
-
 	double& operator[](size_t);
 
     // Vector arithmetic operators
@@ -39,9 +43,4 @@ public:
     Vector3 normalized() const;
 
     static Vector3 slerp(const Vector3& start, const Vector3& end, double t);
-
-private:
-	double _x;
-	double _y;
-	double _z;
 };

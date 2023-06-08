@@ -141,6 +141,7 @@
     <ClCompile Include="defenderUnit.hpp" />
     <ClCompile Include="enemyUnit.cpp" />
     <ClCompile Include="gameApp.cpp" />
+    <ClCompile Include="gameObject.cpp" />
     <ClCompile Include="playerUnit.cpp" />
     <ClCompile Include="playerUnit.hpp" />
     <ClCompile Include="unit.cpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="camera.hpp" />
     <ClInclude Include="enemyUnit.hpp" />
     <ClInclude Include="gameApp.hpp" />
+    <ClInclude Include="gameObject.hpp" />
     <ClInclude Include="unit.hpp" />
     <ClInclude Include="vector3.hpp" />
   </ItemGroup>

@@ -20,7 +20,7 @@ Unit::Unit()
 
     _segmentCount = 3;
     _radius = 1.0;
-    _mass = 1.0;
+    _mass = 0.01;
 
     _isStoppingX = true;
     _isStoppingY = true;
@@ -115,11 +115,6 @@ void Unit::rotate(double deltaTime)
     //printf("_front: %f, %f, %f\n", _front[0], _front[1], _front[2]);
 }
 
-void Unit::applyForce(Vector3 f)
-{
-    _acc += f / _mass;
-}
-
 void Unit::animate(double deltaTime)
 {
     accelerate(deltaTime);
@@ -203,4 +198,9 @@ Vector3 Unit::getPos()
 double Unit::getRadius()
 {
     return _radius;
+}
+
+void Unit::applyForce(Vector3 f)
+{
+    _acc += f / _mass;
 }

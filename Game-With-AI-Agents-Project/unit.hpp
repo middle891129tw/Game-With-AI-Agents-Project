@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "vector3.hpp"
+#include "gameObject.hpp"
 
-class Unit
+class Unit : protected GameObject
 {
 public:
 	enum Direction { Forward, Backward, Leftward, Rightward };
@@ -21,6 +21,7 @@ public:
 
 	Vector3 getPos();
 	double getRadius();
+	void applyForce(Vector3 f);
 
 protected:
 	Vector3 _pos;
@@ -42,5 +43,4 @@ protected:
 	void accelerate(Vector3 a);
 	void accelerate(double deltaTime);
 	void rotate(double deltaTime);
-	void applyForce(Vector3 f);
 };
