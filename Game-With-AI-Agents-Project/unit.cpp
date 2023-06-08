@@ -12,15 +12,7 @@
 
 Unit::Unit()
 {
-    _pos    = { 0.0, 0.0, 0.1 };
-    _vel    = { 0.0, 0.0, 0.0 };
-    _acc    = { 0.0, 0.0, 0.0 };
-
-    _front  = { 0.0, 0.9, 0.0 };
-
     _segmentCount = 3;
-    _radius = 1.0;
-    _mass = 0.01;
 
     _isStoppingX = true;
     _isStoppingY = true;
