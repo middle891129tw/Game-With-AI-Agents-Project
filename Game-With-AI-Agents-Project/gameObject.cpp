@@ -30,15 +30,15 @@ void GameObject::draw()
 
 void GameObject::confinePos()
 {
-    if (_pos[0] < _minPos[0] + _radius)
-        _pos[0] = _minPos[0] + _radius;
-    if (_pos[1] < _minPos[1] + _radius)
-        _pos[1] = _minPos[1] + _radius;
+    if (_pos[0] < _minPos[0] + _radius * 2.0)
+        _pos[0] = _minPos[0] + _radius * 2.0;
+    if (_pos[1] < _minPos[1] + _radius * 2.0)
+        _pos[1] = _minPos[1] + _radius * 2.0;
 
-    if (_pos[0] > _maxPos[0] - _radius)
-        _pos[0] = _maxPos[0] - _radius;
-    if (_pos[1] > _maxPos[1] - _radius)
-        _pos[1] = _maxPos[1] - _radius;
+    if (_pos[0] > _maxPos[0] - _radius * 2.0)
+        _pos[0] = _maxPos[0] - _radius * 2.0;
+    if (_pos[1] > _maxPos[1] - _radius * 2.0)
+        _pos[1] = _maxPos[1] - _radius * 2.0;
 }
 
 void GameObject::confineVel()
@@ -82,7 +82,8 @@ void GameObject::applyForce(Vector3 force)
     if (_mass <= 0.0)
         return;
 
-    _acc += force / _mass;
+    _acc[0] += force[0] / _mass;
+    _acc[1] += force[1] / _mass;
 }
 
 void GameObject::update(double deltaTime)

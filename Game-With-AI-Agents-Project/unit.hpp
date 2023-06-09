@@ -20,9 +20,10 @@ protected:
     bool _isDashing;
     double _accAbility;
     double _dashFactor;
+    double _hp;
 
     Vector3 _bodyColor;
-    Vector3 _indicatorColor;
+    Vector3 _arrowColor;
 
     Team _team;
 
@@ -33,6 +34,9 @@ public:
     ~Unit();
     
     void draw() override;
+    void drawBody(float angleOffset);
+    void drawArrow(float angleOffset);
+    void drawHealthBar();
     void move(Direction);
     void stop(Direction);
     void dash();

@@ -22,11 +22,12 @@ BotUnit::BotUnit()
     randomValue = dis(gen);
     _pos[1] = randomValue;
     _destination = _pos;
-    _threshold = 3.0;
+    _threshold = 2.0;
 
     _segmentCount = 7;
     _radius = 2.0;
     _mass = 8.0;
+    _bodyColor = { 0.6, 0.6, 0.6 };
 }
 
 BotUnit::~BotUnit()
