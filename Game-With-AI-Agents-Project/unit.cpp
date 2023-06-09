@@ -54,8 +54,8 @@ void Unit::drawBody(float angleOffset)
         for (int i = 0; i <= _segmentCount; ++i)
         {
             float angle = 2.0f * PI * static_cast<float>(i) / static_cast<float>(_segmentCount) + angleOffset;
-            float x = _radius * cos(angle);
-            float y = _radius * sin(angle);
+            float x = _r * cos(angle);
+            float y = _r * sin(angle);
             glVertex3f(x, y, 0.0);
         }
       glEnd();
@@ -65,9 +65,9 @@ void Unit::drawBody(float angleOffset)
 void Unit::drawArrow(float angleOffset)
 {
     glPushMatrix();
-      glTranslatef(1.25 * _radius * _front[0],
-                   1.25 * _radius * _front[1],
-                   1.25 * _radius * _front[2]);
+      glTranslatef(1.25 * _r * _front[0],
+                   1.25 * _r * _front[1],
+                   1.25 * _r * _front[2]);
       glColor3f(_arrowColor[0],
                 _arrowColor[1],
                 _arrowColor[2]);
@@ -106,7 +106,7 @@ void Unit::drawHealthBar()
         return;
     }
     glPushMatrix();
-      glTranslatef(0.0, 1.5 * _radius, 0.0);
+      glTranslatef(0.0, 1.5 * _r, 0.0);
       glBegin(GL_POLYGON);
         glVertex3f(-length, -0.05, 0.0);
         glVertex3f( length, -0.05, 0.0);
@@ -124,8 +124,36 @@ void Unit::turn(double deltaTime)
     GameObject::turn(deltaTime);
 }
 
+void Unit::applyForce(Vector3 force)
+{
+    if (!_isColliding)
+    {
+        switch (_health)
+        {
+            break;
+        case Red:
+            _health = Empty;
+            break;
+        case Yellow:
+            _health = Red;
+            break;
+        case Green:
+            _health = Yellow;
+            break;
+        case Empty:
+        default:
+            break;
+        }
+    }
+
+    GameObject::applyForce(force);
+}
+
 void Unit::move(Direction dir)
 {
+    if (_health == Empty)
+        return;
+
     switch (dir)
     {
     case Forward:
@@ -156,11 +184,11 @@ void Unit::stop(Direction dir)
         _isStoppingY = true;
         if (_vel[1] < -0.1)
         {
-            _acc[1] = _accAbility * 0.9;
+            _acc[1] = _accAbility * 0.5;
         }
         else if (_vel[1] > 0.1)
         {
-            _acc[1] = -_accAbility * 0.9;
+            _acc[1] = -_accAbility * 0.5;
         }
         else
         {
@@ -174,11 +202,11 @@ void Unit::stop(Direction dir)
         _isStoppingX = true;
         if (_vel[0] < -0.1)
         {
-            _acc[0] = _accAbility * 0.9;
+            _acc[0] = _accAbility * 0.5;
         }
         else if (_vel[0] > 0.1)
         {
-            _acc[0] = -_accAbility * 0.9;
+            _acc[0] = -_accAbility * 0.5;
         }
         else
         {

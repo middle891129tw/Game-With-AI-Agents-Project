@@ -28,13 +28,15 @@ protected:
     Health _health;
     Team _team;
 
-    void turn(double deltaTime) override;
 
 public:
     Unit();
     ~Unit();
     
     void draw() override;
+    void turn(double deltaTime) override;
+    void applyForce(Vector3 force) override;
+
     void drawBody(float angleOffset);
     void drawArrow(float angleOffset);
     void drawHealthBar();

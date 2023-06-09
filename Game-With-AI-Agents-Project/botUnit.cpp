@@ -25,8 +25,8 @@ BotUnit::BotUnit()
     _threshold = 2.0;
 
     _segmentCount = 7;
-    _radius = 2.0;
-    _mass = 8.0;
+    _r = 2.0;
+    _m = 8.0;
     _bodyColor = { 0.6, 0.6, 0.6 };
 
     _health = Green;

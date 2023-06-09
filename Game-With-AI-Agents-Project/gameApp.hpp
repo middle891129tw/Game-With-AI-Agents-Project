@@ -20,7 +20,7 @@ void makeProjection();
 void makeView();
 
 void handleCollisions();
-void handleCollision(GameObject& a, GameObject& b);
+bool handleCollision(GameObject& a, GameObject& b);
 
 void renderScene();
 void drawGrid();

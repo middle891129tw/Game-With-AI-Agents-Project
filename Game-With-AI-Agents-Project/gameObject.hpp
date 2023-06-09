@@ -17,15 +17,15 @@ protected:
     Vector3 _maxPos;
     double _maxSpeed;
     double _turnSpeed;
-    double _radius;
-    double _mass;
+    double _r;          // radius
+    double _m;          // mass
+    bool _isColliding;
 
 public:
     GameObject();
     ~GameObject();
 
     void virtual draw();
-
     void confinePos();
     void confineVel();
     void translate(Vector3 deltaPos);
@@ -33,14 +33,15 @@ public:
     void accelerate(Vector3 deltaVel);
     void accelerate(double deltaTime);
     void virtual turn(double deltaTime);
-    void applyForce(Vector3 force);
-
+    void virtual applyForce(Vector3 force);
     void update(double deltaTime);
 
     Vector3 getPos();
     Vector3 getVel();
     Vector3 getAcc();
     Vector3 getFront();
-    double getRadius();
+    double getR();
+
+    void setIsColliding(bool isColliding);
 };
 

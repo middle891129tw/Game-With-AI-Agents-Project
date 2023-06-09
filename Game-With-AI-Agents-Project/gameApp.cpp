@@ -22,9 +22,9 @@ double _collisionFactor = 80.0;
 
 Camera camera;
 PlayerUnit playerUnit;
-BotUnit enemyUnit;
-DefenderUnit defenderUnit(&enemyUnit);
-AttackerUnit attackerUnit(&playerUnit);
+BotUnit enemyUnit1;
+DefenderUnit enemyUnit2(&enemyUnit1);
+AttackerUnit enemyUnit3(&playerUnit);
 
 std::chrono::high_resolution_clock::time_point prevTime;
 std::chrono::high_resolution_clock::time_point currTime;
@@ -93,9 +93,9 @@ void renderScene()
 
     drawGrid();
     playerUnit.draw();
-    enemyUnit.draw();
-    defenderUnit.draw();
-    attackerUnit.draw();
+    enemyUnit1.draw();
+    enemyUnit2.draw();
+    enemyUnit3.draw();
 
     glutSwapBuffers();
 }
@@ -104,45 +104,55 @@ void renderScene()
 
 void handleCollisions()
 {
-    handleCollision(playerUnit, enemyUnit);
-    handleCollision(playerUnit, attackerUnit);
-    handleCollision(playerUnit, defenderUnit);
+    bool isColliding1 = handleCollision(playerUnit, enemyUnit1);
+    bool isColliding2 = handleCollision(playerUnit, enemyUnit3);
+    bool isColliding3 = handleCollision(playerUnit, enemyUnit2);
+    playerUnit.setIsColliding( isColliding1 || isColliding2 || isColliding3);
+    enemyUnit1.setIsColliding(isColliding1);
+    enemyUnit2.setIsColliding(isColliding2);
+    enemyUnit3.setIsColliding(isColliding3);
 }
 
-void handleCollision(GameObject& a, GameObject& b)
+bool handleCollision(GameObject& a, GameObject& b)
 {
-    if ((a.getPos() - b.getPos()).magnitude() <
-        a.getRadius() + b.getRadius())
+    if ((a.getPos() - b.getPos()).magnitude() < a.getR() + b.getR())
     {
         Vector3 forceB2A(_collisionFactor * (a.getPos() - b.getPos()));;
         a.applyForce(forceB2A);
         Vector3 forceA2B(_collisionFactor * (b.getPos() - a.getPos()));;
         b.applyForce(forceA2B);
+        return true;
+    }
+    else
+    {
+        return false;
     }
 }
 
 
 void drawGrid()
 {
-    glColor3f(0.8f, 0.8f, 0.8f);
-
-    // Draw grid lines along X-axis
-    for (float x = -_gridSize; x <= _gridSize; x += _gridSpacing)
-    {
-        glBegin(GL_LINES);
-          glVertex3f(x, -_gridSize, 0.0f);
-          glVertex3f(x,  _gridSize, 0.0f);
-        glEnd();
-    }
-
-    // Draw grid lines along Y-axis
-    for (float y = -_gridSize; y <= _gridSize; y += _gridSpacing)
-    {
-        glBegin(GL_LINES);
-          glVertex3f(-_gridSize, y, 0.0f);
-          glVertex3f( _gridSize, y, 0.0f);
-        glEnd();
-    }
+    glPushMatrix();
+      glColor3f(0.8f, 0.8f, 0.8f);
+      
+      // Draw grid lines along X-axis
+      for (float x = -_gridSize; x <= _gridSize; x += _gridSpacing)
+      {
+          glBegin(GL_LINES);
+            glVertex3f(x, -_gridSize, 0.0f);
+            glVertex3f(x,  _gridSize, 0.0f);
+          glEnd();
+      }
+      
+      // Draw grid lines along Y-axis
+      for (float y = -_gridSize; y <= _gridSize; y += _gridSpacing)
+      {
+          glBegin(GL_LINES);
+            glVertex3f(-_gridSize, y, 0.0f);
+            glVertex3f( _gridSize, y, 0.0f);
+          glEnd();
+      }
+    glPopMatrix();
 }
 
 
@@ -185,9 +195,9 @@ void idleCallback()
     camera.setPos(playerUnit.getPos());
 
     // control enemy units
-    enemyUnit.wander();
-    defenderUnit.defend();
-    attackerUnit.attack();
+    enemyUnit1.wander();
+    enemyUnit2.defend();
+    enemyUnit3.attack();
 
     //printf("_acc: %f, %f\n", playerUnit.getAcc().getX(), playerUnit.getAcc().getY());
     handleCollisions();
@@ -196,9 +206,9 @@ void idleCallback()
 
 
     playerUnit.update(deltaTime.count());
-    enemyUnit.update(deltaTime.count());
-    defenderUnit.update(deltaTime.count());
-    attackerUnit.update(deltaTime.count());
+    enemyUnit1.update(deltaTime.count());
+    enemyUnit2.update(deltaTime.count());
+    enemyUnit3.update(deltaTime.count());
 
     renderScene();
 }
