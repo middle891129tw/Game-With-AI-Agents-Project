@@ -184,7 +184,7 @@ Vector3 Vector3::slerp(const Vector3& start, const Vector3& end, double t)
     double dotProduct = v1.dotProduct(v2);
 
     // If dot product is close to -1 or 1, return either start or end vector
-    if (std::abs(dotProduct) >= 0.99999)
+    if (std::abs(dotProduct) >= 0.999)
         return t < 0.5 ? v1 : v2;
 
     // Calculate the angle between the two vectors

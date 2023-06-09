@@ -189,10 +189,10 @@ void idleCallback()
     defenderUnit.defend();
     attackerUnit.attack();
 
-    printf("_acc: %f, %f\n", playerUnit.getAcc().getX(), playerUnit.getAcc().getY());
+    //printf("_acc: %f, %f\n", playerUnit.getAcc().getX(), playerUnit.getAcc().getY());
     handleCollisions();
-    printf("_acc: %f, %f\n", playerUnit.getAcc().getX(), playerUnit.getAcc().getY());
-    printf("_vel: %f, %f\n\n", playerUnit.getVel().getX(), playerUnit.getVel().getY());
+    //printf("_acc: %f, %f\n", playerUnit.getAcc().getX(), playerUnit.getAcc().getY());
+    //printf("_vel: %f, %f\n\n", playerUnit.getVel().getX(), playerUnit.getVel().getY());
 
 
     playerUnit.update(deltaTime.count());

@@ -13,7 +13,7 @@ AttackerUnit::AttackerUnit(Unit* target)
     _mass = 0.5;
     _threshold = 0.1;
 
-    _velMax = 15.0;
+    _maxSpeed = 15.0;
     _accAbility = 15.0;
 }
 

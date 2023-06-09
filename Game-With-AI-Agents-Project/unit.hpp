@@ -19,7 +19,6 @@ protected:
     bool _isStoppingY;
     bool _isDashing;
     double _accAbility;
-    double _velMax;
     double _dashFactor;
 
     Vector3 _bodyColor;
