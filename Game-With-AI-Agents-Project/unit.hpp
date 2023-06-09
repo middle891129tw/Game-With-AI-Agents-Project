@@ -11,6 +11,7 @@ class Unit : public GameObject
 public:
     enum Direction { Forward, Backward, Leftward, Rightward };
     enum Health { Empty, Red, Yellow, Green, Invincible };
+    enum Energy { Low, Medium, High };
     enum Team { Neutral, Player, Evil };
 
 protected:
@@ -21,10 +22,12 @@ protected:
     bool _doesDealDamage;
     double _accAbility;
     double _dashFactor;
+    double _energyPt;
     Vector3 _bodyColor;
     Vector3 _arrowColor;
 
     Health _health;
+    Energy _energy;
     Team _team;
 
 
@@ -35,13 +38,14 @@ public:
     void draw() override;
     void turn(double deltaTime) override;
     void applyForce(Vector3 force, GameObject& source) override;
+    void update(double deltaTime) override;
 
     void drawBody(float angleOffset);
     void drawArrow(float angleOffset);
-    void drawHealthBar();
+    void drawBars();
     void move(Direction);
     void stop(Direction);
-    void dash();
+    void setIsDashing(bool isDashing);
 
     void virtual reset();
 

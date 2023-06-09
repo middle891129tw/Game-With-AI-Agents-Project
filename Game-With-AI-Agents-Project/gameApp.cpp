@@ -56,7 +56,7 @@ void initializeGlut(int* argcPtr, char** argv)
     glutIdleFunc(idleCallback);
     glutKeyboardFunc(keyboardCallback);
     glutKeyboardUpFunc(keyboardUpCallback);
-    glutJoystickFunc(joystickCallback, 10);
+    //glutJoystickFunc(joystickCallback, 10);
 }
 
 void initializeOpenGL()
@@ -202,6 +202,8 @@ void idleCallback()
         playerUnit.move(Unit::Leftward);
     else
         playerUnit.stop(Unit::Rightward);
+
+    playerUnit.setIsDashing(keyDown[' ']);
 
     camera.setPos(playerUnit.getPos());
 

@@ -17,9 +17,11 @@ Unit::Unit() : _segmentCount(3),
                _doesDealDamage(false),
                _accAbility(15.0),
                _dashFactor(300.0),
+               _energyPt(100.0),
                _bodyColor(0.8, 0.8, 0.8),
                _arrowColor(0.8, 0.8, 0.8),
                _health(Invincible),
+               _energy(High),
                _team(Neutral)
 {
     reset();
@@ -40,7 +42,7 @@ void Unit::draw()
                    _pos[2]);
       drawBody(angleOffset);
       drawArrow(angleOffset);
-      drawHealthBar();
+      drawBars();
       //glutSolidTeapot(1.0);
     glPopMatrix();
 }
@@ -86,7 +88,7 @@ void Unit::drawArrow(float angleOffset)
     glPopMatrix();
 }
 
-void Unit::drawHealthBar()
+void Unit::drawBars()
 {
     double length;
     switch (_health)
@@ -126,6 +128,31 @@ void Unit::drawHealthBar()
         glVertex3f(-0.9,  0.05, 0.0);
       glEnd();
     glPopMatrix();
+
+    switch (_energy)
+    {
+    case Low:
+        length = 0.3;
+        break;
+    case Medium:
+        length = 0.6;
+        break;
+    case High:
+        length = 0.9;
+        break;
+    default:
+        return;
+    }
+    glPushMatrix();
+      glTranslatef(0.0, 1.5 * _r - 0.15, 0.2);
+      glColor3f(0.5, 0.5, 0.8);
+      glBegin(GL_POLYGON);
+        glVertex3f(-length * _energyPt / 100.0, -0.05, 0.0);
+        glVertex3f( length * _energyPt / 100.0, -0.05, 0.0);
+        glVertex3f( length * _energyPt / 100.0,  0.05, 0.0);
+        glVertex3f(-length * _energyPt / 100.0,  0.05, 0.0);
+      glEnd();
+    glPopMatrix();
 }
 
 void Unit::turn(double deltaTime)
@@ -160,6 +187,22 @@ void Unit::applyForce(Vector3 force, GameObject& source)
         }
     }
     GameObject::applyForce(force, source);
+}
+
+void Unit::update(double deltaTime)
+{
+    GameObject::update(deltaTime);
+
+    if (_isDashing)
+    {
+        _energyPt -= 5.0;
+        _energyPt = _energyPt < 0.0 ? 0.0 : _energyPt;
+    }
+    else
+    {
+        _energyPt += 1.0;
+        _energyPt = _energyPt > 100.0 ? 100.0 : _energyPt;
+    }
 }
 
 void Unit::move(Direction dir)
@@ -229,14 +272,15 @@ void Unit::stop(Direction dir)
     }
 }
 
-void Unit::dash()
+void Unit::setIsDashing(bool isDashing)
 {
-    if (_isDashing)
+    if (_health == Empty)
         return;
 
-    _isDashing = true;
+    _isDashing = isDashing;
     
     // TODO
+    //applyForce(200.0 * _front, *this);
 }
 
 void Unit::reset()

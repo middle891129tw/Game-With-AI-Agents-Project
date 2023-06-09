@@ -34,7 +34,7 @@ public:
     void accelerate(double deltaTime);
     void virtual turn(double deltaTime);
     void virtual applyForce(Vector3 force, GameObject& source);
-    void update(double deltaTime);
+    void virtual update(double deltaTime);
 
     Vector3 getPos();
     Vector3 getVel();
