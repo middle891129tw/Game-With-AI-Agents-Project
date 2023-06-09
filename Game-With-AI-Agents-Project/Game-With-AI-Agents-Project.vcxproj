@@ -139,7 +139,7 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="defenderUnit.cpp" />
     <ClCompile Include="defenderUnit.hpp" />
-    <ClCompile Include="enemyUnit.cpp" />
+    <ClCompile Include="botUnit.cpp" />
     <ClCompile Include="gameApp.cpp" />
     <ClCompile Include="gameObject.cpp" />
     <ClCompile Include="playerUnit.cpp" />
@@ -150,7 +150,7 @@
   <ItemGroup>
     <ClInclude Include="attackerUnit.hpp" />
     <ClInclude Include="camera.hpp" />
-    <ClInclude Include="enemyUnit.hpp" />
+    <ClInclude Include="botUnit.hpp" />
     <ClInclude Include="gameApp.hpp" />
     <ClInclude Include="gameObject.hpp" />
     <ClInclude Include="unit.hpp" />

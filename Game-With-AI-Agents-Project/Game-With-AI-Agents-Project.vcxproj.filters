@@ -30,7 +30,7 @@
     <ClCompile Include="unit.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
-    <ClCompile Include="enemyUnit.cpp">
+    <ClCompile Include="botUnit.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
     <ClCompile Include="defenderUnit.hpp">
@@ -53,7 +53,7 @@
     <ClInclude Include="camera.hpp">
       <Filter>標頭檔</Filter>
     </ClInclude>
-    <ClInclude Include="enemyUnit.hpp">
+    <ClInclude Include="botUnit.hpp">
       <Filter>標頭檔</Filter>
     </ClInclude>
     <ClInclude Include="unit.hpp">

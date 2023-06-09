@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "enemyUnit.hpp"
+#include "botUnit.hpp"
 
-class AttackerUnit : public EnemyUnit
+class AttackerUnit : public BotUnit
 {
 public:
 	AttackerUnit(Unit* target);

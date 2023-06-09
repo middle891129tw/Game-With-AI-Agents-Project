@@ -18,9 +18,11 @@ unsigned int _height = 720;
 float _gridSize    = 25;
 float _gridSpacing = 5;
 
+double _collisionFactor = 80.0;
+
 Camera camera;
 PlayerUnit playerUnit;
-EnemyUnit enemyUnit;
+BotUnit enemyUnit;
 DefenderUnit defenderUnit(&enemyUnit);
 AttackerUnit attackerUnit(&playerUnit);
 
@@ -100,14 +102,22 @@ void renderScene()
 
 #pragma endregion
 
-void handleCollision()
+void handleCollisions()
 {
-    if ((playerUnit.getPos() - enemyUnit.getPos()).magnitude() <
-        playerUnit.getRadius() + enemyUnit.getRadius())
+    handleCollision(playerUnit, enemyUnit);
+    handleCollision(playerUnit, attackerUnit);
+    handleCollision(playerUnit, defenderUnit);
+}
+
+void handleCollision(GameObject& a, GameObject& b)
+{
+    if ((a.getPos() - b.getPos()).magnitude() <
+        a.getRadius() + b.getRadius())
     {
-        Vector3 force(playerUnit.getPos() - enemyUnit.getPos());
-        printf("Collided! Force: %f, %f, %f\n", force.getX(), force.getY(), force.getZ());
-        //playerUnit.applyForce(force);
+        Vector3 forceB2A(_collisionFactor * (a.getPos() - b.getPos()));;
+        a.applyForce(forceB2A);
+        Vector3 forceA2B(_collisionFactor * (b.getPos() - a.getPos()));;
+        b.applyForce(forceA2B);
     }
 }
 
@@ -155,33 +165,40 @@ void idleCallback()
     std::chrono::duration<double> deltaTime = std::chrono::duration_cast<std::chrono::duration<double>>(currTime - prevTime);
     prevTime = currTime;
 
-    if (keyDown['w'])
+    // control player unit
+    if (keyDown['w'] && !keyDown['s'])
         playerUnit.move(Unit::Forward);
-    else if (keyDown['s'])
+    else if (keyDown['s'] && !keyDown['w'])
         playerUnit.move(Unit::Backward);
     else
         playerUnit.stop(Unit::Forward);
 
-    if (keyDown['d'])
+    if (keyDown['d'] && !keyDown['a'])
         playerUnit.move(Unit::Rightward);
-    else if (keyDown['a'])
+    else if (keyDown['a'] && !keyDown['d'])
         playerUnit.move(Unit::Leftward);
     else
         playerUnit.stop(Unit::Rightward);
+    //if (keyDown[' '])
+    //    playerUnit.dash();
 
-    playerUnit.update(deltaTime.count());
     camera.setPos(playerUnit.getPos());
 
+    // control enemy units
     enemyUnit.wander();
-    enemyUnit.update(deltaTime.count());
-
     defenderUnit.defend();
-    defenderUnit.update(deltaTime.count());
-
     attackerUnit.attack();
-    attackerUnit.update(deltaTime.count());
 
-    handleCollision();
+    printf("_acc: %f, %f\n", playerUnit.getAcc().getX(), playerUnit.getAcc().getY());
+    handleCollisions();
+    printf("_acc: %f, %f\n", playerUnit.getAcc().getX(), playerUnit.getAcc().getY());
+    printf("_vel: %f, %f\n\n", playerUnit.getVel().getX(), playerUnit.getVel().getY());
+
+
+    playerUnit.update(deltaTime.count());
+    enemyUnit.update(deltaTime.count());
+    defenderUnit.update(deltaTime.count());
+    attackerUnit.update(deltaTime.count());
 
     renderScene();
 }

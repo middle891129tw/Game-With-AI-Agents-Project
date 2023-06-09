@@ -79,6 +79,10 @@ void GameObject::turn(double deltaTime)
 
 void GameObject::applyForce(Vector3 force)
 {
+    if (_mass <= 0.0)
+        return;
+
+    _acc += force / _mass;
 }
 
 void GameObject::update(double deltaTime)
@@ -101,6 +105,11 @@ Vector3 GameObject::getVel()
 Vector3 GameObject::getAcc()
 {
     return _acc;
+}
+
+Vector3 GameObject::getFront()
+{
+    return _front;
 }
 
 double GameObject::getRadius()

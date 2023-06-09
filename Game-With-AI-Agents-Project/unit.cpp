@@ -13,10 +13,13 @@
 Unit::Unit() : _segmentCount(3),
                _isStoppingX(true),
                _isStoppingY(true),
+               _isDashing(false),
                _velMax(10.0),
                _accAbility(15.0),
+               _dashFactor(300.0),
                _bodyColor(0.8, 0.8, 0.8),
-               _indicatorColor(0.8, 0.8, 0.8)
+               _indicatorColor(0.8, 0.8, 0.8),
+               _team(Neutral)
 {
     _pos = { 0.0, 0.0, 0.1 };
 }
@@ -108,11 +111,11 @@ void Unit::stop(Direction dir)
         _isStoppingY = true;
         if (_vel[1] < -0.1)
         {
-            _acc[1] = _accAbility;
+            _acc[1] = _accAbility * 0.9;
         }
         else if (_vel[1] > 0.1)
         {
-            _acc[1] = -_accAbility;
+            _acc[1] = -_accAbility * 0.9;
         }
         else
         {
@@ -126,11 +129,11 @@ void Unit::stop(Direction dir)
         _isStoppingX = true;
         if (_vel[0] < -0.1)
         {
-            _acc[0] = _accAbility;
+            _acc[0] = _accAbility * 0.9;
         }
         else if (_vel[0] > 0.1)
         {
-            _acc[0] = -_accAbility;
+            _acc[0] = -_accAbility * 0.9;
         }
         else
         {
@@ -140,9 +143,14 @@ void Unit::stop(Direction dir)
     }
 }
 
-void Unit::applyForce(Vector3 f)
+void Unit::dash()
 {
-    //_acc += f / _mass;
-    _acc = Vector3(0.0, 0.0, 0.0);
-    _vel = -_vel * 0.99;
+    if (_isDashing)
+        return;
+
+    _isDashing = true;
+    applyForce(_dashFactor * _front);
+    
+    // TODO
 }
+

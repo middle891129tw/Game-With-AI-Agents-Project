@@ -1,16 +1,16 @@
 /*
-* enemyUnit.hpp
+* botUnit.hpp
 */
 
 #pragma once
 
 #include "unit.hpp"
 
-class EnemyUnit : public Unit
+class BotUnit : public Unit
 {
 public:
-    EnemyUnit();
-    ~EnemyUnit();
+    BotUnit();
+    ~BotUnit();
     
     void goToDestination();
     void wander();

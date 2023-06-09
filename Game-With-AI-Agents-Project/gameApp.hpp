@@ -5,7 +5,7 @@
 #pragma once
 
 #include "playerUnit.hpp"
-#include "enemyUnit.hpp"
+#include "botUnit.hpp"
 #include "defenderUnit.hpp"
 #include "attackerUnit.hpp"
 
@@ -19,7 +19,8 @@ void keyboardUpCallback(unsigned char, int, int);
 void makeProjection();
 void makeView();
 
-void handleCollision();
+void handleCollisions();
+void handleCollision(GameObject& a, GameObject& b);
 
 void renderScene();
 void drawGrid();

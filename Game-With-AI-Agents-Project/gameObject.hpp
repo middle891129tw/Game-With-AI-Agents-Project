@@ -40,6 +40,7 @@ public:
     Vector3 getPos();
     Vector3 getVel();
     Vector3 getAcc();
+    Vector3 getFront();
     double getRadius();
 };
 

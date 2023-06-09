@@ -1,12 +1,12 @@
 /*
-* enemyUnit.cpp
+* botUnit.cpp
 */
 
 #include <random>
 
-#include "enemyUnit.hpp"
+#include "botUnit.hpp"
 
-EnemyUnit::EnemyUnit()
+BotUnit::BotUnit()
 {
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -26,13 +26,14 @@ EnemyUnit::EnemyUnit()
 
     _segmentCount = 7;
     _radius = 2.0;
+    _mass = 8.0;
 }
 
-EnemyUnit::~EnemyUnit()
+BotUnit::~BotUnit()
 {
 }
 
-void EnemyUnit::goToDestination()
+void BotUnit::goToDestination()
 {
     if (_pos[0] < _destination[0] - _threshold)
         move(Rightward);
@@ -49,7 +50,7 @@ void EnemyUnit::goToDestination()
         stop(Forward);
 }
 
-void EnemyUnit::wander()
+void BotUnit::wander()
 {
     if (abs(_pos[0] - _destination[0]) < _threshold && abs(_pos[1] - _destination[1]) < _threshold)
     {
