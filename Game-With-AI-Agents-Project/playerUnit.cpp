@@ -7,12 +7,12 @@
 
 PlayerUnit::PlayerUnit()
 {
-	_pos[2] = 0.2;
+    GameObject::_pos[2] = 0.2;
+    GameObject::_m = 2.0;
 
-	_segmentCount = 5;
-	_m = 2.0;
-
-	_health = Green;
+    Unit::_segmentCount = 5;
+    Unit::_doesDealDamage = true;
+    Unit::_health = Green;
 }
 
 PlayerUnit::~PlayerUnit()

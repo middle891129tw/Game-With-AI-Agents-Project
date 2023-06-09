@@ -4,17 +4,18 @@
 
 #include "defenderUnit.hpp"
 
-DefenderUnit::DefenderUnit(Unit* target)
+DefenderUnit::DefenderUnit(Unit* target) : _target(target)
 {
-    _target = target;
+    GameObject::_r = 1.2;
+    GameObject::_m = 5.0;
+    GameObject::_maxSpeed = 13.0;;
 
-    _segmentCount = 4;
-    _r = 1.0;
-    _m = 5.0;
-    _threshold = 5.0;
+    Unit::_segmentCount = 4;
+    Unit::_accAbility = 30.0;
+    Unit::_doesDealDamage = true;
+    Unit::_health = Infinity;
 
-    _maxSpeed = 13.0;
-    _accAbility = 30.0;
+    BotUnit::_threshold = 5.0;
 }
 
 DefenderUnit::~DefenderUnit()

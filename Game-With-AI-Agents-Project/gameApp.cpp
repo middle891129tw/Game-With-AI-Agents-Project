@@ -107,7 +107,7 @@ void handleCollisions()
     bool isColliding1 = handleCollision(playerUnit, enemyUnit1);
     bool isColliding2 = handleCollision(playerUnit, enemyUnit3);
     bool isColliding3 = handleCollision(playerUnit, enemyUnit2);
-    playerUnit.setIsColliding( isColliding1 || isColliding2 || isColliding3);
+    playerUnit.setIsColliding(isColliding1 || isColliding2 || isColliding3);
     enemyUnit1.setIsColliding(isColliding1);
     enemyUnit2.setIsColliding(isColliding2);
     enemyUnit3.setIsColliding(isColliding3);
@@ -118,9 +118,9 @@ bool handleCollision(GameObject& a, GameObject& b)
     if ((a.getPos() - b.getPos()).magnitude() < a.getR() + b.getR())
     {
         Vector3 forceB2A(_collisionFactor * (a.getPos() - b.getPos()));;
-        a.applyForce(forceB2A);
+        a.applyForce(forceB2A, b);
         Vector3 forceA2B(_collisionFactor * (b.getPos() - a.getPos()));;
-        b.applyForce(forceA2B);
+        b.applyForce(forceA2B, a);
         return true;
     }
     else

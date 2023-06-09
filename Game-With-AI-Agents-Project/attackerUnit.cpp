@@ -4,17 +4,18 @@
 
 #include "attackerUnit.hpp"
 
-AttackerUnit::AttackerUnit(Unit* target)
+AttackerUnit::AttackerUnit(Unit* target) : _target(target)
 {
-    _target = target;
+    GameObject::_r = 0.7;
+    GameObject::_m = 0.2;
+    GameObject::_maxSpeed = 15.0;
 
-    _segmentCount = 3;
-    _r = 0.7;
-    _m = 0.5;
-    _threshold = 0.1;
+    Unit::_segmentCount = 3;
+    Unit::_accAbility = 15.0;
+    Unit::_doesDealDamage = true;
+    Unit::_health = Red;
 
-    _maxSpeed = 15.0;
-    _accAbility = 15.0;
+    BotUnit::_threshold = 0.1;
 }
 
 AttackerUnit::~AttackerUnit()

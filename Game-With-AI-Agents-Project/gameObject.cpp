@@ -78,7 +78,7 @@ void GameObject::turn(double deltaTime)
     _front = interpolatedFront;
 }
 
-void GameObject::applyForce(Vector3 force)
+void GameObject::applyForce(Vector3 force, GameObject& source)
 {
     if (_m <= 0.0)
         return;

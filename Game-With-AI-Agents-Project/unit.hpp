@@ -10,18 +10,17 @@ class Unit : public GameObject
 {
 public:
     enum Direction { Forward, Backward, Leftward, Rightward };
-    enum Health { Empty, Red, Yellow, Green };
+    enum Health { Empty, Red, Yellow, Green, Infinity };
     enum Team { Neutral, Player, Enemy };
 
 protected:
     unsigned int _segmentCount;
-
     bool _isStoppingX;
     bool _isStoppingY;
     bool _isDashing;
+    bool _doesDealDamage;
     double _accAbility;
     double _dashFactor;
-
     Vector3 _bodyColor;
     Vector3 _arrowColor;
 
@@ -35,7 +34,7 @@ public:
     
     void draw() override;
     void turn(double deltaTime) override;
-    void applyForce(Vector3 force) override;
+    void applyForce(Vector3 force, GameObject& source) override;
 
     void drawBody(float angleOffset);
     void drawArrow(float angleOffset);
@@ -43,4 +42,6 @@ public:
     void move(Direction);
     void stop(Direction);
     void dash();
+
+    bool getDoesDealDamage();
 };

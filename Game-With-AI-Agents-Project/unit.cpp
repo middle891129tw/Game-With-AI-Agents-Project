@@ -14,14 +14,15 @@ Unit::Unit() : _segmentCount(3),
                _isStoppingX(true),
                _isStoppingY(true),
                _isDashing(false),
+               _doesDealDamage(false),
                _accAbility(15.0),
                _dashFactor(300.0),
                _bodyColor(0.8, 0.8, 0.8),
                _arrowColor(0.8, 0.8, 0.8),
-               _health(Empty),
+               _health(Infinity),
                _team(Neutral)
 {
-    _pos = { 0.0, 0.0, 0.1 };
+    GameObject::_pos = { 0.0, 0.0, 0.1 };
 }
 
 Unit::~Unit()
@@ -101,7 +102,10 @@ void Unit::drawHealthBar()
         glColor3f(0.2, 0.8, 0.3);
         length = 0.9;
         break;
-    case Empty:
+    case Infinity:
+        glColor3f(0.4, 0.4, 0.4);
+        length = 0.9;
+        break;
     default:
         return;
     }
@@ -124,9 +128,10 @@ void Unit::turn(double deltaTime)
     GameObject::turn(deltaTime);
 }
 
-void Unit::applyForce(Vector3 force)
+void Unit::applyForce(Vector3 force, GameObject& source)
 {
-    if (!_isColliding)
+    Unit* sourceUnitPtr = dynamic_cast<Unit*>(&source);
+    if (!_isColliding && sourceUnitPtr != NULL && sourceUnitPtr->getDoesDealDamage())
     {
         switch (_health)
         {
@@ -140,19 +145,17 @@ void Unit::applyForce(Vector3 force)
         case Green:
             _health = Yellow;
             break;
-        case Empty:
         default:
             break;
         }
     }
-
-    GameObject::applyForce(force);
+    GameObject::applyForce(force, source);
 }
 
 void Unit::move(Direction dir)
 {
-    if (_health == Empty)
-        return;
+    //if (_health == Empty)
+    //    return;
 
     switch (dir)
     {
@@ -222,8 +225,12 @@ void Unit::dash()
         return;
 
     _isDashing = true;
-    applyForce(_dashFactor * _front);
     
     // TODO
+}
+
+bool Unit::getDoesDealDamage()
+{
+    return _doesDealDamage;
 }
 

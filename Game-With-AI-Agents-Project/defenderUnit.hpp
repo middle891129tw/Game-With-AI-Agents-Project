@@ -9,11 +9,11 @@
 class DefenderUnit : public BotUnit
 {
 public:
-	DefenderUnit(Unit* target);
-	~DefenderUnit();
+    DefenderUnit(Unit* target);
+    ~DefenderUnit();
 
-	void defend();
+    void defend();
 
 protected:
-	Unit* _target;
+    Unit* _target;
 };

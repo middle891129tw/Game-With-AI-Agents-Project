@@ -9,6 +9,6 @@
 class PlayerUnit : public Unit
 {
 public:
-	PlayerUnit();
-	~PlayerUnit();
+    PlayerUnit();
+    ~PlayerUnit();
 };
