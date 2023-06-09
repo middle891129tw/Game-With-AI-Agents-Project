@@ -15,6 +15,8 @@ AttackerUnit::AttackerUnit(Unit* target)
 
     _maxSpeed = 15.0;
     _accAbility = 15.0;
+
+    _health = Red;
 }
 
 AttackerUnit::~AttackerUnit()

@@ -28,6 +28,8 @@ BotUnit::BotUnit()
     _radius = 2.0;
     _mass = 8.0;
     _bodyColor = { 0.6, 0.6, 0.6 };
+
+    _health = Green;
 }
 
 BotUnit::~BotUnit()

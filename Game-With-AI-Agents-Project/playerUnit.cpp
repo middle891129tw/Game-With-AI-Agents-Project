@@ -11,6 +11,8 @@ PlayerUnit::PlayerUnit()
 
 	_segmentCount = 5;
 	_mass = 2.0;
+
+	_health = Green;
 }
 
 PlayerUnit::~PlayerUnit()

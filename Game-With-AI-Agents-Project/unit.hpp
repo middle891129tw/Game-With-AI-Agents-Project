@@ -10,6 +10,7 @@ class Unit : public GameObject
 {
 public:
     enum Direction { Forward, Backward, Leftward, Rightward };
+    enum Health { Empty, Red, Yellow, Green };
     enum Team { Neutral, Player, Enemy };
 
 protected:
@@ -20,11 +21,11 @@ protected:
     bool _isDashing;
     double _accAbility;
     double _dashFactor;
-    double _hp;
 
     Vector3 _bodyColor;
     Vector3 _arrowColor;
 
+    Health _health;
     Team _team;
 
     void turn(double deltaTime) override;

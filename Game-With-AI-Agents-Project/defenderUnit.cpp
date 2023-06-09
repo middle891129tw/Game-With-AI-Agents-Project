@@ -15,6 +15,8 @@ DefenderUnit::DefenderUnit(Unit* target)
 
     _maxSpeed = 13.0;
     _accAbility = 30.0;
+
+    _health = Yellow;
 }
 
 DefenderUnit::~DefenderUnit()
