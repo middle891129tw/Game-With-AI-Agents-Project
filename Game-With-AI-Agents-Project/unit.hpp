@@ -11,7 +11,7 @@ class Unit : public GameObject
 public:
     enum Direction { Forward, Backward, Leftward, Rightward };
     enum Health { Empty, Red, Yellow, Green, Invincible };
-    enum Team { Neutral, Player, Enemy };
+    enum Team { Neutral, Player, Evil };
 
 protected:
     unsigned int _segmentCount;
@@ -46,4 +46,7 @@ public:
     void virtual reset();
 
     bool getDoesDealDamage();
+
+    Team getTeam();
+    void setTeam(Team team);
 };

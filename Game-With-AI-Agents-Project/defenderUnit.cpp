@@ -1,10 +1,10 @@
 /*
-* enemyUnit2.cpp
+* evilUnit2.cpp
 */
 
 #include "defenderUnit.hpp"
 
-DefenderUnit::DefenderUnit(Unit* target) : _target(target)
+DefenderUnit::DefenderUnit(Unit& target) : _target(target)
 {
     GameObject::_r = 1.2;
     GameObject::_m = 5.0;
@@ -30,7 +30,7 @@ void DefenderUnit::reset()
 
 void DefenderUnit::defend()
 {
-    _destination = _target->getPos();
+    _destination = _target.getPos();
     //printf("_destination: %f, %f\n", _destination[0], _destination[1]);
     goToDestination();
 }

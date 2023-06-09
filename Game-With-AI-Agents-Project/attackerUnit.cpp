@@ -1,10 +1,10 @@
 /*
-* enemyUnit3.cpp
+* evilUnit3.cpp
 */
 
 #include "attackerUnit.hpp"
 
-AttackerUnit::AttackerUnit(Unit* target) : _target(target)
+AttackerUnit::AttackerUnit(Unit& target) : _target(target)
 {
     GameObject::_r = 0.7;
     GameObject::_m = 0.2;
@@ -30,7 +30,7 @@ void AttackerUnit::reset()
 
 void AttackerUnit::attack()
 {
-    _destination = _target->getPos();
+    _destination = _target.getPos();
     //printf("_destination: %f, %f\n", _destination[0], _destination[1]);
     goToDestination();
 }

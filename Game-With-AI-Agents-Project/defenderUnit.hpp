@@ -9,7 +9,7 @@
 class DefenderUnit : public BotUnit
 {
 public:
-    DefenderUnit(Unit* target);
+    DefenderUnit(Unit& target);
     ~DefenderUnit();
 
     void reset() override;
@@ -17,5 +17,5 @@ public:
     void defend();
 
 protected:
-    Unit* _target;
+    Unit& _target;
 };

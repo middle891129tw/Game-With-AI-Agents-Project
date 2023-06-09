@@ -1,5 +1,5 @@
 /*
-* enemyUnit3.hpp
+* evilUnit3.hpp
 */
 
 #pragma once
@@ -9,7 +9,7 @@
 class AttackerUnit : public BotUnit
 {
 public:
-    AttackerUnit(Unit* target);
+    AttackerUnit(Unit& target);
     ~AttackerUnit();
 
     void reset() override;
@@ -17,5 +17,5 @@ public:
     void attack();
 
 protected:
-    Unit* _target;
+    Unit& _target;
 };

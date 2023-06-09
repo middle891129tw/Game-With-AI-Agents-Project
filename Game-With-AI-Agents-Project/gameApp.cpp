@@ -22,15 +22,24 @@ double _collisionFactor = 80.0;
 
 Camera camera;
 PlayerUnit playerUnit;
-BotUnit enemyUnit1;
-DefenderUnit enemyUnit2(&enemyUnit1);
-AttackerUnit enemyUnit3(&playerUnit);
-AttackerUnit enemyUnit4(&playerUnit);
+BotUnit evilUnit1;
+DefenderUnit evilUnit2(evilUnit1);
+AttackerUnit evilUnit3(playerUnit);
+AttackerUnit evilUnit4(playerUnit);
 
 std::chrono::high_resolution_clock::time_point prevTime;
 std::chrono::high_resolution_clock::time_point currTime;
 
 std::map<char, bool> keyDown;
+
+void setUpUnits()
+{
+    evilUnit1.setTeam(Unit::Evil);
+    evilUnit2.setTeam(Unit::Evil);
+    evilUnit3.setTeam(Unit::Evil);
+    evilUnit4.setTeam(Unit::Evil);
+}
+
 
 #pragma region GL Rendering
 
@@ -94,10 +103,10 @@ void renderScene()
 
     drawGrid();
     playerUnit.draw();
-    enemyUnit1.draw();
-    enemyUnit2.draw();
-    enemyUnit3.draw();
-    enemyUnit4.draw();
+    evilUnit1.draw();
+    evilUnit2.draw();
+    evilUnit3.draw();
+    evilUnit4.draw();
 
     glutSwapBuffers();
 }
@@ -106,15 +115,15 @@ void renderScene()
 
 void handleCollisions()
 {
-    bool isColliding1 = handleCollision(playerUnit, enemyUnit1);
-    bool isColliding2 = handleCollision(playerUnit, enemyUnit2);
-    bool isColliding3 = handleCollision(playerUnit, enemyUnit3);
-    bool isColliding4 = handleCollision(playerUnit, enemyUnit4);
+    bool isColliding1 = handleCollision(playerUnit, evilUnit1);
+    bool isColliding2 = handleCollision(playerUnit, evilUnit2);
+    bool isColliding3 = handleCollision(playerUnit, evilUnit3);
+    bool isColliding4 = handleCollision(playerUnit, evilUnit4);
     playerUnit.setIsColliding(isColliding1 || isColliding2 || isColliding3 || isColliding4);
-    enemyUnit1.setIsColliding(isColliding1);
-    enemyUnit2.setIsColliding(isColliding2);
-    enemyUnit3.setIsColliding(isColliding3);
-    enemyUnit4.setIsColliding(isColliding4);
+    evilUnit1.setIsColliding(isColliding1);
+    evilUnit2.setIsColliding(isColliding2);
+    evilUnit3.setIsColliding(isColliding3);
+    evilUnit4.setIsColliding(isColliding4);
 }
 
 bool handleCollision(GameObject& a, GameObject& b)
@@ -132,7 +141,6 @@ bool handleCollision(GameObject& a, GameObject& b)
         return false;
     }
 }
-
 
 void drawGrid()
 {
@@ -197,10 +205,10 @@ void idleCallback()
     camera.setPos(playerUnit.getPos());
 
     // control enemy units
-    enemyUnit1.wander();
-    enemyUnit2.defend();
-    enemyUnit3.attack();
-    enemyUnit4.attack();
+    evilUnit1.wander();
+    evilUnit2.defend();
+    evilUnit3.attack();
+    evilUnit4.attack();
 
     //printf("_acc: %f, %f\n", playerUnit.getAcc().getX(), playerUnit.getAcc().getY());
     handleCollisions();
@@ -209,10 +217,10 @@ void idleCallback()
 
 
     playerUnit.update(deltaTime.count());
-    enemyUnit1.update(deltaTime.count());
-    enemyUnit2.update(deltaTime.count());
-    enemyUnit3.update(deltaTime.count());
-    enemyUnit4.update(deltaTime.count());
+    evilUnit1.update(deltaTime.count());
+    evilUnit2.update(deltaTime.count());
+    evilUnit3.update(deltaTime.count());
+    evilUnit4.update(deltaTime.count());
 
     renderScene();
 }
@@ -227,10 +235,10 @@ void keyboardCallback(unsigned char key, int, int)
         break;
     case 'r':
         playerUnit.reset();
-        enemyUnit1.reset();
-        enemyUnit2.reset();
-        enemyUnit3.reset();
-        enemyUnit4.reset();
+        evilUnit1.reset();
+        evilUnit2.reset();
+        evilUnit3.reset();
+        evilUnit4.reset();
     default:
         break;
     }
@@ -247,11 +255,9 @@ void keyboardUpCallback(unsigned char key, int, int)
 int main(int argc, char** argv)
 {
     printf("Hello world!\n");
-
+    setUpUnits;
     initializeGlut(&argc, argv);
     initializeOpenGL();
     glutMainLoop();
-
-
     return 0;
 }

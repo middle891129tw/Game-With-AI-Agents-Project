@@ -139,7 +139,10 @@ void Unit::turn(double deltaTime)
 void Unit::applyForce(Vector3 force, GameObject& source)
 {
     Unit* sourceUnitPtr = dynamic_cast<Unit*>(&source);
-    if (!_isColliding && sourceUnitPtr != NULL && sourceUnitPtr->getDoesDealDamage())
+    if (!_isColliding &&
+        sourceUnitPtr != NULL &&
+        sourceUnitPtr->getDoesDealDamage() &&
+        sourceUnitPtr->getTeam() != _team)
     {
         switch (_health)
         {
@@ -244,5 +247,15 @@ void Unit::reset()
 bool Unit::getDoesDealDamage()
 {
     return _doesDealDamage;
+}
+
+Unit::Team Unit::getTeam()
+{
+    return _team;
+}
+
+void Unit::setTeam(Team team)
+{
+    _team = team;
 }
 
