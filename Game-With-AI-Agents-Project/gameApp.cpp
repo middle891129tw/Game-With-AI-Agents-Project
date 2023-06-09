@@ -56,6 +56,7 @@ void initializeGlut(int* argcPtr, char** argv)
     glutIdleFunc(idleCallback);
     glutKeyboardFunc(keyboardCallback);
     glutKeyboardUpFunc(keyboardUpCallback);
+    glutJoystickFunc(joystickCallback, 10);
 }
 
 void initializeOpenGL()
@@ -247,6 +248,38 @@ void keyboardCallback(unsigned char key, int, int)
 void keyboardUpCallback(unsigned char key, int, int)
 {
     keyDown[key] = false;
+}
+
+void joystickCallback(unsigned int buttonMask, int x, int y, int z)
+{
+    if (x < -512)
+    {
+        keyDown['a'] = true;
+        keyDown['d'] = false;
+    }
+    else if (x > 512)
+    {
+        keyDown['a'] = false;
+        keyDown['d'] = true;
+    }
+    else
+    {
+        keyDown['a'] = keyDown['d'] = false;
+    }
+    if (y < -512)
+    {
+        keyDown['w'] = true;
+        keyDown['s'] = false;
+    }
+    else if (y > 512)
+    {
+        keyDown['w'] = false;
+        keyDown['s'] = true;
+    }
+    else
+    {
+        keyDown['w'] = keyDown['s'] = false;
+    }
 }
 
 #pragma endregion

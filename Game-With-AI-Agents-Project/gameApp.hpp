@@ -15,6 +15,7 @@ void displayCallback();
 void idleCallback();
 void keyboardCallback(unsigned char, int, int);
 void keyboardUpCallback(unsigned char, int, int);
+void joystickCallback(unsigned int, int, int, int);
 
 void makeProjection();
 void makeView();
