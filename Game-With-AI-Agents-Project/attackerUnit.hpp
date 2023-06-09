@@ -12,6 +12,8 @@ public:
     AttackerUnit(Unit* target);
     ~AttackerUnit();
 
+    void reset() override;
+
     void attack();
 
 protected:

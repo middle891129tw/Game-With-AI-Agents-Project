@@ -12,6 +12,8 @@ public:
     DefenderUnit(Unit* target);
     ~DefenderUnit();
 
+    void reset() override;
+
     void defend();
 
 protected:

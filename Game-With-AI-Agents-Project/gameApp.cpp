@@ -25,6 +25,7 @@ PlayerUnit playerUnit;
 BotUnit enemyUnit1;
 DefenderUnit enemyUnit2(&enemyUnit1);
 AttackerUnit enemyUnit3(&playerUnit);
+AttackerUnit enemyUnit4(&playerUnit);
 
 std::chrono::high_resolution_clock::time_point prevTime;
 std::chrono::high_resolution_clock::time_point currTime;
@@ -96,6 +97,7 @@ void renderScene()
     enemyUnit1.draw();
     enemyUnit2.draw();
     enemyUnit3.draw();
+    enemyUnit4.draw();
 
     glutSwapBuffers();
 }
@@ -105,12 +107,14 @@ void renderScene()
 void handleCollisions()
 {
     bool isColliding1 = handleCollision(playerUnit, enemyUnit1);
-    bool isColliding2 = handleCollision(playerUnit, enemyUnit3);
-    bool isColliding3 = handleCollision(playerUnit, enemyUnit2);
-    playerUnit.setIsColliding(isColliding1 || isColliding2 || isColliding3);
+    bool isColliding2 = handleCollision(playerUnit, enemyUnit2);
+    bool isColliding3 = handleCollision(playerUnit, enemyUnit3);
+    bool isColliding4 = handleCollision(playerUnit, enemyUnit4);
+    playerUnit.setIsColliding(isColliding1 || isColliding2 || isColliding3 || isColliding4);
     enemyUnit1.setIsColliding(isColliding1);
     enemyUnit2.setIsColliding(isColliding2);
     enemyUnit3.setIsColliding(isColliding3);
+    enemyUnit4.setIsColliding(isColliding4);
 }
 
 bool handleCollision(GameObject& a, GameObject& b)
@@ -189,8 +193,6 @@ void idleCallback()
         playerUnit.move(Unit::Leftward);
     else
         playerUnit.stop(Unit::Rightward);
-    //if (keyDown[' '])
-    //    playerUnit.dash();
 
     camera.setPos(playerUnit.getPos());
 
@@ -198,6 +200,7 @@ void idleCallback()
     enemyUnit1.wander();
     enemyUnit2.defend();
     enemyUnit3.attack();
+    enemyUnit4.attack();
 
     //printf("_acc: %f, %f\n", playerUnit.getAcc().getX(), playerUnit.getAcc().getY());
     handleCollisions();
@@ -209,6 +212,7 @@ void idleCallback()
     enemyUnit1.update(deltaTime.count());
     enemyUnit2.update(deltaTime.count());
     enemyUnit3.update(deltaTime.count());
+    enemyUnit4.update(deltaTime.count());
 
     renderScene();
 }
@@ -218,9 +222,15 @@ void keyboardCallback(unsigned char key, int, int)
     keyDown[key] = true;
     switch (key)
     {
-    case 'q':
-        printf("quit ");
+    case 'f':
+        glutFullScreen();
         break;
+    case 'r':
+        playerUnit.reset();
+        enemyUnit1.reset();
+        enemyUnit2.reset();
+        enemyUnit3.reset();
+        enemyUnit4.reset();
     default:
         break;
     }

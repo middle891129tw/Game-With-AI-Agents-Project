@@ -13,13 +13,19 @@ AttackerUnit::AttackerUnit(Unit* target) : _target(target)
     Unit::_segmentCount = 3;
     Unit::_accAbility = 15.0;
     Unit::_doesDealDamage = true;
-    Unit::_health = Red;
 
     BotUnit::_threshold = 0.1;
+
+    reset();
 }
 
 AttackerUnit::~AttackerUnit()
 {
+}
+
+void AttackerUnit::reset()
+{
+    Unit::_health = Red;
 }
 
 void AttackerUnit::attack()

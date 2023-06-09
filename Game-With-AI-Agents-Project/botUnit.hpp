@@ -11,7 +11,9 @@ class BotUnit : public Unit
 public:
     BotUnit();
     ~BotUnit();
-    
+
+    void virtual reset() override;
+
     void goToDestination();
     void wander();
 

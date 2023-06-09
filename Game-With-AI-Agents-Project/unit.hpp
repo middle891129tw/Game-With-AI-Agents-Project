@@ -10,7 +10,7 @@ class Unit : public GameObject
 {
 public:
     enum Direction { Forward, Backward, Leftward, Rightward };
-    enum Health { Empty, Red, Yellow, Green, Infinity };
+    enum Health { Empty, Red, Yellow, Green, Invincible };
     enum Team { Neutral, Player, Enemy };
 
 protected:
@@ -42,6 +42,8 @@ public:
     void move(Direction);
     void stop(Direction);
     void dash();
+
+    void virtual reset();
 
     bool getDoesDealDamage();
 };

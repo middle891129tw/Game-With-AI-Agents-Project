@@ -13,13 +13,19 @@ DefenderUnit::DefenderUnit(Unit* target) : _target(target)
     Unit::_segmentCount = 4;
     Unit::_accAbility = 30.0;
     Unit::_doesDealDamage = true;
-    Unit::_health = Infinity;
 
     BotUnit::_threshold = 5.0;
+
+    reset();
 }
 
 DefenderUnit::~DefenderUnit()
 {
+}
+
+void DefenderUnit::reset()
+{
+    Unit::_health = Yellow;
 }
 
 void DefenderUnit::defend()

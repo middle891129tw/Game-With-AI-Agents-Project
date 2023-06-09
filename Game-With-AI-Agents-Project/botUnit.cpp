@@ -24,12 +24,18 @@ BotUnit::BotUnit() : _destination(),
     GameObject::_m = 8.0;
 
     Unit::_segmentCount = 7;
-    Unit::_bodyColor = { 0.6, 0.6, 0.6 };
-    Unit::_health = Green;
+    Unit::_bodyColor = { 0.5, 0.5, 0.5 };
+
+    reset();
 }
 
 BotUnit::~BotUnit()
 {
+}
+
+void BotUnit::reset()
+{
+    Unit::_health = Green;
 }
 
 void BotUnit::goToDestination()

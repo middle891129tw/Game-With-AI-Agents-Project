@@ -19,10 +19,10 @@ Unit::Unit() : _segmentCount(3),
                _dashFactor(300.0),
                _bodyColor(0.8, 0.8, 0.8),
                _arrowColor(0.8, 0.8, 0.8),
-               _health(Infinity),
+               _health(Invincible),
                _team(Neutral)
 {
-    GameObject::_pos = { 0.0, 0.0, 0.1 };
+    reset();
 }
 
 Unit::~Unit()
@@ -41,6 +41,7 @@ void Unit::draw()
       drawBody(angleOffset);
       drawArrow(angleOffset);
       drawHealthBar();
+      //glutSolidTeapot(1.0);
     glPopMatrix();
 }
 
@@ -68,7 +69,7 @@ void Unit::drawArrow(float angleOffset)
     glPushMatrix();
       glTranslatef(1.25 * _r * _front[0],
                    1.25 * _r * _front[1],
-                   1.25 * _r * _front[2]);
+                   1.25 * _r * _front[2] + 0.01);
       glColor3f(_arrowColor[0],
                 _arrowColor[1],
                 _arrowColor[2]);
@@ -102,20 +103,27 @@ void Unit::drawHealthBar()
         glColor3f(0.2, 0.8, 0.3);
         length = 0.9;
         break;
-    case Infinity:
-        glColor3f(0.4, 0.4, 0.4);
+    case Invincible:
+        glColor3f(0.6, 0.2, 0.8);
         length = 0.9;
         break;
     default:
         return;
     }
     glPushMatrix();
-      glTranslatef(0.0, 1.5 * _r, 0.0);
+      glTranslatef(0.0, 1.5 * _r, 0.2);
       glBegin(GL_POLYGON);
         glVertex3f(-length, -0.05, 0.0);
         glVertex3f( length, -0.05, 0.0);
         glVertex3f( length,  0.05, 0.0);
         glVertex3f(-length,  0.05, 0.0);
+      glEnd();
+      glColor3f(0.5, 0.5, 0.5);
+      glBegin(GL_POLYGON);
+        glVertex3f(-0.9, -0.05, 0.0);
+        glVertex3f( 0.9, -0.05, 0.0);
+        glVertex3f( 0.9,  0.05, 0.0);
+        glVertex3f(-0.9,  0.05, 0.0);
       glEnd();
     glPopMatrix();
 }
@@ -135,15 +143,14 @@ void Unit::applyForce(Vector3 force, GameObject& source)
     {
         switch (_health)
         {
-            break;
-        case Red:
-            _health = Empty;
+        case Green:
+            _health = Yellow;
             break;
         case Yellow:
             _health = Red;
             break;
-        case Green:
-            _health = Yellow;
+        case Red:
+            _health = Empty;
             break;
         default:
             break;
@@ -154,26 +161,26 @@ void Unit::applyForce(Vector3 force, GameObject& source)
 
 void Unit::move(Direction dir)
 {
-    //if (_health == Empty)
-    //    return;
+    bool isStopping = _health == Empty;
+    double accAbility = _accAbility * (isStopping ? 0.0 : 1.0);
 
     switch (dir)
     {
     case Forward:
-        _isStoppingY = false;
-        _acc[1] = _accAbility;
+        _isStoppingY = isStopping;
+        _acc[1] = accAbility;
         break;
     case Backward:
-        _isStoppingY = false;
-        _acc[1] = -_accAbility;
+        _isStoppingY = isStopping;
+        _acc[1] = -accAbility;
         break;
     case Leftward:
-        _isStoppingX = false;
-        _acc[0] = -_accAbility;
+        _isStoppingX = isStopping;
+        _acc[0] = -accAbility;
         break;
     case Rightward:
-        _isStoppingX = false;
-        _acc[0] = _accAbility;
+        _isStoppingX = isStopping;
+        _acc[0] = accAbility;
         break;
     default:
         break;
@@ -227,6 +234,11 @@ void Unit::dash()
     _isDashing = true;
     
     // TODO
+}
+
+void Unit::reset()
+{
+    GameObject::_pos = { 0.0, 0.0, 0.1 };
 }
 
 bool Unit::getDoesDealDamage()
