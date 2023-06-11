@@ -20,8 +20,8 @@ BotUnit::BotUnit() : _destination(),
     GameObject::_pos[0] = randomValue;
     randomValue = dis(gen);
     GameObject::_pos[1] = randomValue;
-    GameObject::_r = 2.0;
-    GameObject::_m = 8.0;
+    GameObject::_r = 1.8;
+    GameObject::_m = 18.0;
 
     Unit::_segmentCount = 7;
     Unit::_bodyColor = { 0.5, 0.5, 0.5 };
@@ -36,6 +36,7 @@ BotUnit::~BotUnit()
 void BotUnit::reset()
 {
     Unit::_health = Green;
+    Unit::_energyPt = 60.0;
 }
 
 void BotUnit::goToDestination()
@@ -53,6 +54,9 @@ void BotUnit::goToDestination()
         move(Backward);
     else
         stop(Forward);
+
+    setIsDashing((_destination - _pos).magnitude() < _threshold * 2.0 &&
+                 _energyPt > 10.0);
 }
 
 void BotUnit::wander()

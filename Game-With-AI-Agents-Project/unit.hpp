@@ -45,9 +45,11 @@ public:
     void drawBars();
     void move(Direction);
     void stop(Direction);
-    void setIsDashing(bool isDashing);
 
     void virtual reset();
+
+    bool getIsDashing();
+    void setIsDashing(bool isDashing);
 
     bool getDoesDealDamage();
 

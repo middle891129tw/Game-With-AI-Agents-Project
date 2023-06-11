@@ -15,10 +15,10 @@
 unsigned int _width  = 1280;
 unsigned int _height = 720;
 
-float _gridSize    = 25;
+float _gridSize    = 30;
 float _gridSpacing = 5;
 
-double _collisionFactor = 80.0;
+double _collisionFactor = 100.0;
 
 Camera camera;
 PlayerUnit playerUnit;

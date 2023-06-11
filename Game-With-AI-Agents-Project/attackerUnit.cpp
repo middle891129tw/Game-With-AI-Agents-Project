@@ -14,7 +14,7 @@ AttackerUnit::AttackerUnit(Unit& target) : _target(target)
     Unit::_accAbility = 15.0;
     Unit::_doesDealDamage = true;
 
-    BotUnit::_threshold = 0.1;
+    BotUnit::_threshold = 2.0;
 
     reset();
 }
@@ -25,7 +25,9 @@ AttackerUnit::~AttackerUnit()
 
 void AttackerUnit::reset()
 {
-    Unit::_health = Red;
+    //Unit::_health = Red;
+    Unit::_health = Green;
+    Unit::_energyPt = 60.0 / 2.0;
 }
 
 void AttackerUnit::attack()

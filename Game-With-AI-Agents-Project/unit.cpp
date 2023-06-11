@@ -17,7 +17,7 @@ Unit::Unit() : _segmentCount(3),
                _doesDealDamage(false),
                _accAbility(15.0),
                _dashFactor(300.0),
-               _energyPt(100.0),
+               _energyPt(60.0),
                _bodyColor(0.8, 0.8, 0.8),
                _arrowColor(0.8, 0.8, 0.8),
                _health(Invincible),
@@ -43,7 +43,6 @@ void Unit::draw()
       drawBody(angleOffset);
       drawArrow(angleOffset);
       drawBars();
-      //glutSolidTeapot(1.0);
     glPopMatrix();
 }
 
@@ -113,7 +112,7 @@ void Unit::drawBars()
         return;
     }
     glPushMatrix();
-      glTranslatef(0.0, 1.5 * _r, 0.2);
+      glTranslatef(0.0, 1.75 * _r, 0.2);
       glBegin(GL_POLYGON);
         glVertex3f(-length, -0.05, 0.0);
         glVertex3f( length, -0.05, 0.0);
@@ -144,8 +143,8 @@ void Unit::drawBars()
         return;
     }
     glPushMatrix();
-      glTranslatef(0.0, 1.5 * _r - 0.15, 0.2);
-      glColor3f(0.5, 0.5, 0.8);
+      glTranslatef(0.0, 1.75 * _r - 0.15, 0.2);
+      glColor3f(0.8, 0.8, 0.8);
       glBegin(GL_POLYGON);
         glVertex3f(-length * _energyPt / 100.0, -0.05, 0.0);
         glVertex3f( length * _energyPt / 100.0, -0.05, 0.0);
@@ -168,6 +167,7 @@ void Unit::applyForce(Vector3 force, GameObject& source)
     Unit* sourceUnitPtr = dynamic_cast<Unit*>(&source);
     if (!_isColliding &&
         sourceUnitPtr != NULL &&
+        sourceUnitPtr->getIsDashing() &&
         sourceUnitPtr->getDoesDealDamage() &&
         sourceUnitPtr->getTeam() != _team)
     {
@@ -200,7 +200,7 @@ void Unit::update(double deltaTime)
     }
     else
     {
-        _energyPt += 1.0;
+        _energyPt += 0.5;
         _energyPt = _energyPt > 100.0 ? 100.0 : _energyPt;
     }
 }
@@ -272,20 +272,25 @@ void Unit::stop(Direction dir)
     }
 }
 
-void Unit::setIsDashing(bool isDashing)
-{
-    if (_health == Empty)
-        return;
-
-    _isDashing = isDashing;
-    
-    // TODO
-    //applyForce(200.0 * _front, *this);
-}
-
 void Unit::reset()
 {
     GameObject::_pos = { 0.0, 0.0, 0.1 };
+}
+
+bool Unit::getIsDashing()
+{
+    return _isDashing;
+}
+
+void Unit::setIsDashing(bool isDashing)
+{
+    _isDashing = isDashing;
+
+    if (_health == Empty || _energyPt <= 10.0)
+        return;
+
+    if (_isDashing)
+        applyForce(200.0 * _front, *this);
 }
 
 bool Unit::getDoesDealDamage()
