@@ -9,9 +9,9 @@
 class Unit : public GameObject
 {
 public:
-    enum Direction { Forward, Backward, Leftward, Rightward };
-    enum Health { Empty, Red, Yellow, Green, Invincible };
-    enum Energy { Low, Medium, High };
+    enum Direction { FORWARD, BACKWARD, LEFTWARD, RIGHTWARD };
+    enum Health { H_EMPTY, H_LOW, H_MEDIUM, H_HIGH, INVINCIBLE };
+    enum Energy { E_EMPTY, E_LOW, E_MEDIUM, E_HIGH };
     enum Team { Neutral, Player, Evil };
 
 protected:

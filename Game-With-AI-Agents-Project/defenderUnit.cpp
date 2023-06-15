@@ -25,8 +25,8 @@ DefenderUnit::~DefenderUnit()
 
 void DefenderUnit::reset()
 {
-    //Unit::_health = Yellow;
-    Unit::_health = Green;
+    //Unit::_health = H_MEDIUM;
+    Unit::_health = H_HIGH;
     Unit::_energyPt = 60.0;
 }
 

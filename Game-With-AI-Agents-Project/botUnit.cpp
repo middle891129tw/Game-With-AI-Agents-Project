@@ -35,25 +35,25 @@ BotUnit::~BotUnit()
 
 void BotUnit::reset()
 {
-    Unit::_health = Green;
+    Unit::_health = H_HIGH;
     Unit::_energyPt = 60.0;
 }
 
 void BotUnit::goToDestination()
 {
     if (_pos[0] < _destination[0] - _threshold)
-        move(Rightward);
+        move(RIGHTWARD);
     else if (_pos[0] > _destination[0] + _threshold)
-        move(Leftward);
+        move(LEFTWARD);
     else
-        stop(Rightward);
+        stop(RIGHTWARD);
 
     if (_pos[1] < _destination[1] - _threshold)
-        move(Forward);
+        move(FORWARD);
     else if (_pos[1] > _destination[1] + _threshold)
-        move(Backward);
+        move(BACKWARD);
     else
-        stop(Forward);
+        stop(FORWARD);
 
     setIsDashing((_destination - _pos).magnitude() < _threshold * 2.0 &&
                  _energyPt > 10.0);

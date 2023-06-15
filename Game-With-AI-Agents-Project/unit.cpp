@@ -20,8 +20,8 @@ Unit::Unit() : _segmentCount(3),
                _energyPt(60.0),
                _bodyColor(0.8, 0.8, 0.8),
                _arrowColor(0.8, 0.8, 0.8),
-               _health(Invincible),
-               _energy(High),
+               _health(INVINCIBLE),
+               _energy(E_HIGH),
                _team(Neutral)
 {
     reset();
@@ -92,19 +92,19 @@ void Unit::drawBars()
     double length;
     switch (_health)
     {
-    case Red:
+    case H_LOW:
         glColor3f(0.8, 0.2, 0.3);
         length = 0.3;
         break;
-    case Yellow:
+    case H_MEDIUM:
         glColor3f(0.8, 0.8, 0.2);
         length = 0.6;
         break;
-    case Green:
+    case H_HIGH:
         glColor3f(0.2, 0.8, 0.3);
         length = 0.9;
         break;
-    case Invincible:
+    case INVINCIBLE:
         glColor3f(0.6, 0.2, 0.8);
         length = 0.9;
         break;
@@ -130,13 +130,13 @@ void Unit::drawBars()
 
     switch (_energy)
     {
-    case Low:
+    case H_LOW:
         length = 0.3;
         break;
-    case Medium:
+    case H_MEDIUM:
         length = 0.6;
         break;
-    case High:
+    case H_HIGH:
         length = 0.9;
         break;
     default:
@@ -173,14 +173,14 @@ void Unit::applyForce(Vector3 force, GameObject& source)
     {
         switch (_health)
         {
-        case Green:
-            _health = Yellow;
+        case H_HIGH:
+            _health = H_MEDIUM;
             break;
-        case Yellow:
-            _health = Red;
+        case H_MEDIUM:
+            _health = H_LOW;
             break;
-        case Red:
-            _health = Empty;
+        case H_LOW:
+            _health = H_EMPTY;
             break;
         default:
             break;
@@ -195,36 +195,36 @@ void Unit::update(double deltaTime)
 
     if (_isDashing)
     {
-        _energyPt -= 5.0;
+        _energyPt -= 2.0;
         _energyPt = _energyPt < 0.0 ? 0.0 : _energyPt;
     }
     else
     {
-        _energyPt += 0.5;
+        _energyPt += 0.2;
         _energyPt = _energyPt > 100.0 ? 100.0 : _energyPt;
     }
 }
 
 void Unit::move(Direction dir)
 {
-    bool isStopping = _health == Empty;
+    bool isStopping = _health == H_EMPTY;
     double accAbility = _accAbility * (isStopping ? 0.0 : 1.0);
 
     switch (dir)
     {
-    case Forward:
+    case FORWARD:
         _isStoppingY = isStopping;
         _acc[1] = accAbility;
         break;
-    case Backward:
+    case BACKWARD:
         _isStoppingY = isStopping;
         _acc[1] = -accAbility;
         break;
-    case Leftward:
+    case LEFTWARD:
         _isStoppingX = isStopping;
         _acc[0] = -accAbility;
         break;
-    case Rightward:
+    case RIGHTWARD:
         _isStoppingX = isStopping;
         _acc[0] = accAbility;
         break;
@@ -235,16 +235,16 @@ void Unit::move(Direction dir)
 
 void Unit::stop(Direction dir)
 {
-    if (dir == Forward)
+    if (dir == FORWARD)
     {
         _isStoppingY = true;
         if (_vel[1] < -0.1)
         {
-            _acc[1] = _accAbility * 0.5;
+            _acc[1] = _accAbility * 0.3;
         }
         else if (_vel[1] > 0.1)
         {
-            _acc[1] = -_accAbility * 0.5;
+            _acc[1] = -_accAbility * 0.3;
         }
         else
         {
@@ -253,16 +253,16 @@ void Unit::stop(Direction dir)
         }
     }
 
-    if (dir == Rightward)
+    if (dir == RIGHTWARD)
     {
         _isStoppingX = true;
         if (_vel[0] < -0.1)
         {
-            _acc[0] = _accAbility * 0.5;
+            _acc[0] = _accAbility * 0.3;
         }
         else if (_vel[0] > 0.1)
         {
-            _acc[0] = -_accAbility * 0.5;
+            _acc[0] = -_accAbility * 0.3;
         }
         else
         {
@@ -286,7 +286,7 @@ void Unit::setIsDashing(bool isDashing)
 {
     _isDashing = isDashing;
 
-    if (_health == Empty || _energyPt <= 10.0)
+    if (_health == H_EMPTY || _energyPt <= 10.0)
         return;
 
     if (_isDashing)

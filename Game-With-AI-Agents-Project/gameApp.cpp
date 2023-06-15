@@ -18,7 +18,7 @@ unsigned int _height = 720;
 float _gridSize    = 30;
 float _gridSpacing = 5;
 
-double _collisionFactor = 100.0;
+double _collisionFactor = 160.0;
 
 Camera camera;
 PlayerUnit playerUnit;
@@ -116,15 +116,16 @@ void renderScene()
 
 void handleCollisions()
 {
-    bool isColliding1 = handleCollision(playerUnit, evilUnit1);
-    bool isColliding2 = handleCollision(playerUnit, evilUnit2);
-    bool isColliding3 = handleCollision(playerUnit, evilUnit3);
-    bool isColliding4 = handleCollision(playerUnit, evilUnit4);
-    playerUnit.setIsColliding(isColliding1 || isColliding2 || isColliding3 || isColliding4);
-    evilUnit1.setIsColliding(isColliding1);
-    evilUnit2.setIsColliding(isColliding2);
-    evilUnit3.setIsColliding(isColliding3);
-    evilUnit4.setIsColliding(isColliding4);
+    bool isCollidingp1 = handleCollision(playerUnit, evilUnit1);
+    bool isCollidingp2 = handleCollision(playerUnit, evilUnit2);
+    bool isCollidingp3 = handleCollision(playerUnit, evilUnit3);
+    bool isCollidingp4 = handleCollision(playerUnit, evilUnit4);
+    bool isColliding34 = handleCollision(evilUnit3, evilUnit4);
+    playerUnit.setIsColliding(isCollidingp1 || isCollidingp2 || isCollidingp3 || isCollidingp4);
+    evilUnit1.setIsColliding(isCollidingp1);
+    evilUnit2.setIsColliding(isCollidingp2);
+    evilUnit3.setIsColliding(isCollidingp3 || isColliding34);
+    evilUnit4.setIsColliding(isCollidingp4 || isColliding34);
 }
 
 bool handleCollision(GameObject& a, GameObject& b)
@@ -190,18 +191,18 @@ void idleCallback()
 
     // control player unit
     if (keyDown['w'] && !keyDown['s'])
-        playerUnit.move(Unit::Forward);
+        playerUnit.move(Unit::FORWARD);
     else if (keyDown['s'] && !keyDown['w'])
-        playerUnit.move(Unit::Backward);
+        playerUnit.move(Unit::BACKWARD);
     else
-        playerUnit.stop(Unit::Forward);
+        playerUnit.stop(Unit::FORWARD);
 
     if (keyDown['d'] && !keyDown['a'])
-        playerUnit.move(Unit::Rightward);
+        playerUnit.move(Unit::RIGHTWARD);
     else if (keyDown['a'] && !keyDown['d'])
-        playerUnit.move(Unit::Leftward);
+        playerUnit.move(Unit::LEFTWARD);
     else
-        playerUnit.stop(Unit::Rightward);
+        playerUnit.stop(Unit::RIGHTWARD);
 
     playerUnit.setIsDashing(keyDown[' ']);
 
@@ -290,7 +291,7 @@ void joystickCallback(unsigned int buttonMask, int x, int y, int z)
 int main(int argc, char** argv)
 {
     printf("Hello world!\n");
-    setUpUnits;
+    setUpUnits();
     initializeGlut(&argc, argv);
     initializeOpenGL();
     glutMainLoop();

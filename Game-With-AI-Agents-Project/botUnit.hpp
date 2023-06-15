@@ -9,6 +9,16 @@
 class BotUnit : public Unit
 {
 public:
+    enum Mode
+    {
+        Wadner,
+        Attack,
+        Defend,
+        Escape,
+        Rescue
+    };
+
+public:
     BotUnit();
     ~BotUnit();
 
