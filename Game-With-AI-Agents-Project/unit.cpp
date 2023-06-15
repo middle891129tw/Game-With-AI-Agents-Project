@@ -17,10 +17,15 @@ Unit::Unit() : _segmentCount(3),
                _doesDealDamage(false),
                _accAbility(15.0),
                _dashFactor(300.0),
-               _energyPt(60.0),
+               _healthPt(95.0f),
+               _energyPt(60.0f),
+               _emptyHealthPt(0.0f),
+               _emptyEnergyPt(0.0f),
+               _fullHealthPt(100.0f),
+               _fullEnergyPt(100.0f),
                _bodyColor(0.8, 0.8, 0.8),
                _arrowColor(0.8, 0.8, 0.8),
-               _health(H_MAX),
+               _health(H_FULL),
                _energy(E_HIGH),
                _team(NEUTRAL)
 {
@@ -191,13 +196,13 @@ void Unit::update(double deltaTime)
 
     if (_isDashing)
     {
-        _energyPt -= 2.0;
-        _energyPt = _energyPt < 0.0 ? 0.0 : _energyPt;
+        _energyPt -= 2.0f;
+        _energyPt = _energyPt < _emptyEnergyPt ? _emptyEnergyPt : _energyPt;
     }
     else
     {
-        _energyPt += 0.2;
-        _energyPt = _energyPt > 100.0 ? 100.0 : _energyPt;
+        _energyPt += 0.2f;
+        _energyPt = _energyPt > _fullEnergyPt ? _fullEnergyPt : _energyPt;
     }
 }
 
@@ -302,5 +307,52 @@ Unit::Team Unit::getTeam()
 void Unit::setTeam(Team team)
 {
     _team = team;
+}
+
+std::map<Unit::Health, float> Unit::_getHealthLevels() const
+{
+    std::map<Unit::Health, float> levels;
+
+    // H_EMPTY
+    if (_healthPt == _emptyHealthPt)
+        levels[H_EMPTY] = 1.0f;
+    else
+        levels[H_EMPTY] = 0.0f;
+
+    // use linear equation
+    // y - y0 = m(x - x0)
+    // y = m(x - x0) + y0
+
+    // H_LOW: 0~10 linear, 10~30 constant, 30~50, linear
+    if (0.0f <= _healthPt && _healthPt <= 10.0f)
+        levels[H_LOW] = 1.0f / (10.0f - 0.0f) * (_healthPt - 0.0f);
+    else if (10.0f <= _healthPt && _healthPt <= 30.0f)
+        levels[H_LOW] = 1.0f;
+    else if (30.0f <= _healthPt && _healthPt <= 50.0f)
+        levels[H_LOW] = -1.0f / (50.0f - 30.0f) * (_healthPt - 30.0f) + 1.0f;
+
+    // H_MEDIUM: 30~40 linear, 40~60 constant, 60~70, linear
+    if (30.0f <= _healthPt && _healthPt <= 40.0f)
+        levels[H_MEDIUM] = 1.0f / (40.0f - 30.0f) * (_healthPt - 30.0f);
+    else if (40.0f <= _healthPt && _healthPt <= 60.0f)
+        levels[H_MEDIUM] = 1.0f;
+    else if (60.0f <= _healthPt && _healthPt <= 70.0f)
+        levels[H_MEDIUM] = -1.0f / (70.0f - 60.0f) * (_healthPt - 60.0f) + 1.0f;
+
+    // H_HIGH: 50~70 linear, 70~90 constant, 90~100, linear
+    if (50.0f <= _healthPt && _healthPt <= 70.0f)
+        levels[H_HIGH] = 1.0f / (70.0f - 50.0f) * (_healthPt - 50.0f);
+    else if (70.0f <= _healthPt && _healthPt <= 90.0f)
+        levels[H_HIGH] = 1.0f;
+    else if (90.0f <= _healthPt && _healthPt <= 100.0f)
+        levels[H_HIGH] = -1.0f / (100.0f - 90.0f) * (_healthPt - 90.0f) + 1.0f;
+
+    // H_FULL
+    if (_healthPt == _fullHealthPt)
+        levels[H_FULL] = 1.0f;
+    else
+        levels[H_FULL] = 0.0f;
+
+    return levels;
 }
 

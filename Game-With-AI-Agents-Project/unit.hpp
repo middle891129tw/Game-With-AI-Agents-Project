@@ -4,14 +4,16 @@
 
 #pragma once
 
+#include <map>
+
 #include "gameObject.hpp"
 
 class Unit : public GameObject
 {
 public:
     enum Direction { FORWARD, BACKWARD, LEFTWARD, RIGHTWARD };
-    enum Health { H_EMPTY, H_LOW, H_MEDIUM, H_HIGH, H_MAX };
-    enum Energy { E_EMPTY, E_LOW, E_MEDIUM, E_HIGH, E_MAX };
+    enum Health { H_EMPTY, H_LOW, H_MEDIUM, H_HIGH, H_FULL };
+    enum Energy { E_EMPTY, E_LOW, E_MEDIUM, E_HIGH, E_FULL };
     enum Team { NEUTRAL, TERRANS, MARTIANS };
 
 protected:
@@ -22,7 +24,12 @@ protected:
     bool _doesDealDamage;
     double _accAbility;
     double _dashFactor;
-    double _energyPt;
+    float _healthPt;
+    float _energyPt;
+    const float _emptyHealthPt;
+    const float _emptyEnergyPt;
+    const float _fullHealthPt;
+    const float _fullEnergyPt;
     Vector3 _bodyColor;
     Vector3 _arrowColor;
 
@@ -55,4 +62,6 @@ public:
 
     Team getTeam();
     void setTeam(Team team);
+
+    std::map<Health, float> _getHealthLevels() const;
 };
