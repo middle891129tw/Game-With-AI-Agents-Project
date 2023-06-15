@@ -25,9 +25,8 @@ AttackerUnit::~AttackerUnit()
 
 void AttackerUnit::reset()
 {
-    //Unit::_health = H_LOW;
-    Unit::_health = H_HIGH;
-    Unit::_energyPt = 60.0 / 2.0;
+    Unit::_healthPt = 95.0f;
+    Unit::_energyPt = 30.0f;
 }
 
 void AttackerUnit::attack()

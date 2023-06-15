@@ -25,8 +25,6 @@ Unit::Unit() : _segmentCount(3),
                _fullEnergyPt(100.0f),
                _bodyColor(0.8, 0.8, 0.8),
                _arrowColor(0.8, 0.8, 0.8),
-               _health(H_FULL),
-               _energy(E_HIGH),
                _team(NEUTRAL)
 {
     reset();
@@ -94,65 +92,55 @@ void Unit::drawArrow(float angleOffset)
 
 void Unit::drawBars()
 {
-    double length;
-    switch (_health)
-    {
-    case H_LOW:
-        glColor3f(0.8, 0.2, 0.3);
-        length = 0.3;
-        break;
-    case H_MEDIUM:
-        glColor3f(0.8, 0.8, 0.2);
-        length = 0.6;
-        break;
-    case H_HIGH:
-        glColor3f(0.2, 0.8, 0.3);
-        length = 0.9;
-        break;
-    default:
-        return;
-    }
+    float length;
+
+    std::map<Health, float> healthLevels = getHealthLevels();
+    if (healthLevels[H_EMPTY] > 0.0f)
+        glColor3f(0.8f, 0.8f, 0.8f);
+    else if (healthLevels[H_LOW] > 0.0f)
+        glColor3f(0.8f, 0.2f, 0.3f);
+    else if (healthLevels[H_MEDIUM] > 0.0f)
+        glColor3f(0.8f, 0.8f, 0.2f);
+    else if (healthLevels[H_HIGH] > 0.0f)
+        glColor3f(0.2f, 0.8f, 0.3f);
+    else if (healthLevels[H_FULL] > 0.0f)
+        glColor3f(0.3f, 0.3f, 0.8f);
+
+    length = _healthPt / _fullHealthPt * 0.9f;
+
     glPushMatrix();
-      glTranslatef(0.0, 1.75 * _r, 0.2);
+      glTranslatef(0.0f, 1.6f * _r, 0.2f);
       glBegin(GL_POLYGON);
-        glVertex3f(-length, -0.05, 0.0);
-        glVertex3f( length, -0.05, 0.0);
-        glVertex3f( length,  0.05, 0.0);
-        glVertex3f(-length,  0.05, 0.0);
+        glVertex3f(-length, -0.05f, 0.0f);
+        glVertex3f( length, -0.05f, 0.0f);
+        glVertex3f( length,  0.05f, 0.0f);
+        glVertex3f(-length,  0.05f, 0.0f);
       glEnd();
-      glColor3f(0.5, 0.5, 0.5);
+      length = 0.9f;
+      glColor3f(0.5f, 0.5f, 0.5f);
       glBegin(GL_POLYGON);
-        glVertex3f(-0.9, -0.05, 0.0);
-        glVertex3f( 0.9, -0.05, 0.0);
-        glVertex3f( 0.9,  0.05, 0.0);
-        glVertex3f(-0.9,  0.05, 0.0);
+        glVertex3f(-length, -0.05f, 0.0f);
+        glVertex3f( length, -0.05f, 0.0f);
+        glVertex3f( length,  0.05f, 0.0f);
+        glVertex3f(-length,  0.05f, 0.0f);
       glEnd();
     glPopMatrix();
 
-    switch (_energy)
+    if (healthLevels[H_EMPTY] == 0.0f)
     {
-    case H_LOW:
-        length = 0.3;
-        break;
-    case H_MEDIUM:
-        length = 0.6;
-        break;
-    case H_HIGH:
-        length = 0.9;
-        break;
-    default:
-        return;
+        glPushMatrix();
+          glTranslatef(0.0f, 1.6f * _r - 0.2f, 0.2f);
+          length = 0.9f * _energyPt / 100.0f;
+          glColor3f(0.8f, 0.8f, 0.8f);
+          glBegin(GL_POLYGON);
+            glVertex3f(-length, -0.05f, 0.0f);
+            glVertex3f( length, -0.05f, 0.0f);
+            glVertex3f( length,  0.05f, 0.0f);
+            glVertex3f(-length,  0.05f, 0.0f);
+          glEnd();
+        glPopMatrix();
     }
-    glPushMatrix();
-      glTranslatef(0.0, 1.75 * _r - 0.15, 0.2);
-      glColor3f(0.8, 0.8, 0.8);
-      glBegin(GL_POLYGON);
-        glVertex3f(-length * _energyPt / 100.0, -0.05, 0.0);
-        glVertex3f( length * _energyPt / 100.0, -0.05, 0.0);
-        glVertex3f( length * _energyPt / 100.0,  0.05, 0.0);
-        glVertex3f(-length * _energyPt / 100.0,  0.05, 0.0);
-      glEnd();
-    glPopMatrix();
+
 }
 
 void Unit::turn(double deltaTime)
@@ -172,20 +160,9 @@ void Unit::applyForce(Vector3 force, GameObject& source)
         sourceUnitPtr->getDoesDealDamage() &&
         sourceUnitPtr->getTeam() != _team)
     {
-        switch (_health)
-        {
-        case H_HIGH:
-            _health = H_MEDIUM;
-            break;
-        case H_MEDIUM:
-            _health = H_LOW;
-            break;
-        case H_LOW:
-            _health = H_EMPTY;
-            break;
-        default:
-            break;
-        }
+        _healthPt -= 15.0f;
+        if (_healthPt < _emptyHealthPt)
+            _healthPt = _emptyHealthPt;
     }
     GameObject::applyForce(force, source);
 }
@@ -194,21 +171,30 @@ void Unit::update(double deltaTime)
 {
     GameObject::update(deltaTime);
 
+    if (_healthPt > _emptyHealthPt && _isStoppingX && _isStoppingY)
+    {
+        _healthPt += 0.1f;
+        if (_healthPt > _fullHealthPt)
+            _healthPt = _fullHealthPt;
+    }
+
     if (_isDashing)
     {
         _energyPt -= 2.0f;
-        _energyPt = _energyPt < _emptyEnergyPt ? _emptyEnergyPt : _energyPt;
+        if (_energyPt < _emptyEnergyPt)
+            _energyPt = _emptyEnergyPt;
     }
     else
     {
         _energyPt += 0.2f;
-        _energyPt = _energyPt > _fullEnergyPt ? _fullEnergyPt : _energyPt;
+        if (_energyPt > _fullEnergyPt)
+            _energyPt = _fullEnergyPt;
     }
 }
 
 void Unit::move(Direction dir)
 {
-    bool isStopping = _health == H_EMPTY;
+    bool isStopping = getHealthLevels()[H_EMPTY] > 0.0f;
     double accAbility = _accAbility * (isStopping ? 0.0 : 1.0);
 
     switch (dir)
@@ -287,7 +273,7 @@ void Unit::setIsDashing(bool isDashing)
 {
     _isDashing = isDashing;
 
-    if (_health == H_EMPTY || _energyPt <= 10.0)
+    if (getHealthLevels()[H_EMPTY] > 0.0f || _energyPt <= 10.0)
         return;
 
     if (_isDashing)
@@ -309,7 +295,7 @@ void Unit::setTeam(Team team)
     _team = team;
 }
 
-std::map<Unit::Health, float> Unit::_getHealthLevels() const
+std::map<Unit::Health, float> Unit::getHealthLevels() const
 {
     std::map<Unit::Health, float> levels;
 

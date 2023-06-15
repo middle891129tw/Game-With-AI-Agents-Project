@@ -25,6 +25,6 @@ PlayerUnit::~PlayerUnit()
 
 void PlayerUnit::reset()
 {
-    Unit::_health = H_HIGH;
+    Unit::_healthPt = 95.0f;
     Unit::_energyPt = 60.0;
 }

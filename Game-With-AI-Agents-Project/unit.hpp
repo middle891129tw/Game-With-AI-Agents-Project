@@ -32,9 +32,6 @@ protected:
     const float _fullEnergyPt;
     Vector3 _bodyColor;
     Vector3 _arrowColor;
-
-    Health _health;
-    Energy _energy;
     Team _team;
 
 
@@ -63,5 +60,5 @@ public:
     Team getTeam();
     void setTeam(Team team);
 
-    std::map<Health, float> _getHealthLevels() const;
+    std::map<Health, float> getHealthLevels() const;
 };
