@@ -7,7 +7,10 @@
 #include "botUnit.hpp"
 
 BotUnit::BotUnit() : _destination(),
-                     _threshold(2.0)
+                     _threshold(2.0),
+                     _mode(WANDER),
+                     _friendlyUnits(),
+                     _hostileUnits()
 {
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -33,10 +36,22 @@ BotUnit::~BotUnit()
 {
 }
 
+void BotUnit::update(double deltTime)
+{
+    /**/
+
+    Unit::update(deltTime);
+}
+
 void BotUnit::reset()
 {
     Unit::_healthPt = 95.0f;
     Unit::_energyPt = 60.0;
+}
+
+void BotUnit::addFriendlyUnit(Unit unit)
+{
+    _friendlyUnits.push_back(unit);
 }
 
 void BotUnit::goToDestination()
@@ -80,5 +95,40 @@ void BotUnit::wander()
     else
     {
         goToDestination();
+    }
+}
+
+void BotUnit::attack()
+{
+    //_destination = ???;
+    goToDestination();
+}
+
+BotUnit::Mode BotUnit::getMode()
+{
+    return _mode;
+}
+
+void BotUnit::setMode(Mode mode)
+{
+    _mode = mode;
+
+    switch (mode)
+    {
+    case WANDER:
+        wander();
+        break;
+    case REGAIN:
+        break;
+    case ATTACK:
+        break;
+    case DEFEND:
+        break;
+    case ESCAPE:
+        break;
+    case RESCUE:
+        break;
+    default:
+        break;
     }
 }

@@ -42,7 +42,8 @@ public:
     void draw() override;
     void turn(double deltaTime) override;
     void applyForce(Vector3 force, GameObject& source) override;
-    void update(double deltaTime) override;
+
+    void virtual update(double deltaTime) override;
 
     void drawBody(float angleOffset);
     void drawArrow(float angleOffset);

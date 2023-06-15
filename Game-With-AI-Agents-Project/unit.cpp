@@ -8,7 +8,7 @@
 
 #include "unit.hpp"
 
-#define PI 3.14159
+#define PI 3.14159f
 
 Unit::Unit() : _segmentCount(3),
                _isStoppingX(true),
@@ -169,8 +169,6 @@ void Unit::applyForce(Vector3 force, GameObject& source)
 
 void Unit::update(double deltaTime)
 {
-    GameObject::update(deltaTime);
-
     if (_healthPt > _emptyHealthPt && _isStoppingX && _isStoppingY)
     {
         _healthPt += 0.1f;
@@ -190,6 +188,8 @@ void Unit::update(double deltaTime)
         if (_energyPt > _fullEnergyPt)
             _energyPt = _fullEnergyPt;
     }
+
+    GameObject::update(deltaTime);
 }
 
 void Unit::move(Direction dir)

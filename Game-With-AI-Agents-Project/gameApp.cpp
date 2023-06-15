@@ -209,7 +209,10 @@ void idleCallback()
     camera.setPos(playerUnit.getPos());
 
     // control enemy units
-    evilUnit1.wander();
+    //evilUnit1.wander();
+    evilUnit1.setMode(BotUnit::WANDER);
+    evilUnit1.addFriendlyUnit(evilUnit2);
+
     evilUnit2.defend();
     evilUnit3.attack();
     evilUnit4.attack();

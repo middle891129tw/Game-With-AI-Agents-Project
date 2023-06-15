@@ -4,6 +4,9 @@
 
 #pragma once
 
+#include <list>
+#include <functional>
+
 #include "unit.hpp"
 
 class BotUnit : public Unit
@@ -11,23 +14,34 @@ class BotUnit : public Unit
 public:
     enum Mode
     {
-        Wadner,
-        Attack,
-        Defend,
-        Escape,
-        Rescue
+        WANDER,
+        REGAIN,
+        ATTACK,
+        DEFEND,
+        ESCAPE,
+        RESCUE
     };
+
+protected:
+    Vector3 _destination;
+    double _threshold;
+    Mode _mode;
+    std::list<std::reference_wrapper<Unit>> _friendlyUnits;
+    std::list<std::reference_wrapper<Unit>> _hostileUnits;
 
 public:
     BotUnit();
     ~BotUnit();
 
+    void update(double deltTime) override;
     void virtual reset() override;
+
+    void addFriendlyUnit(Unit unit);
 
     void goToDestination();
     void wander();
+    void attack();
 
-protected:
-    Vector3 _destination;
-    double _threshold;
+    Mode getMode();
+    void setMode(Mode mode);
 };
