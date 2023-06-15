@@ -14,7 +14,7 @@ PlayerUnit::PlayerUnit()
     Unit::_segmentCount = 5;
     Unit::_accAbility = 20.0;
     Unit::_doesDealDamage = true;
-    Unit::_team = Player;
+    Unit::_team = TERRANS;
 
     reset();
 }

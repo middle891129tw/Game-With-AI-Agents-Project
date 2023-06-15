@@ -20,9 +20,9 @@ Unit::Unit() : _segmentCount(3),
                _energyPt(60.0),
                _bodyColor(0.8, 0.8, 0.8),
                _arrowColor(0.8, 0.8, 0.8),
-               _health(INVINCIBLE),
+               _health(H_MAX),
                _energy(E_HIGH),
-               _team(Neutral)
+               _team(NEUTRAL)
 {
     reset();
 }
@@ -102,10 +102,6 @@ void Unit::drawBars()
         break;
     case H_HIGH:
         glColor3f(0.2, 0.8, 0.3);
-        length = 0.9;
-        break;
-    case INVINCIBLE:
-        glColor3f(0.6, 0.2, 0.8);
         length = 0.9;
         break;
     default:

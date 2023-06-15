@@ -10,9 +10,9 @@ class Unit : public GameObject
 {
 public:
     enum Direction { FORWARD, BACKWARD, LEFTWARD, RIGHTWARD };
-    enum Health { H_EMPTY, H_LOW, H_MEDIUM, H_HIGH, INVINCIBLE };
-    enum Energy { E_EMPTY, E_LOW, E_MEDIUM, E_HIGH };
-    enum Team { Neutral, Player, Evil };
+    enum Health { H_EMPTY, H_LOW, H_MEDIUM, H_HIGH, H_MAX };
+    enum Energy { E_EMPTY, E_LOW, E_MEDIUM, E_HIGH, E_MAX };
+    enum Team { NEUTRAL, TERRANS, MARTIANS };
 
 protected:
     unsigned int _segmentCount;

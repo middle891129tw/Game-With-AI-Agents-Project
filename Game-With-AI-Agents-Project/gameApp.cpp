@@ -34,10 +34,10 @@ std::map<char, bool> keyDown;
 
 void setUpUnits()
 {
-    evilUnit1.setTeam(Unit::Evil);
-    evilUnit2.setTeam(Unit::Evil);
-    evilUnit3.setTeam(Unit::Evil);
-    evilUnit4.setTeam(Unit::Evil);
+    evilUnit1.setTeam(Unit::MARTIANS);
+    evilUnit2.setTeam(Unit::MARTIANS);
+    evilUnit3.setTeam(Unit::MARTIANS);
+    evilUnit4.setTeam(Unit::MARTIANS);
 }
 
 
