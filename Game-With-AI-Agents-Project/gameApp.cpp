@@ -24,8 +24,8 @@ Camera camera;
 PlayerUnit playerUnit;
 BotUnit evilUnit1;
 DefenderUnit evilUnit2(evilUnit1);
-AttackerUnit evilUnit3(playerUnit);
-AttackerUnit evilUnit4(playerUnit);
+BotUnit evilUnit3;
+BotUnit evilUnit4;
 
 std::chrono::high_resolution_clock::time_point prevTime;
 std::chrono::high_resolution_clock::time_point currTime;
@@ -38,6 +38,14 @@ void setUpUnits()
     evilUnit2.setTeam(Unit::MARTIANS);
     evilUnit3.setTeam(Unit::MARTIANS);
     evilUnit4.setTeam(Unit::MARTIANS);
+
+    evilUnit1.setMode(BotUnit::WANDER);
+    evilUnit3.setMode(BotUnit::ATTACK);
+    evilUnit4.setMode(BotUnit::ATTACK);
+
+    evilUnit1.addFriendlyUnit(evilUnit2);
+    evilUnit3.addHostileUnit(playerUnit);
+    evilUnit4.addHostileUnit(playerUnit);
 }
 
 
@@ -186,7 +194,7 @@ void displayCallback()
 void idleCallback()
 {
     currTime = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> deltaTime = std::chrono::duration_cast<std::chrono::duration<double>>(currTime - prevTime);
+    double deltaTime = std::chrono::duration_cast<std::chrono::duration<double>>(currTime - prevTime).count();
     prevTime = currTime;
 
     // control player unit
@@ -210,12 +218,14 @@ void idleCallback()
 
     // control enemy units
     //evilUnit1.wander();
-    evilUnit1.setMode(BotUnit::WANDER);
-    evilUnit1.addFriendlyUnit(evilUnit2);
+    //evilUnit1.setMode(BotUnit::WANDER);
+    //evilUnit1.addFriendlyUnit(evilUnit2);
 
     evilUnit2.defend();
-    evilUnit3.attack();
-    evilUnit4.attack();
+    //evilUnit3.addHostileUnit(playerUnit);
+    //evilUnit3.attack();
+    //evilUnit3.setMode(BotUnit::ATTACK);
+    //evilUnit4.attack();
 
     //printf("_acc: %f, %f\n", playerUnit.getAcc().getX(), playerUnit.getAcc().getY());
     handleCollisions();
@@ -223,11 +233,11 @@ void idleCallback()
     //printf("_vel: %f, %f\n\n", playerUnit.getVel().getX(), playerUnit.getVel().getY());
 
 
-    playerUnit.update(deltaTime.count());
-    evilUnit1.update(deltaTime.count());
-    evilUnit2.update(deltaTime.count());
-    evilUnit3.update(deltaTime.count());
-    evilUnit4.update(deltaTime.count());
+    playerUnit.update(deltaTime);
+    evilUnit1.update(deltaTime);
+    evilUnit2.update(deltaTime);
+    evilUnit3.update(deltaTime);
+    evilUnit4.update(deltaTime);
 
     renderScene();
 }

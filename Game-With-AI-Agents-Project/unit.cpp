@@ -17,15 +17,19 @@ Unit::Unit() : _segmentCount(3),
                _doesDealDamage(false),
                _accAbility(15.0),
                _dashFactor(300.0),
-               _healthPt(95.0f),
-               _energyPt(60.0f),
+               _initHealthPt(95.0f),
+               _initEnergyPt(60.0f),
+               _healthPt(_initHealthPt),
+               _energyPt(_initEnergyPt),
                _emptyHealthPt(0.0f),
                _emptyEnergyPt(0.0f),
                _fullHealthPt(100.0f),
                _fullEnergyPt(100.0f),
                _bodyColor(0.8, 0.8, 0.8),
                _arrowColor(0.8, 0.8, 0.8),
-               _team(NEUTRAL)
+               _team(NEUTRAL),
+               _friendlyUnits(),
+               _hostileUnits()
 {
     reset();
 }
@@ -259,12 +263,25 @@ void Unit::stop(Direction dir)
     }
 }
 
-void Unit::reset()
+void Unit::addFriendlyUnit(Unit& unit)
 {
-    GameObject::_pos = { 0.0, 0.0, 0.1 };
+    _friendlyUnits.push_back(unit);
 }
 
-bool Unit::getIsDashing()
+void Unit::addHostileUnit(Unit& unit)
+{
+    _hostileUnits.push_back(unit);
+}
+
+void Unit::reset()
+{
+    GameObject::_pos[2] = 0.1;
+
+    _healthPt = _initHealthPt;
+    _energyPt = _initEnergyPt;
+}
+
+bool Unit::getIsDashing() const
 {
     return _isDashing;
 }
@@ -280,12 +297,12 @@ void Unit::setIsDashing(bool isDashing)
         applyForce(200.0 * _front, *this);
 }
 
-bool Unit::getDoesDealDamage()
+bool Unit::getDoesDealDamage() const
 {
     return _doesDealDamage;
 }
 
-Unit::Team Unit::getTeam()
+Unit::Team Unit::getTeam() const
 {
     return _team;
 }

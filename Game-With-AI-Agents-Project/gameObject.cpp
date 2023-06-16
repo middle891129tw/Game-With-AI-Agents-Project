@@ -94,27 +94,27 @@ void GameObject::update(double deltaTime)
     turn(deltaTime);
 }
 
-Vector3 GameObject::getPos()
+Vector3 GameObject::getPos() const
 {
     return _pos;
 }
 
-Vector3 GameObject::getVel()
+Vector3 GameObject::getVel() const
 {
     return _vel;
 }
 
-Vector3 GameObject::getAcc()
+Vector3 GameObject::getAcc() const
 {
     return _acc;
 }
 
-Vector3 GameObject::getFront()
+Vector3 GameObject::getFront() const
 {
     return _front;
 }
 
-double GameObject::getR()
+double GameObject::getR() const
 {
     return _r;
 }

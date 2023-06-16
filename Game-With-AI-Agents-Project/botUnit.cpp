@@ -8,9 +8,7 @@
 
 BotUnit::BotUnit() : _destination(),
                      _threshold(2.0),
-                     _mode(WANDER),
-                     _friendlyUnits(),
-                     _hostileUnits()
+                     _mode(WANDER)
 {
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -38,20 +36,34 @@ BotUnit::~BotUnit()
 
 void BotUnit::update(double deltTime)
 {
-    /**/
+    switch (_mode)
+    {
+    case BotUnit::WANDER:
+        wander();
+        break;
+    case BotUnit::REGAIN:
+        break;
+    case BotUnit::ATTACK:
+        attack();
+        break;
+    case BotUnit::DEFEND:
+        break;
+    case BotUnit::FOLLOW:
+        break;
+    case BotUnit::ESCAPE:
+        break;
+    case BotUnit::RESCUE:
+        break;
+    default:
+        break;
+    }
 
     Unit::update(deltTime);
 }
 
 void BotUnit::reset()
 {
-    Unit::_healthPt = 95.0f;
-    Unit::_energyPt = 60.0;
-}
-
-void BotUnit::addFriendlyUnit(Unit unit)
-{
-    _friendlyUnits.push_back(unit);
+    Unit::reset();
 }
 
 void BotUnit::goToDestination()
@@ -100,11 +112,14 @@ void BotUnit::wander()
 
 void BotUnit::attack()
 {
-    //_destination = ???;
+    if (_hostileUnits.empty())
+        return;
+
+    _destination = _hostileUnits.front().get().getPos();
     goToDestination();
 }
 
-BotUnit::Mode BotUnit::getMode()
+BotUnit::Mode BotUnit::getMode() const
 {
     return _mode;
 }
@@ -121,6 +136,16 @@ void BotUnit::setMode(Mode mode)
     case REGAIN:
         break;
     case ATTACK:
+        GameObject::_r = 0.7;
+        GameObject::_m = 0.2;
+        GameObject::_maxSpeed = 15.0;
+
+        Unit::_segmentCount = 3;
+        Unit::_accAbility = 15.0;
+        Unit::_doesDealDamage = true;
+        Unit::_initEnergyPt = 30.0;
+
+        BotUnit::_threshold = 2.0;
         break;
     case DEFEND:
         break;

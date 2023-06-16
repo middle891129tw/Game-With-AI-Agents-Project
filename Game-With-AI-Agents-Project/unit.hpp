@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <functional>
+#include <list>
 #include <map>
 
 #include "gameObject.hpp"
@@ -24,6 +26,8 @@ protected:
     bool _doesDealDamage;
     double _accAbility;
     double _dashFactor;
+    float _initHealthPt;
+    float _initEnergyPt;
     float _healthPt;
     float _energyPt;
     const float _emptyHealthPt;
@@ -33,6 +37,8 @@ protected:
     Vector3 _bodyColor;
     Vector3 _arrowColor;
     Team _team;
+    std::list<std::reference_wrapper<Unit>> _friendlyUnits;
+    std::list<std::reference_wrapper<Unit>> _hostileUnits;
 
 
 public:
@@ -50,15 +56,17 @@ public:
     void drawBars();
     void move(Direction);
     void stop(Direction);
+    void addFriendlyUnit(Unit& unit);
+    void addHostileUnit(Unit& unit);
 
     void virtual reset();
 
-    bool getIsDashing();
+    bool getIsDashing() const;
     void setIsDashing(bool isDashing);
 
-    bool getDoesDealDamage();
+    bool getDoesDealDamage() const;
 
-    Team getTeam();
+    Team getTeam() const;
     void setTeam(Team team);
 
     std::map<Health, float> getHealthLevels() const;

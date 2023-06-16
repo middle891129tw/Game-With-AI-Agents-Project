@@ -36,11 +36,11 @@ public:
     void virtual applyForce(Vector3 force, GameObject& source);
     void virtual update(double deltaTime);
 
-    Vector3 getPos();
-    Vector3 getVel();
-    Vector3 getAcc();
-    Vector3 getFront();
-    double getR();
+    Vector3 getPos() const;
+    Vector3 getVel() const;
+    Vector3 getAcc() const;
+    Vector3 getFront() const;
+    double getR() const;
 
     void setIsColliding(bool isColliding);
 };
