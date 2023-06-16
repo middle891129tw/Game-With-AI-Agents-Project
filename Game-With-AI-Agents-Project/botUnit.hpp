@@ -34,7 +34,12 @@ public:
 
     void goToDestination();
     void wander();
+    void regain();
     void attack();
+    void defend();
+    void follow();
+    void escape();
+    void rescue();
 
     Mode getMode() const;
     void setMode(Mode mode);

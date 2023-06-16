@@ -160,7 +160,9 @@ void Unit::applyForce(Vector3 force, GameObject& source)
     Unit* sourceUnitPtr = dynamic_cast<Unit*>(&source);
     if (!_isColliding &&
         sourceUnitPtr != NULL &&
+        sourceUnitPtr->getVel().magnitude() > 15.0f &&
         sourceUnitPtr->getIsDashing() &&
+        sourceUnitPtr->getEnergyPt() > 10.0f &&
         sourceUnitPtr->getDoesDealDamage() &&
         sourceUnitPtr->getTeam() != _team)
     {
@@ -281,6 +283,11 @@ void Unit::reset()
     _energyPt = _initEnergyPt;
 }
 
+Vector3 Unit::getVel() const
+{
+    return _vel;
+}
+
 bool Unit::getIsDashing() const
 {
     return _isDashing;
@@ -300,6 +307,16 @@ void Unit::setIsDashing(bool isDashing)
 bool Unit::getDoesDealDamage() const
 {
     return _doesDealDamage;
+}
+
+float Unit::getHealthPt() const
+{
+    return _healthPt;
+}
+
+float Unit::getEnergyPt() const
+{
+    return _energyPt;
 }
 
 Unit::Team Unit::getTeam() const

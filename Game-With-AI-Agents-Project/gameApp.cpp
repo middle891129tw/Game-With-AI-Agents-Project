@@ -22,10 +22,11 @@ double _collisionFactor = 160.0;
 
 Camera camera;
 PlayerUnit playerUnit;
-BotUnit evilUnit1;
-DefenderUnit evilUnit2(evilUnit1);
-BotUnit evilUnit3;
-BotUnit evilUnit4;
+BotUnit martianBossUnit;
+BotUnit martianMinionUnit1;
+
+BotUnit martianMinionUnit2;
+BotUnit martianMinionUnit3;
 
 std::chrono::high_resolution_clock::time_point prevTime;
 std::chrono::high_resolution_clock::time_point currTime;
@@ -34,18 +35,19 @@ std::map<char, bool> keyDown;
 
 void setUpUnits()
 {
-    evilUnit1.setTeam(Unit::MARTIANS);
-    evilUnit2.setTeam(Unit::MARTIANS);
-    evilUnit3.setTeam(Unit::MARTIANS);
-    evilUnit4.setTeam(Unit::MARTIANS);
+    martianBossUnit.setTeam(Unit::MARTIANS);
+    martianMinionUnit1.setTeam(Unit::MARTIANS);
+    martianMinionUnit2.setTeam(Unit::MARTIANS);
+    martianMinionUnit3.setTeam(Unit::MARTIANS);
 
-    evilUnit1.setMode(BotUnit::WANDER);
-    evilUnit3.setMode(BotUnit::ATTACK);
-    evilUnit4.setMode(BotUnit::ATTACK);
+    martianBossUnit.setMode(BotUnit::WANDER);
+    martianMinionUnit1.setMode(BotUnit::DEFEND);
+    martianMinionUnit2.setMode(BotUnit::ATTACK);
+    martianMinionUnit3.setMode(BotUnit::ATTACK);
 
-    evilUnit1.addFriendlyUnit(evilUnit2);
-    evilUnit3.addHostileUnit(playerUnit);
-    evilUnit4.addHostileUnit(playerUnit);
+    martianMinionUnit1.addFriendlyUnit(martianBossUnit);
+    martianMinionUnit2.addHostileUnit(playerUnit);
+    martianMinionUnit3.addHostileUnit(playerUnit);
 }
 
 
@@ -112,10 +114,10 @@ void renderScene()
 
     drawGrid();
     playerUnit.draw();
-    evilUnit1.draw();
-    evilUnit2.draw();
-    evilUnit3.draw();
-    evilUnit4.draw();
+    martianBossUnit.draw();
+    martianMinionUnit1.draw();
+    martianMinionUnit2.draw();
+    martianMinionUnit3.draw();
 
     glutSwapBuffers();
 }
@@ -124,16 +126,16 @@ void renderScene()
 
 void handleCollisions()
 {
-    bool isCollidingp1 = handleCollision(playerUnit, evilUnit1);
-    bool isCollidingp2 = handleCollision(playerUnit, evilUnit2);
-    bool isCollidingp3 = handleCollision(playerUnit, evilUnit3);
-    bool isCollidingp4 = handleCollision(playerUnit, evilUnit4);
-    bool isColliding34 = handleCollision(evilUnit3, evilUnit4);
-    playerUnit.setIsColliding(isCollidingp1 || isCollidingp2 || isCollidingp3 || isCollidingp4);
-    evilUnit1.setIsColliding(isCollidingp1);
-    evilUnit2.setIsColliding(isCollidingp2);
-    evilUnit3.setIsColliding(isCollidingp3 || isColliding34);
-    evilUnit4.setIsColliding(isCollidingp4 || isColliding34);
+    bool isCollidingp0 = handleCollision(playerUnit, martianBossUnit);
+    bool isCollidingp1 = handleCollision(playerUnit, martianMinionUnit1);
+    bool isCollidingp2 = handleCollision(playerUnit, martianMinionUnit2);
+    bool isCollidingp3 = handleCollision(playerUnit, martianMinionUnit3);
+    bool isColliding23 = handleCollision(martianMinionUnit2, martianMinionUnit3);
+    playerUnit.setIsColliding(isCollidingp0 || isCollidingp1 || isCollidingp2 || isCollidingp3);
+    martianBossUnit.setIsColliding(isCollidingp0);
+    martianMinionUnit1.setIsColliding(isCollidingp1);
+    martianMinionUnit2.setIsColliding(isCollidingp2 || isColliding23);
+    martianMinionUnit3.setIsColliding(isCollidingp3 || isColliding23);
 }
 
 bool handleCollision(GameObject& a, GameObject& b)
@@ -216,28 +218,13 @@ void idleCallback()
 
     camera.setPos(playerUnit.getPos());
 
-    // control enemy units
-    //evilUnit1.wander();
-    //evilUnit1.setMode(BotUnit::WANDER);
-    //evilUnit1.addFriendlyUnit(evilUnit2);
-
-    evilUnit2.defend();
-    //evilUnit3.addHostileUnit(playerUnit);
-    //evilUnit3.attack();
-    //evilUnit3.setMode(BotUnit::ATTACK);
-    //evilUnit4.attack();
-
-    //printf("_acc: %f, %f\n", playerUnit.getAcc().getX(), playerUnit.getAcc().getY());
     handleCollisions();
-    //printf("_acc: %f, %f\n", playerUnit.getAcc().getX(), playerUnit.getAcc().getY());
-    //printf("_vel: %f, %f\n\n", playerUnit.getVel().getX(), playerUnit.getVel().getY());
-
 
     playerUnit.update(deltaTime);
-    evilUnit1.update(deltaTime);
-    evilUnit2.update(deltaTime);
-    evilUnit3.update(deltaTime);
-    evilUnit4.update(deltaTime);
+    martianBossUnit.update(deltaTime);
+    martianMinionUnit1.update(deltaTime);
+    martianMinionUnit2.update(deltaTime);
+    martianMinionUnit3.update(deltaTime);
 
     renderScene();
 }
@@ -252,10 +239,10 @@ void keyboardCallback(unsigned char key, int, int)
         break;
     case 'r':
         playerUnit.reset();
-        evilUnit1.reset();
-        evilUnit2.reset();
-        evilUnit3.reset();
-        evilUnit4.reset();
+        martianBossUnit.reset();
+        martianMinionUnit1.reset();
+        martianMinionUnit2.reset();
+        martianMinionUnit3.reset();
     default:
         break;
     }

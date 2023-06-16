@@ -61,10 +61,15 @@ public:
 
     void virtual reset();
 
+    Vector3 getVel() const;
+
     bool getIsDashing() const;
     void setIsDashing(bool isDashing);
 
     bool getDoesDealDamage() const;
+
+    float getHealthPt() const;
+    float getEnergyPt() const;
 
     Team getTeam() const;
     void setTeam(Team team);

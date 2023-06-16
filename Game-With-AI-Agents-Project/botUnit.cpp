@@ -42,17 +42,22 @@ void BotUnit::update(double deltTime)
         wander();
         break;
     case BotUnit::REGAIN:
+        regain();
         break;
     case BotUnit::ATTACK:
         attack();
         break;
     case BotUnit::DEFEND:
+        defend();
         break;
     case BotUnit::FOLLOW:
+        follow();
         break;
     case BotUnit::ESCAPE:
+        escape();
         break;
     case BotUnit::RESCUE:
+        rescue();
         break;
     default:
         break;
@@ -110,6 +115,11 @@ void BotUnit::wander()
     }
 }
 
+void BotUnit::regain()
+{
+    // TODO
+}
+
 void BotUnit::attack()
 {
     if (_hostileUnits.empty())
@@ -117,6 +127,30 @@ void BotUnit::attack()
 
     _destination = _hostileUnits.front().get().getPos();
     goToDestination();
+}
+
+void BotUnit::defend()
+{
+    if (_friendlyUnits.empty())
+        return;
+
+    _destination = _friendlyUnits.front().get().getPos();
+    goToDestination();
+}
+
+void BotUnit::follow()
+{
+    // TODO
+}
+
+void BotUnit::escape()
+{
+    // TODO
+}
+
+void BotUnit::rescue()
+{
+    // TODO
 }
 
 BotUnit::Mode BotUnit::getMode() const
@@ -138,16 +172,25 @@ void BotUnit::setMode(Mode mode)
     case ATTACK:
         GameObject::_r = 0.7;
         GameObject::_m = 0.2;
-        GameObject::_maxSpeed = 15.0;
+        GameObject::_maxSpeed = 18.0;
 
         Unit::_segmentCount = 3;
-        Unit::_accAbility = 15.0;
+        Unit::_accAbility = 20.0;
         Unit::_doesDealDamage = true;
         Unit::_initEnergyPt = 30.0;
 
         BotUnit::_threshold = 2.0;
         break;
     case DEFEND:
+        GameObject::_r = 1.2;
+        GameObject::_m = 5.0;
+        GameObject::_maxSpeed = 13.0;;
+
+        Unit::_segmentCount = 4;
+        Unit::_accAbility = 30.0;
+        Unit::_doesDealDamage = true;
+
+        BotUnit::_threshold = 5.0;
         break;
     case ESCAPE:
         break;
