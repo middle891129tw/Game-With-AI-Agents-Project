@@ -33,15 +33,6 @@
     <ClCompile Include="botUnit.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
-    <ClCompile Include="defenderUnit.hpp">
-      <Filter>標頭檔</Filter>
-    </ClCompile>
-    <ClCompile Include="defenderUnit.cpp">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
-    <ClCompile Include="attackerUnit.cpp">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
     <ClCompile Include="vector3.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
@@ -60,9 +51,6 @@
       <Filter>標頭檔</Filter>
     </ClInclude>
     <ClInclude Include="gameApp.hpp">
-      <Filter>標頭檔</Filter>
-    </ClInclude>
-    <ClInclude Include="attackerUnit.hpp">
       <Filter>標頭檔</Filter>
     </ClInclude>
     <ClInclude Include="vector3.hpp">

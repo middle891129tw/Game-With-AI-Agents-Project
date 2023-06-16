@@ -135,10 +135,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="attackerUnit.cpp" />
     <ClCompile Include="camera.cpp" />
-    <ClCompile Include="defenderUnit.cpp" />
-    <ClCompile Include="defenderUnit.hpp" />
     <ClCompile Include="botUnit.cpp" />
     <ClCompile Include="gameApp.cpp" />
     <ClCompile Include="gameObject.cpp" />
@@ -148,7 +145,6 @@
     <ClCompile Include="vector3.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="attackerUnit.hpp" />
     <ClInclude Include="camera.hpp" />
     <ClInclude Include="botUnit.hpp" />
     <ClInclude Include="gameApp.hpp" />

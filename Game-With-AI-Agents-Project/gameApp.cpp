@@ -94,15 +94,15 @@ void makeView()
 {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(	camera.getEye()		[0],
-                camera.getEye()		[1],
-                camera.getEye()		[2],
-                camera.getCenter()	[0],
-                camera.getCenter()	[1],
-                camera.getCenter()	[2],
-                camera.getUp()		[0],
-                camera.getUp()		[1],
-                camera.getUp()		[2]);
+    gluLookAt(	camera.getEye()     [0],
+                camera.getEye()     [1],
+                camera.getEye()     [2],
+                camera.getCenter()  [0],
+                camera.getCenter()  [1],
+                camera.getCenter()  [2],
+                camera.getUp()      [0],
+                camera.getUp()      [1],
+                camera.getUp()      [2]);
 }
 
 void renderScene()
