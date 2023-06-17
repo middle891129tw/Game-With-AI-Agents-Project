@@ -99,7 +99,7 @@ void Unit::drawBars()
     double length;
 
     if (getHStatusTruthiness(H_FULL) > 0.0f)
-        glColor3f(0.3f, 0.3f, 0.8f);
+        glColor3f(0.3f, 0.7f, 0.8f);
     else if (getHStatusTruthiness(H_HIGH) > 0.0f)
         glColor3f(0.2f, 0.8f, 0.3f);
     else if (getHStatusTruthiness(H_MEDIUM) > 0.0f)
@@ -159,13 +159,13 @@ void Unit::applyForce(Vector3 force, GameObject& source)
     Unit* sourceUnitPtr = dynamic_cast<Unit*>(&source);
     if (!_isColliding &&
         sourceUnitPtr != NULL &&
-        sourceUnitPtr->getVel().magnitude() > 15.0 &&
+        sourceUnitPtr->getVel().magnitude() > 1.0 &&
         sourceUnitPtr->getIsDashing() &&
-        sourceUnitPtr->getEnergyPt() > 10.0f &&
+        sourceUnitPtr->getEnergyPt() > 1.0f &&
         sourceUnitPtr->getDoesDealDamage() &&
         sourceUnitPtr->getTeam() != _team)
     {
-        _healthPt -= 15.0f;
+        _healthPt -= 30.0f;
         if (_healthPt < _emptyHealthPt)
             _healthPt = _emptyHealthPt;
     }
@@ -189,7 +189,7 @@ void Unit::update(double deltaTime)
     }
     else
     {
-        _energyPt += 0.2f;
+        _energyPt += 1.0f;
         if (_energyPt > _fullEnergyPt)
             _energyPt = _fullEnergyPt;
     }
@@ -300,7 +300,7 @@ void Unit::setIsDashing(bool isDashing)
         return;
 
     if (_isDashing)
-        applyForce(200.0 * _front, *this);
+        applyForce(500.0 * _front, *this);
 }
 
 bool Unit::getDoesDealDamage() const

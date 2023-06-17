@@ -17,34 +17,35 @@ BotUnit::BotUnit(Type type) : _type(type),
 {
     std::random_device rd;
     std::mt19937 gen(rd());
-    double min = -20.0;
-    double max =  20.0;
+    double minCoord = -20.0;
+    double maxCoord =  20.0;
     double randomValue;
-    std::uniform_real_distribution<double> dis(min, max);
+    std::uniform_real_distribution<double> dis(minCoord, maxCoord);
 
     randomValue = dis(gen);
     GameObject::_pos[0] = randomValue;
     randomValue = dis(gen);
     GameObject::_pos[1] = randomValue;
-    GameObject::_r = 1.8;
-    GameObject::_m = 18.0;
 
-    Unit::_segmentCount = 7;
-    Unit::_bodyColor = { 0.5, 0.5, 0.5 };
+    Unit::_bodyColor = { 0.7, 0.4, 0.3 };
 
     switch (_type)
     {
     case DUMMY:
         break;
     case BOSS:
+        GameObject::_r = 1.8;
+        GameObject::_m = 18.0;
+
+        Unit::_segmentCount = 7;
         break;
     case ATTACKER:
         GameObject::_r = 0.7;
         GameObject::_m = 0.2;
-        GameObject::_maxSpeed = 18.0;
+        GameObject::_maxSpeed = 20.0;
 
         Unit::_segmentCount = 3;
-        Unit::_accAbility = 20.0;
+        Unit::_accAbility = 40.0;
         Unit::_doesDealDamage = true;
         Unit::_initEnergyPt = 30.0f;
 
@@ -55,7 +56,7 @@ BotUnit::BotUnit(Type type) : _type(type),
         GameObject::_m = 5.0;
         GameObject::_maxSpeed = 13.0;;
 
-        Unit::_segmentCount = 4;
+        Unit::_segmentCount = 6;
         Unit::_accAbility = 30.0;
         Unit::_doesDealDamage = true;
 
