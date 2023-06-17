@@ -16,6 +16,7 @@ GameObject::GameObject() : _pos(0.0, 0.0, 0.0),
                            _turnSpeed(3.0),
                            _r(1.0),
                            _m(1.0),
+                           _timeSinceUpdate(0.0),
                            _isColliding(false)
 {
 }

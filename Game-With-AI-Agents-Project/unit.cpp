@@ -157,6 +157,7 @@ void Unit::turn(double deltaTime)
 void Unit::applyForce(Vector3 force, GameObject& source)
 {
     Unit* sourceUnitPtr = dynamic_cast<Unit*>(&source);
+
     if (!_isColliding &&
         sourceUnitPtr != NULL &&
         sourceUnitPtr->getVel().magnitude() > 1.0 &&
@@ -169,6 +170,16 @@ void Unit::applyForce(Vector3 force, GameObject& source)
         if (_healthPt < _emptyHealthPt)
             _healthPt = _emptyHealthPt;
     }
+
+    else if (!_isColliding &&
+             _healthPt == 0.0 &&
+             sourceUnitPtr != NULL &&
+             sourceUnitPtr->getVel().magnitude() > 1.0 &&
+             sourceUnitPtr->getTeam() == _team)
+    {
+        _healthPt = 50.0f;
+    }
+
     GameObject::applyForce(force, source);
 }
 

@@ -32,12 +32,19 @@ BotUnit::BotUnit(Type type) : _type(type),
     switch (_type)
     {
     case DUMMY:
+        GameObject::_r = 1.0;
+        GameObject::_m = 15.0;
+        GameObject::_maxSpeed = 12.0;
+
+        Unit::_segmentCount = 4;
         break;
     case BOSS:
         GameObject::_r = 1.8;
         GameObject::_m = 18.0;
 
         Unit::_segmentCount = 7;
+
+        setMode(WANDER);
         break;
     case ATTACKER:
         GameObject::_r = 0.7;
@@ -50,6 +57,8 @@ BotUnit::BotUnit(Type type) : _type(type),
         Unit::_initEnergyPt = 30.0f;
 
         BotUnit::_threshold = 2.0;
+
+        setMode(ATTACK);
         break;
     case DEFENDER:
         GameObject::_r = 1.2;
@@ -61,6 +70,8 @@ BotUnit::BotUnit(Type type) : _type(type),
         Unit::_doesDealDamage = true;
 
         BotUnit::_threshold = 5.0;
+
+        setMode(DEFEND);
         break;
     default:
         break;
@@ -75,31 +86,32 @@ BotUnit::~BotUnit()
 
 void BotUnit::update(double deltaTime)
 {
-    switch (_mode)
+    switch (_type)
     {
-    case BotUnit::WANDER:
-        wander();
-        break;
-    case BotUnit::REGAIN:
-        regain();
-        break;
-    case BotUnit::ATTACK:
-        attack();
-        break;
-    case BotUnit::DEFEND:
-        defend();
-        break;
-    case BotUnit::FOLLOW:
-        follow();
-        break;
-    case BotUnit::ESCAPE:
-        escape();
-        break;
-    case BotUnit::RESCUE:
-        rescue();
+    case BOSS:
+        if (!_friendlyUnits.empty())
+        {
+            Unit& friendlyUnit = _friendlyUnits.front().get();
+            if (friendlyUnit.getHStatusTruthiness(H_EMPTY) > 0.0 ||
+                friendlyUnit.getHStatusTruthiness(H_LOW) > 0.5)
+                setMode(RESCUE);
+            else setMode(WANDER);
+        }
         break;
     default:
         break;
+    }
+
+    switch (_mode)
+    {
+    case WANDER: wander(); break;
+    case REGAIN: regain(); break;
+    case ATTACK: attack(); break;
+    case DEFEND: defend(); break;
+    case FOLLOW: follow(); break;
+    case ESCAPE: escape(); break;
+    case RESCUE: rescue(); break;
+    default: break;
     }
 
     Unit::update(deltaTime);
@@ -190,6 +202,10 @@ void BotUnit::escape()
 void BotUnit::rescue()
 {
     // TODO
+    if (_friendlyUnits.empty())
+        return;
+    _destination = _friendlyUnits.front().get().getPos();
+    goToDestination();
 }
 
 BotUnit::Mode BotUnit::getMode() const

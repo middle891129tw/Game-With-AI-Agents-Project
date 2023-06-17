@@ -19,6 +19,7 @@ protected:
     double      _turnSpeed;
     double      _r;          // radius
     double      _m;          // mass
+    double      _timeSinceUpdate;
     bool        _isColliding;
 
 public:

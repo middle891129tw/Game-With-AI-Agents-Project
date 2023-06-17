@@ -25,7 +25,7 @@ PlayerUnit playerUnit;
 BotUnit martianBossUnit(BotUnit::BOSS);
 BotUnit martianMinionUnit1(BotUnit::DEFENDER);
 BotUnit martianMinionUnit2(BotUnit::ATTACKER);
-//BotUnit martianMinionUnit3(BotUnit::ATTACKER);
+BotUnit martianMinionUnit3(BotUnit::DUMMY);
 
 std::chrono::high_resolution_clock::time_point prevTime;
 std::chrono::high_resolution_clock::time_point currTime;
@@ -37,16 +37,12 @@ void setUpUnits()
     martianBossUnit.setTeam(Unit::MARTIANS);
     martianMinionUnit1.setTeam(Unit::MARTIANS);
     martianMinionUnit2.setTeam(Unit::MARTIANS);
-    //martianMinionUnit3.setTeam(Unit::MARTIANS);
+    martianMinionUnit3.setTeam(Unit::MARTIANS);
 
-    martianBossUnit.setMode(BotUnit::WANDER);
-    martianMinionUnit1.setMode(BotUnit::DEFEND);
-    martianMinionUnit2.setMode(BotUnit::ATTACK);
-    //martianMinionUnit3.setMode(BotUnit::ATTACK);
-
+    martianBossUnit.addFriendlyUnit(martianMinionUnit3);
     martianMinionUnit1.addFriendlyUnit(martianBossUnit);
     martianMinionUnit2.addHostileUnit(playerUnit);
-    //martianMinionUnit3.addHostileUnit(playerUnit);
+    martianMinionUnit3.addHostileUnit(playerUnit);
 }
 
 
@@ -116,7 +112,7 @@ void renderScene()
     martianBossUnit.draw();
     martianMinionUnit1.draw();
     martianMinionUnit2.draw();
-    //martianMinionUnit3.draw();
+    martianMinionUnit3.draw();
 
     glutSwapBuffers();
 }
@@ -128,15 +124,13 @@ void handleCollisions()
     bool isCollidingP0 = handleCollision(playerUnit, martianBossUnit);
     bool isCollidingP1 = handleCollision(playerUnit, martianMinionUnit1);
     bool isCollidingP2 = handleCollision(playerUnit, martianMinionUnit2);
-    //bool isCollidingP3 = handleCollision(playerUnit, martianMinionUnit3);
-    //bool isColliding23 = handleCollision(martianMinionUnit2, martianMinionUnit3);
-    //playerUnit.setIsColliding(isCollidingP0 || isCollidingP1 || isCollidingP2 || isCollidingP3);
-    playerUnit.setIsColliding(isCollidingP0 || isCollidingP1 || isCollidingP2);
-    martianBossUnit.setIsColliding(isCollidingP0);
+    bool isCollidingP3 = handleCollision(playerUnit, martianMinionUnit3);
+    bool isColliding03 = handleCollision(martianBossUnit, martianMinionUnit3);
+    playerUnit.setIsColliding(isCollidingP0 || isCollidingP1 || isCollidingP2 || isCollidingP3);
+    martianBossUnit.setIsColliding(isCollidingP0 || isColliding03);
     martianMinionUnit1.setIsColliding(isCollidingP1);
-    //martianMinionUnit2.setIsColliding(isCollidingP2 || isColliding23);
     martianMinionUnit2.setIsColliding(isCollidingP2);
-    //martianMinionUnit3.setIsColliding(isCollidingP3 || isColliding23);
+    martianMinionUnit3.setIsColliding(isCollidingP3 || isColliding03);
 }
 
 bool handleCollision(GameObject& a, GameObject& b)
@@ -225,7 +219,7 @@ void idleCallback()
     martianBossUnit.update(deltaTime);
     martianMinionUnit1.update(deltaTime);
     martianMinionUnit2.update(deltaTime);
-    //martianMinionUnit3.update(deltaTime);
+    martianMinionUnit3.update(deltaTime);
 
     renderScene();
 }
@@ -243,7 +237,7 @@ void keyboardCallback(unsigned char key, int, int)
         martianBossUnit.reset();
         martianMinionUnit1.reset();
         martianMinionUnit2.reset();
-        //martianMinionUnit3.reset();
+        martianMinionUnit3.reset();
     default:
         break;
     }

@@ -34,6 +34,9 @@ protected:
     Vector3     _destination;
     double      _threshold;
 
+    double      _tSinceUpdateMode;
+    double      _updateModeInterval;
+
 public:
     BotUnit();
     BotUnit(Type type);
