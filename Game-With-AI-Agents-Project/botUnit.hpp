@@ -9,6 +9,14 @@
 class BotUnit : public Unit
 {
 public:
+    enum Type
+    {
+        DUMMY,
+        BOSS,
+        ATTACKER,
+        DEFENDER
+    };
+
     enum Mode
     {
         WANDER,
@@ -21,12 +29,14 @@ public:
     };
 
 protected:
-    Vector3 _destination;
-    double _threshold;
-    Mode _mode;
+    const Type  _type;
+    Mode        _mode;
+    Vector3     _destination;
+    double      _threshold;
 
 public:
     BotUnit();
+    BotUnit(Type type);
     ~BotUnit();
 
     void update(double deltTime) override;

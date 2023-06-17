@@ -80,6 +80,8 @@ void GameObject::turn(double deltaTime)
 
 void GameObject::applyForce(Vector3 force, GameObject& source)
 {
+    // virtual
+
     if (_m <= 0.0)
         return;
 

@@ -9,17 +9,17 @@
 class GameObject
 {
 protected:
-    Vector3 _pos;       // position
-    Vector3 _vel;       // velocity
-    Vector3 _acc;       // acceleration
-    Vector3 _front;     // front direction
-    Vector3 _minPos;
-    Vector3 _maxPos;
-    double _maxSpeed;
-    double _turnSpeed;
-    double _r;          // radius
-    double _m;          // mass
-    bool _isColliding;
+    Vector3     _pos;       // position
+    Vector3     _vel;       // velocity
+    Vector3     _acc;       // acceleration
+    Vector3     _front;     // front direction
+    Vector3     _minPos;
+    Vector3     _maxPos;
+    double      _maxSpeed;
+    double      _turnSpeed;
+    double      _r;          // radius
+    double      _m;          // mass
+    bool        _isColliding;
 
 public:
     GameObject();

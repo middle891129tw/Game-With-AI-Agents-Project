@@ -332,42 +332,6 @@ std::map<Unit::HStatus, float> Unit::getHStatusTruthinessMap() const
 {
     std::map<Unit::HStatus, float> levelMap;
 
-    //// H_EMPTY
-    //if (_healthPt == _emptyHealthPt)
-    //    levelMap[H_EMPTY] = 1.0f;
-    //else
-    //    levelMap[H_EMPTY] = 0.0f;
-    //
-    //// H_LOW: 0~10 linear, 10~30 constant, 30~50, linear
-    //if (0.0f <= _healthPt && _healthPt <= 10.0f)
-    //    levelMap[H_LOW] = 1.0f / (10.0f - 0.0f) * (_healthPt - 0.0f);
-    //else if (10.0f <= _healthPt && _healthPt <= 30.0f)
-    //    levelMap[H_LOW] = 1.0f;
-    //else if (30.0f <= _healthPt && _healthPt <= 50.0f)
-    //    levelMap[H_LOW] = -1.0f / (50.0f - 30.0f) * (_healthPt - 30.0f) + 1.0f;
-    //
-    //// H_MEDIUM: 30~40 linear, 40~60 constant, 60~70, linear
-    //if (30.0f <= _healthPt && _healthPt <= 40.0f)
-    //    levelMap[H_MEDIUM] = 1.0f / (40.0f - 30.0f) * (_healthPt - 30.0f);
-    //else if (40.0f <= _healthPt && _healthPt <= 60.0f)
-    //    levelMap[H_MEDIUM] = 1.0f;
-    //else if (60.0f <= _healthPt && _healthPt <= 70.0f)
-    //    levelMap[H_MEDIUM] = -1.0f / (70.0f - 60.0f) * (_healthPt - 60.0f) + 1.0f;
-    //
-    //// H_HIGH: 50~70 linear, 70~90 constant, 90~100, linear
-    //if (50.0f <= _healthPt && _healthPt <= 70.0f)
-    //    levelMap[H_HIGH] = 1.0f / (70.0f - 50.0f) * (_healthPt - 50.0f);
-    //else if (70.0f <= _healthPt && _healthPt <= 90.0f)
-    //    levelMap[H_HIGH] = 1.0f;
-    //else if (90.0f <= _healthPt && _healthPt <= 100.0f)
-    //    levelMap[H_HIGH] = -1.0f / (100.0f - 90.0f) * (_healthPt - 90.0f) + 1.0f;
-    //
-    //// H_FULL
-    //if (_healthPt == _fullHealthPt)
-    //    levelMap[H_FULL] = 1.0f;
-    //else
-    //    levelMap[H_FULL] = 0.0f;
-
     for (HStatus healthStatus : { H_EMPTY, H_LOW, H_MEDIUM, H_HIGH, H_FULL })
     {
         levelMap[healthStatus] = getHStatusTruthiness(healthStatus);

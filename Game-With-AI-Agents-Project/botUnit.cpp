@@ -6,9 +6,14 @@
 
 #include "botUnit.hpp"
 
-BotUnit::BotUnit() : _destination(),
-                     _threshold(2.0),
-                     _mode(WANDER)
+BotUnit::BotUnit() : BotUnit(DUMMY)
+{
+}
+
+BotUnit::BotUnit(Type type) : _type(type),
+                              _mode(WANDER),
+                              _destination(),
+                              _threshold(2.0)
 {
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -27,6 +32,39 @@ BotUnit::BotUnit() : _destination(),
     Unit::_segmentCount = 7;
     Unit::_bodyColor = { 0.5, 0.5, 0.5 };
 
+    switch (_type)
+    {
+    case DUMMY:
+        break;
+    case BOSS:
+        break;
+    case ATTACKER:
+        GameObject::_r = 0.7;
+        GameObject::_m = 0.2;
+        GameObject::_maxSpeed = 18.0;
+
+        Unit::_segmentCount = 3;
+        Unit::_accAbility = 20.0;
+        Unit::_doesDealDamage = true;
+        Unit::_initEnergyPt = 30.0f;
+
+        BotUnit::_threshold = 2.0;
+        break;
+    case DEFENDER:
+        GameObject::_r = 1.2;
+        GameObject::_m = 5.0;
+        GameObject::_maxSpeed = 13.0;;
+
+        Unit::_segmentCount = 4;
+        Unit::_accAbility = 30.0;
+        Unit::_doesDealDamage = true;
+
+        BotUnit::_threshold = 5.0;
+        break;
+    default:
+        break;
+    }
+
     reset();
 }
 
@@ -34,7 +72,7 @@ BotUnit::~BotUnit()
 {
 }
 
-void BotUnit::update(double deltTime)
+void BotUnit::update(double deltaTime)
 {
     switch (_mode)
     {
@@ -63,7 +101,7 @@ void BotUnit::update(double deltTime)
         break;
     }
 
-    Unit::update(deltTime);
+    Unit::update(deltaTime);
 }
 
 void BotUnit::reset()
@@ -165,32 +203,12 @@ void BotUnit::setMode(Mode mode)
     switch (mode)
     {
     case WANDER:
-        wander();
         break;
     case REGAIN:
         break;
     case ATTACK:
-        GameObject::_r = 0.7;
-        GameObject::_m = 0.2;
-        GameObject::_maxSpeed = 18.0;
-
-        Unit::_segmentCount = 3;
-        Unit::_accAbility = 20.0;
-        Unit::_doesDealDamage = true;
-        Unit::_initEnergyPt = 30.0f;
-
-        BotUnit::_threshold = 2.0;
         break;
     case DEFEND:
-        GameObject::_r = 1.2;
-        GameObject::_m = 5.0;
-        GameObject::_maxSpeed = 13.0;;
-
-        Unit::_segmentCount = 4;
-        Unit::_accAbility = 30.0;
-        Unit::_doesDealDamage = true;
-
-        BotUnit::_threshold = 5.0;
         break;
     case ESCAPE:
         break;

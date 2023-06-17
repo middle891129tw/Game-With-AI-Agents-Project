@@ -22,11 +22,10 @@ double _collisionFactor = 160.0;
 
 Camera camera;
 PlayerUnit playerUnit;
-BotUnit martianBossUnit;
-BotUnit martianMinionUnit1;
-
-BotUnit martianMinionUnit2;
-BotUnit martianMinionUnit3;
+BotUnit martianBossUnit(BotUnit::BOSS);
+BotUnit martianMinionUnit1(BotUnit::DEFENDER);
+BotUnit martianMinionUnit2(BotUnit::ATTACKER);
+BotUnit martianMinionUnit3(BotUnit::ATTACKER);
 
 std::chrono::high_resolution_clock::time_point prevTime;
 std::chrono::high_resolution_clock::time_point currTime;
@@ -56,7 +55,7 @@ void setUpUnits()
 void initializeGlut(int* argcPtr, char** argv)
 {
     glutInit(argcPtr, argv);
-    glutInitWindowPosition(100, 100);
+    glutInitWindowPosition(300, 100);
     glutInitWindowSize(_width, _height);
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
     glutCreateWindow("Game");
@@ -126,16 +125,16 @@ void renderScene()
 
 void handleCollisions()
 {
-    bool isCollidingp0 = handleCollision(playerUnit, martianBossUnit);
-    bool isCollidingp1 = handleCollision(playerUnit, martianMinionUnit1);
-    bool isCollidingp2 = handleCollision(playerUnit, martianMinionUnit2);
-    bool isCollidingp3 = handleCollision(playerUnit, martianMinionUnit3);
+    bool isCollidingP0 = handleCollision(playerUnit, martianBossUnit);
+    bool isCollidingP1 = handleCollision(playerUnit, martianMinionUnit1);
+    bool isCollidingP2 = handleCollision(playerUnit, martianMinionUnit2);
+    bool isCollidingP3 = handleCollision(playerUnit, martianMinionUnit3);
     bool isColliding23 = handleCollision(martianMinionUnit2, martianMinionUnit3);
-    playerUnit.setIsColliding(isCollidingp0 || isCollidingp1 || isCollidingp2 || isCollidingp3);
-    martianBossUnit.setIsColliding(isCollidingp0);
-    martianMinionUnit1.setIsColliding(isCollidingp1);
-    martianMinionUnit2.setIsColliding(isCollidingp2 || isColliding23);
-    martianMinionUnit3.setIsColliding(isCollidingp3 || isColliding23);
+    playerUnit.setIsColliding(isCollidingP0 || isCollidingP1 || isCollidingP2 || isCollidingP3);
+    martianBossUnit.setIsColliding(isCollidingP0);
+    martianMinionUnit1.setIsColliding(isCollidingP1);
+    martianMinionUnit2.setIsColliding(isCollidingP2 || isColliding23);
+    martianMinionUnit3.setIsColliding(isCollidingP3 || isColliding23);
 }
 
 bool handleCollision(GameObject& a, GameObject& b)

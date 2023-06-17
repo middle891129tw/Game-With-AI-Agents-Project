@@ -19,24 +19,24 @@ public:
     enum Team { NEUTRAL, TERRANS, MARTIANS };
 
 protected:
-    unsigned int _segmentCount;
-    bool _isStoppingX;
-    bool _isStoppingY;
-    bool _isDashing;
-    bool _doesDealDamage;
-    double _accAbility;
-    double _dashFactor;
-    float _initHealthPt;
-    float _initEnergyPt;
-    float _healthPt;
-    float _energyPt;
-    const float _emptyHealthPt; // 0.0f
-    const float _emptyEnergyPt; // 0.0f
-    const float _fullHealthPt;
-    const float _fullEnergyPt;
-    Vector3 _bodyColor;
-    Vector3 _arrowColor;
-    Team _team;
+    unsigned int    _segmentCount;
+    bool            _isStoppingX;
+    bool            _isStoppingY;
+    bool            _isDashing;
+    bool            _doesDealDamage;
+    double          _accAbility;
+    double          _dashFactor;
+    float           _initHealthPt;
+    float           _initEnergyPt;
+    float           _healthPt;
+    float           _energyPt;
+    const float     _emptyHealthPt; // 0.0f
+    const float     _emptyEnergyPt; // 0.0f
+    const float     _fullHealthPt;
+    const float     _fullEnergyPt;
+    Vector3         _bodyColor;
+    Vector3         _arrowColor;
+    Team            _team;
     std::list<std::reference_wrapper<Unit>> _friendlyUnits;
     std::list<std::reference_wrapper<Unit>> _hostileUnits;
 
