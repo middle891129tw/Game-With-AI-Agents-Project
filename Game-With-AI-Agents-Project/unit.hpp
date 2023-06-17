@@ -14,8 +14,8 @@ class Unit : public GameObject
 {
 public:
     enum Direction { FORWARD, BACKWARD, LEFTWARD, RIGHTWARD };
-    enum Health { H_EMPTY, H_LOW, H_MEDIUM, H_HIGH, H_FULL };
-    enum Energy { E_EMPTY, E_LOW, E_MEDIUM, E_HIGH, E_FULL };
+    enum HStatus { H_EMPTY, H_LOW, H_MEDIUM, H_HIGH, H_FULL }; // health status
+    enum EStatus { E_EMPTY, E_LOW, E_MEDIUM, E_HIGH, E_FULL }; // energy status
     enum Team { NEUTRAL, TERRANS, MARTIANS };
 
 protected:
@@ -30,8 +30,8 @@ protected:
     float _initEnergyPt;
     float _healthPt;
     float _energyPt;
-    const float _emptyHealthPt;
-    const float _emptyEnergyPt;
+    const float _emptyHealthPt; // 0.0f
+    const float _emptyEnergyPt; // 0.0f
     const float _fullHealthPt;
     const float _fullEnergyPt;
     Vector3 _bodyColor;
@@ -51,8 +51,8 @@ public:
 
     void virtual update(double deltaTime) override;
 
-    void drawBody(float angleOffset);
-    void drawArrow(float angleOffset);
+    void drawBody(double angleOffset);
+    void drawArrow(double angleOffset);
     void drawBars();
     void move(Direction);
     void stop(Direction);
@@ -74,5 +74,6 @@ public:
     Team getTeam() const;
     void setTeam(Team team);
 
-    std::map<Health, float> getHealthLevels() const;
+    std::map<HStatus, float> getHStatusTruthinessMap() const;
+    float getHStatusTruthiness(HStatus healthStatus) const;
 };

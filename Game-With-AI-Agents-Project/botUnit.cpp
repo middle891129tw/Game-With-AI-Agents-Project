@@ -177,7 +177,7 @@ void BotUnit::setMode(Mode mode)
         Unit::_segmentCount = 3;
         Unit::_accAbility = 20.0;
         Unit::_doesDealDamage = true;
-        Unit::_initEnergyPt = 30.0;
+        Unit::_initEnergyPt = 30.0f;
 
         BotUnit::_threshold = 2.0;
         break;

@@ -8,7 +8,7 @@
 
 #include "unit.hpp"
 
-#define PI 3.14159f
+#define PI 3.14159
 
 Unit::Unit() : _segmentCount(3),
                _isStoppingX(true),
@@ -41,10 +41,10 @@ Unit::~Unit()
 
 void Unit::draw()
 {
-    float angleOffset = atan2(_front[1], _front[0]);
+    double angleOffset = atan2(_front[1], _front[0]);
 
     glPushMatrix();
-      glTranslatef(_pos[0],
+      glTranslated(_pos[0],
                    _pos[1],
                    _pos[2]);
       drawBody(angleOffset);
@@ -53,42 +53,42 @@ void Unit::draw()
     glPopMatrix();
 }
 
-void Unit::drawBody(float angleOffset)
+void Unit::drawBody(double angleOffset)
 {
     glPushMatrix();
       glColor3f(_bodyColor[0],
                 _bodyColor[1],
                 _bodyColor[2]);
       glBegin(GL_TRIANGLE_FAN);
-        glVertex3f(0.0, 0.0, 0.0);
+        glVertex3d(0.0, 0.0, 0.0);
         for (int i = 0; i <= _segmentCount; ++i)
         {
-            float angle = 2.0f * PI * static_cast<float>(i) / static_cast<float>(_segmentCount) + angleOffset;
-            float x = _r * cos(angle);
-            float y = _r * sin(angle);
-            glVertex3f(x, y, 0.0);
+            double angle = 2.0 * PI * static_cast<double>(i) / static_cast<double>(_segmentCount) + angleOffset;
+            double x = _r * cos(angle);
+            double y = _r * sin(angle);
+            glVertex3d(x, y, 0.0);
         }
       glEnd();
     glPopMatrix();
 }
 
-void Unit::drawArrow(float angleOffset)
+void Unit::drawArrow(double angleOffset)
 {
     glPushMatrix();
-      glTranslatef(1.25 * _r * _front[0],
+      glTranslated(1.25 * _r * _front[0],
                    1.25 * _r * _front[1],
                    1.25 * _r * _front[2] + 0.01);
       glColor3f(_arrowColor[0],
                 _arrowColor[1],
                 _arrowColor[2]);
       glBegin(GL_TRIANGLE_FAN);
-        glVertex3f(0.0, 0.0, 0.0);
+        glVertex3d(0.0, 0.0, 0.0);
         for (int i = 0; i <= 3; ++i)
         {
-            float angle = 2.0f * PI * static_cast<float>(i) / static_cast<float>(3) + angleOffset;
-            float x = cos(angle) * 0.15;
-            float y = sin(angle) * 0.15;
-            glVertex3f(x, y, 0.0);
+            double angle = 2.0f * PI * static_cast<double>(i) / static_cast<double>(3) + angleOffset;
+            double x = cos(angle) * 0.15;
+            double y = sin(angle) * 0.15;
+            glVertex3d(x, y, 0.0);
         }
       glEnd();
     glPopMatrix();
@@ -96,51 +96,50 @@ void Unit::drawArrow(float angleOffset)
 
 void Unit::drawBars()
 {
-    float length;
+    double length;
 
-    std::map<Health, float> healthLevels = getHealthLevels();
-    if (healthLevels[H_EMPTY] > 0.0f)
-        glColor3f(0.8f, 0.8f, 0.8f);
-    else if (healthLevels[H_LOW] > 0.0f)
-        glColor3f(0.8f, 0.2f, 0.3f);
-    else if (healthLevels[H_MEDIUM] > 0.0f)
-        glColor3f(0.8f, 0.8f, 0.2f);
-    else if (healthLevels[H_HIGH] > 0.0f)
-        glColor3f(0.2f, 0.8f, 0.3f);
-    else if (healthLevels[H_FULL] > 0.0f)
+    if (getHStatusTruthiness(H_FULL) > 0.0f)
         glColor3f(0.3f, 0.3f, 0.8f);
+    else if (getHStatusTruthiness(H_HIGH) > 0.0f)
+        glColor3f(0.2f, 0.8f, 0.3f);
+    else if (getHStatusTruthiness(H_MEDIUM) > 0.0f)
+        glColor3f(0.8f, 0.8f, 0.2f);
+    else if (getHStatusTruthiness(H_LOW) > 0.0f)
+        glColor3f(0.8f, 0.2f, 0.3f);
+    else if (getHStatusTruthiness(H_EMPTY) > 0.0f)
+        glColor3f(0.8f, 0.8f, 0.8f);
 
-    length = _healthPt / _fullHealthPt * 0.9f;
+    length = _healthPt / _fullHealthPt * 0.9;
 
     glPushMatrix();
-      glTranslatef(0.0f, 1.6f * _r, 0.2f);
+      glTranslated(0.0, 1.6 * _r, 0.2);
       glBegin(GL_POLYGON);
-        glVertex3f(-length, -0.05f, 0.0f);
-        glVertex3f( length, -0.05f, 0.0f);
-        glVertex3f( length,  0.05f, 0.0f);
-        glVertex3f(-length,  0.05f, 0.0f);
+        glVertex3d(-length, -0.05, 0.0);
+        glVertex3d( length, -0.05, 0.0);
+        glVertex3d( length,  0.05, 0.0);
+        glVertex3d(-length,  0.05, 0.0);
       glEnd();
-      length = 0.9f;
+      length = 0.9;
       glColor3f(0.5f, 0.5f, 0.5f);
       glBegin(GL_POLYGON);
-        glVertex3f(-length, -0.05f, 0.0f);
-        glVertex3f( length, -0.05f, 0.0f);
-        glVertex3f( length,  0.05f, 0.0f);
-        glVertex3f(-length,  0.05f, 0.0f);
+        glVertex3d(-length, -0.05, 0.0);
+        glVertex3d( length, -0.05, 0.0);
+        glVertex3d( length,  0.05, 0.0);
+        glVertex3d(-length,  0.05, 0.0);
       glEnd();
     glPopMatrix();
 
-    if (healthLevels[H_EMPTY] == 0.0f)
+    if (getHStatusTruthiness(H_EMPTY) == 0.0f)
     {
         glPushMatrix();
-          glTranslatef(0.0f, 1.6f * _r - 0.2f, 0.2f);
+          glTranslated(0.0, 1.6 * _r - 0.2, 0.2);
           length = 0.9f * _energyPt / 100.0f;
           glColor3f(0.8f, 0.8f, 0.8f);
           glBegin(GL_POLYGON);
-            glVertex3f(-length, -0.05f, 0.0f);
-            glVertex3f( length, -0.05f, 0.0f);
-            glVertex3f( length,  0.05f, 0.0f);
-            glVertex3f(-length,  0.05f, 0.0f);
+            glVertex3d(-length, -0.05, 0.0);
+            glVertex3d( length, -0.05, 0.0);
+            glVertex3d( length,  0.05, 0.0);
+            glVertex3d(-length,  0.05, 0.0);
           glEnd();
         glPopMatrix();
     }
@@ -160,7 +159,7 @@ void Unit::applyForce(Vector3 force, GameObject& source)
     Unit* sourceUnitPtr = dynamic_cast<Unit*>(&source);
     if (!_isColliding &&
         sourceUnitPtr != NULL &&
-        sourceUnitPtr->getVel().magnitude() > 15.0f &&
+        sourceUnitPtr->getVel().magnitude() > 15.0 &&
         sourceUnitPtr->getIsDashing() &&
         sourceUnitPtr->getEnergyPt() > 10.0f &&
         sourceUnitPtr->getDoesDealDamage() &&
@@ -200,7 +199,7 @@ void Unit::update(double deltaTime)
 
 void Unit::move(Direction dir)
 {
-    bool isStopping = getHealthLevels()[H_EMPTY] > 0.0f;
+    bool isStopping = getHStatusTruthiness(H_EMPTY) > 0.0f;
     double accAbility = _accAbility * (isStopping ? 0.0 : 1.0);
 
     switch (dir)
@@ -297,7 +296,7 @@ void Unit::setIsDashing(bool isDashing)
 {
     _isDashing = isDashing;
 
-    if (getHealthLevels()[H_EMPTY] > 0.0f || _energyPt <= 10.0)
+    if (getHStatusTruthiness(H_EMPTY) > 0.0f || _energyPt <= 10.0)
         return;
 
     if (_isDashing)
@@ -329,50 +328,100 @@ void Unit::setTeam(Team team)
     _team = team;
 }
 
-std::map<Unit::Health, float> Unit::getHealthLevels() const
+std::map<Unit::HStatus, float> Unit::getHStatusTruthinessMap() const
 {
-    std::map<Unit::Health, float> levels;
+    std::map<Unit::HStatus, float> levelMap;
 
-    // H_EMPTY
-    if (_healthPt == _emptyHealthPt)
-        levels[H_EMPTY] = 1.0f;
-    else
-        levels[H_EMPTY] = 0.0f;
+    //// H_EMPTY
+    //if (_healthPt == _emptyHealthPt)
+    //    levelMap[H_EMPTY] = 1.0f;
+    //else
+    //    levelMap[H_EMPTY] = 0.0f;
+    //
+    //// H_LOW: 0~10 linear, 10~30 constant, 30~50, linear
+    //if (0.0f <= _healthPt && _healthPt <= 10.0f)
+    //    levelMap[H_LOW] = 1.0f / (10.0f - 0.0f) * (_healthPt - 0.0f);
+    //else if (10.0f <= _healthPt && _healthPt <= 30.0f)
+    //    levelMap[H_LOW] = 1.0f;
+    //else if (30.0f <= _healthPt && _healthPt <= 50.0f)
+    //    levelMap[H_LOW] = -1.0f / (50.0f - 30.0f) * (_healthPt - 30.0f) + 1.0f;
+    //
+    //// H_MEDIUM: 30~40 linear, 40~60 constant, 60~70, linear
+    //if (30.0f <= _healthPt && _healthPt <= 40.0f)
+    //    levelMap[H_MEDIUM] = 1.0f / (40.0f - 30.0f) * (_healthPt - 30.0f);
+    //else if (40.0f <= _healthPt && _healthPt <= 60.0f)
+    //    levelMap[H_MEDIUM] = 1.0f;
+    //else if (60.0f <= _healthPt && _healthPt <= 70.0f)
+    //    levelMap[H_MEDIUM] = -1.0f / (70.0f - 60.0f) * (_healthPt - 60.0f) + 1.0f;
+    //
+    //// H_HIGH: 50~70 linear, 70~90 constant, 90~100, linear
+    //if (50.0f <= _healthPt && _healthPt <= 70.0f)
+    //    levelMap[H_HIGH] = 1.0f / (70.0f - 50.0f) * (_healthPt - 50.0f);
+    //else if (70.0f <= _healthPt && _healthPt <= 90.0f)
+    //    levelMap[H_HIGH] = 1.0f;
+    //else if (90.0f <= _healthPt && _healthPt <= 100.0f)
+    //    levelMap[H_HIGH] = -1.0f / (100.0f - 90.0f) * (_healthPt - 90.0f) + 1.0f;
+    //
+    //// H_FULL
+    //if (_healthPt == _fullHealthPt)
+    //    levelMap[H_FULL] = 1.0f;
+    //else
+    //    levelMap[H_FULL] = 0.0f;
 
-    // use linear equation
+    for (HStatus healthStatus : { H_EMPTY, H_LOW, H_MEDIUM, H_HIGH, H_FULL })
+    {
+        levelMap[healthStatus] = getHStatusTruthiness(healthStatus);
+    }
+
+    return levelMap;
+}
+
+float Unit::getHStatusTruthiness(HStatus healthStatus) const
+{
+    // fuzzy logic, uses linear equation
     // y - y0 = m(x - x0)
     // y = m(x - x0) + y0
 
-    // H_LOW: 0~10 linear, 10~30 constant, 30~50, linear
-    if (0.0f <= _healthPt && _healthPt <= 10.0f)
-        levels[H_LOW] = 1.0f / (10.0f - 0.0f) * (_healthPt - 0.0f);
-    else if (10.0f <= _healthPt && _healthPt <= 30.0f)
-        levels[H_LOW] = 1.0f;
-    else if (30.0f <= _healthPt && _healthPt <= 50.0f)
-        levels[H_LOW] = -1.0f / (50.0f - 30.0f) * (_healthPt - 30.0f) + 1.0f;
+    switch (healthStatus)
+    {
+    case H_EMPTY:
+        if (_healthPt == _emptyHealthPt)
+            return 1.0f;
+        else
+            return 0.0f;
 
-    // H_MEDIUM: 30~40 linear, 40~60 constant, 60~70, linear
-    if (30.0f <= _healthPt && _healthPt <= 40.0f)
-        levels[H_MEDIUM] = 1.0f / (40.0f - 30.0f) * (_healthPt - 30.0f);
-    else if (40.0f <= _healthPt && _healthPt <= 60.0f)
-        levels[H_MEDIUM] = 1.0f;
-    else if (60.0f <= _healthPt && _healthPt <= 70.0f)
-        levels[H_MEDIUM] = -1.0f / (70.0f - 60.0f) * (_healthPt - 60.0f) + 1.0f;
+    case H_LOW:
+        if (0.0f <= _healthPt && _healthPt <= 10.0f)
+            return 1.0f / (10.0f - 0.0f) * (_healthPt - 0.0f);
+        else if (10.0f <= _healthPt && _healthPt <= 30.0f)
+            return 1.0f;
+        else if (30.0f <= _healthPt && _healthPt <= 50.0f)
+            return -1.0f / (50.0f - 30.0f) * (_healthPt - 30.0f) + 1.0f;
 
-    // H_HIGH: 50~70 linear, 70~90 constant, 90~100, linear
-    if (50.0f <= _healthPt && _healthPt <= 70.0f)
-        levels[H_HIGH] = 1.0f / (70.0f - 50.0f) * (_healthPt - 50.0f);
-    else if (70.0f <= _healthPt && _healthPt <= 90.0f)
-        levels[H_HIGH] = 1.0f;
-    else if (90.0f <= _healthPt && _healthPt <= 100.0f)
-        levels[H_HIGH] = -1.0f / (100.0f - 90.0f) * (_healthPt - 90.0f) + 1.0f;
+    case H_MEDIUM:
+        if (30.0f <= _healthPt && _healthPt <= 40.0f)
+            return 1.0f / (40.0f - 30.0f) * (_healthPt - 30.0f);
+        else if (40.0f <= _healthPt && _healthPt <= 60.0f)
+            return 1.0f;
+        else if (60.0f <= _healthPt && _healthPt <= 70.0f)
+            return -1.0f / (70.0f - 60.0f) * (_healthPt - 60.0f) + 1.0f;
 
-    // H_FULL
-    if (_healthPt == _fullHealthPt)
-        levels[H_FULL] = 1.0f;
-    else
-        levels[H_FULL] = 0.0f;
+    case H_HIGH:
+        if (50.0f <= _healthPt && _healthPt <= 70.0f)
+            return 1.0f / (70.0f - 50.0f) * (_healthPt - 50.0f);
+        else if (70.0f <= _healthPt && _healthPt <= 90.0f)
+            return 1.0f;
+        else if (90.0f <= _healthPt && _healthPt <= 100.0f)
+            return -1.0f / (100.0f - 90.0f) * (_healthPt - 90.0f) + 1.0f;
 
-    return levels;
+    case H_FULL:
+        if (_healthPt == _fullHealthPt)
+            return 1.0f;
+        else
+            return 0.0f;
+
+    default:
+        return 0.0f;
+    }
 }
 
