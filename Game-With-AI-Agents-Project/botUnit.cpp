@@ -2,6 +2,7 @@
 * botUnit.cpp
 */
 
+#include <algorithm>
 #include <random>
 
 #include "botUnit.hpp"
@@ -13,7 +14,9 @@ BotUnit::BotUnit() : BotUnit(DUMMY)
 BotUnit::BotUnit(Type type) : _type(type),
                               _mode(WANDER),
                               _destination(),
-                              _threshold(2.0)
+                              _threshold(2.0),
+                              _tSinceUpdateMode(0.0),
+                              _updateModeInterval(1.0)
 {
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -34,7 +37,7 @@ BotUnit::BotUnit(Type type) : _type(type),
     case DUMMY:
         GameObject::_r = 1.0;
         GameObject::_m = 15.0;
-        GameObject::_maxSpeed = 12.0;
+        GameObject::_maxSpeed = 5.0;
 
         Unit::_segmentCount = 4;
         break;
@@ -86,21 +89,35 @@ BotUnit::~BotUnit()
 
 void BotUnit::update(double deltaTime)
 {
-    switch (_type)
+    _tSinceUpdateMode += deltaTime;
+    if (_tSinceUpdateMode > _updateModeInterval)
     {
-    case BOSS:
-        if (!_friendlyUnits.empty())
+        switch (_type)
         {
-            Unit& friendlyUnit = _friendlyUnits.front().get();
-            if (friendlyUnit.getHStatusTruthiness(H_EMPTY) > 0.0 ||
-                friendlyUnit.getHStatusTruthiness(H_LOW) > 0.5)
-                setMode(RESCUE);
-            else setMode(WANDER);
+        case BOSS:
+            if (!_friendlyUnits.empty())
+            {
+                Unit& friendlyUnit = _friendlyUnits.front().get();
+                //printf("dummy unit H_EMPTY:\t\t%f\n", friendlyUnit.getHStatusTruthiness(H_EMPTY));
+                //printf("dummy unit H_LOW:\t\t%f\n", friendlyUnit.getHStatusTruthiness(H_LOW));
+                //printf("dummy unit D_CLOSE:\t\t%f\n", getDStatusTruthiness(D_CLOSE, friendlyUnit));
+                //printf("dummy unit H_LOW AND D_CLOSE:\t%f\n\n", std::min<float>(friendlyUnit.getHStatusTruthiness(H_LOW),
+                //    getDStatusTruthiness(D_CLOSE, friendlyUnit)));
+
+                if (friendlyUnit.getHStatusTruthiness(H_EMPTY) == 1.0 ||
+                    std::min<float>(friendlyUnit.getHStatusTruthiness(H_LOW),
+                                    getDStatusTruthiness(D_CLOSE, friendlyUnit)) > 0.9)
+                    setMode(RESCUE);
+                else setMode(WANDER);
+
+                _tSinceUpdateMode = 0.0;
+            }
+            break;
+        default:
+            break;
         }
-        break;
-    default:
-        break;
     }
+    
 
     switch (_mode)
     {

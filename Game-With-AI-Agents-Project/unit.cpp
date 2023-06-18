@@ -172,8 +172,9 @@ void Unit::applyForce(Vector3 force, GameObject& source)
     }
 
     else if (!_isColliding &&
-             _healthPt == 0.0 &&
+             _healthPt < 50.0 &&
              sourceUnitPtr != NULL &&
+             sourceUnitPtr != this &&
              sourceUnitPtr->getVel().magnitude() > 1.0 &&
              sourceUnitPtr->getTeam() == _team)
     {
@@ -185,11 +186,20 @@ void Unit::applyForce(Vector3 force, GameObject& source)
 
 void Unit::update(double deltaTime)
 {
-    if (_healthPt > _emptyHealthPt && _isStoppingX && _isStoppingY)
+    if (_healthPt > _emptyHealthPt)
     {
-        _healthPt += 0.1f;
-        if (_healthPt > _fullHealthPt)
-            _healthPt = _fullHealthPt;
+        if (_isStoppingX && _isStoppingY)
+        {
+            _healthPt += 0.1f;
+            if (_healthPt > _fullHealthPt)
+                _healthPt = _fullHealthPt;
+        }
+        else
+        {
+            _healthPt += 0.01f;
+            if (_healthPt > _fullHealthPt)
+                _healthPt = _fullHealthPt;
+        }
     }
 
     if (_isDashing)
@@ -339,17 +349,17 @@ void Unit::setTeam(Team team)
     _team = team;
 }
 
-std::map<Unit::HStatus, float> Unit::getHStatusTruthinessMap() const
-{
-    std::map<Unit::HStatus, float> levelMap;
-
-    for (HStatus healthStatus : { H_EMPTY, H_LOW, H_MEDIUM, H_HIGH, H_FULL })
-    {
-        levelMap[healthStatus] = getHStatusTruthiness(healthStatus);
-    }
-
-    return levelMap;
-}
+//std::map<Unit::HStatus, float> Unit::getHStatusTruthinessMap() const
+//{
+//    std::map<Unit::HStatus, float> levelMap;
+//
+//    for (HStatus healthStatus : { H_EMPTY, H_LOW, H_MEDIUM, H_HIGH, H_FULL })
+//    {
+//        levelMap[healthStatus] = getHStatusTruthiness(healthStatus);
+//    }
+//
+//    return levelMap;
+//}
 
 float Unit::getHStatusTruthiness(HStatus healthStatus) const
 {
@@ -357,46 +367,91 @@ float Unit::getHStatusTruthiness(HStatus healthStatus) const
     // y - y0 = m(x - x0)
     // y = m(x - x0) + y0
 
+    float result = 0.0f;
+
     switch (healthStatus)
     {
     case H_EMPTY:
         if (_healthPt == _emptyHealthPt)
-            return 1.0f;
+            result = 1.0f;
         else
-            return 0.0f;
+            result = 0.0f;
+        break;
 
     case H_LOW:
-        if (0.0f <= _healthPt && _healthPt <= 10.0f)
-            return 1.0f / (10.0f - 0.0f) * (_healthPt - 0.0f);
-        else if (10.0f <= _healthPt && _healthPt <= 30.0f)
-            return 1.0f;
+        if (0.0f <= _healthPt && _healthPt <= 30.0f)
+            result = 1.0f;
         else if (30.0f <= _healthPt && _healthPt <= 50.0f)
-            return -1.0f / (50.0f - 30.0f) * (_healthPt - 30.0f) + 1.0f;
+            result = -1.0f / (50.0f - 30.0f) * (_healthPt - 30.0f) + 1.0f;
+        break;
 
     case H_MEDIUM:
         if (30.0f <= _healthPt && _healthPt <= 40.0f)
-            return 1.0f / (40.0f - 30.0f) * (_healthPt - 30.0f);
+            result = 1.0f / (40.0f - 30.0f) * (_healthPt - 30.0f);
         else if (40.0f <= _healthPt && _healthPt <= 60.0f)
-            return 1.0f;
+            result = 1.0f;
         else if (60.0f <= _healthPt && _healthPt <= 70.0f)
-            return -1.0f / (70.0f - 60.0f) * (_healthPt - 60.0f) + 1.0f;
+            result = -1.0f / (70.0f - 60.0f) * (_healthPt - 60.0f) + 1.0f;
+        break;
 
     case H_HIGH:
         if (50.0f <= _healthPt && _healthPt <= 70.0f)
-            return 1.0f / (70.0f - 50.0f) * (_healthPt - 50.0f);
-        else if (70.0f <= _healthPt && _healthPt <= 90.0f)
-            return 1.0f;
-        else if (90.0f <= _healthPt && _healthPt <= 100.0f)
-            return -1.0f / (100.0f - 90.0f) * (_healthPt - 90.0f) + 1.0f;
+            result = 1.0f / (70.0f - 50.0f) * (_healthPt - 50.0f);
+        else if (70.0f <= _healthPt && _healthPt <= 100.0f)
+            result = 1.0f;
+        break;
 
     case H_FULL:
         if (_healthPt == _fullHealthPt)
-            return 1.0f;
+            result = 1.0f;
         else
-            return 0.0f;
+            result = 0.0f;
+        break;
 
     default:
-        return 0.0f;
+        break;
     }
+    return result;
+}
+
+float Unit::getDStatusTruthiness(DStatus dStatus, Unit& anotherUnit) const
+{
+    // fuzzy logic, uses linear equation
+    // y - y0 = m(x - x0)
+    // y = m(x - x0) + y0
+
+    float result = 0.0f;
+    float dStandardized = (anotherUnit.getPos() - _pos).magnitude() * 2.0f;
+
+    switch (dStatus)
+    {
+    case Unit::D_CLOSE:
+        if (0.0f <= dStandardized && dStandardized <= 30.0f)
+            result = 1.0f;
+        else if (30.0f <= dStandardized && dStandardized <= 50.0f)
+            result = -1.0f / (50.0f - 30.0f) * (dStandardized - 30.0f) + 1.0f;
+        break;
+
+    case Unit::D_MEDIUM:
+        if (30.0f <= dStandardized && dStandardized <= 40.0f)
+            result = 1.0f / (40.0f - 30.0f) * (dStandardized - 30.0f);
+        else if (40.0f <= dStandardized && dStandardized <= 60.0f)
+            result = 1.0f;
+        else if (60.0f <= dStandardized && dStandardized <= 70.0f)
+            result = -1.0f / (70.0f - 60.0f) * (dStandardized - 60.0f) + 1.0f;
+        break;
+
+    case Unit::D_FAR:
+        if (50.0f <= dStandardized && dStandardized <= 70.0f)
+            result = 1.0f / (70.0f - 50.0f) * (dStandardized - 50.0f);
+        else if (70.0f <= dStandardized && dStandardized <= 100.0f)
+            result = 1.0f;
+        break;
+
+    default:
+        break;
+    }
+
+    return result;
 }
 

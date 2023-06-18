@@ -6,7 +6,7 @@
 
 #include <functional>
 #include <list>
-#include <map>
+//#include <map>
 
 #include "gameObject.hpp"
 
@@ -14,8 +14,10 @@ class Unit : public GameObject
 {
 public:
     enum Direction { FORWARD, BACKWARD, LEFTWARD, RIGHTWARD };
-    enum HStatus { H_EMPTY, H_LOW, H_MEDIUM, H_HIGH, H_FULL }; // health status
-    enum EStatus { E_EMPTY, E_LOW, E_MEDIUM, E_HIGH, E_FULL }; // energy status
+    enum SStatus { S_STILL, S_SLOW, S_MEDIUM, S_FAST };         // speed status
+    enum HStatus { H_EMPTY, H_LOW, H_MEDIUM, H_HIGH, H_FULL };  // health status
+    enum EStatus { E_EMPTY, E_LOW, E_MEDIUM, E_HIGH, E_FULL };  // energy status
+    enum DStatus { D_CLOSE, D_MEDIUM, D_FAR };                  // distance to another unit status
     enum Team { NEUTRAL, TERRANS, MARTIANS };
 
 protected:
@@ -39,7 +41,6 @@ protected:
     Team            _team;
     std::list<std::reference_wrapper<Unit>> _friendlyUnits;
     std::list<std::reference_wrapper<Unit>> _hostileUnits;
-
 
 public:
     Unit();
@@ -74,6 +75,7 @@ public:
     Team getTeam() const;
     void setTeam(Team team);
 
-    std::map<HStatus, float> getHStatusTruthinessMap() const;
+    //std::map<HStatus, float> getHStatusTruthinessMap() const;
     float getHStatusTruthiness(HStatus healthStatus) const;
+    float getDStatusTruthiness(DStatus dStatus, Unit& anotherUnit) const;
 };
