@@ -1,6 +1,6 @@
 # Game-With-AI-Agents-Project
 
-This is a C++ application for a game.
+This is a C++ application for a game with AI bots.
 
 ## Features
 
@@ -12,5 +12,6 @@ This is a C++ application for a game.
 ## Usage
 
 - Use WASD to control the player unit.
-
+- Press space bar to make the player unit dash
+- Press r to reset all units
 
